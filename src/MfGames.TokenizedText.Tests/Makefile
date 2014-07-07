@@ -8,5 +8,6 @@ all: ../../bin/$(DLL)
 	gmcs -target:library \
 		-out:../../bin/$(DLL) \
 		-r:../../packages/NUnit.2.6.3/lib/nunit.framework.dll \
+		-r:../../bin/MfGames.TokenizedText.dll \
 		$(CSHARP_SOURCE)
 	chmod 0644 ../../bin/$(DLL)
