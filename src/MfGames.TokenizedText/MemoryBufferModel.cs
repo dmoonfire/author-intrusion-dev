@@ -10,6 +10,11 @@ namespace MfGames.TokenizedText
 	{
 		private List<Line> lines;
 
+		public override Line GetLine(int lineIndex)
+		{
+			return lines[lineIndex];
+		}
+
 		public void InsertLines(int afterLineIndex, int count)
 		{
 			// Create an array of blank lines to insert into the collection.
@@ -18,7 +23,8 @@ namespace MfGames.TokenizedText
 			for (int i = 0; i < count; i++)
 			{
 				//LineKey lineKey = LineKeyGenerator.Instance.NewLineKey();
-				array[i] = new Line(/*lineKey*/);
+				LineKey lineKey = KeyGenerator.Instance.GetNextLineKey();
+				array[i] = new Line(lineKey);
 			}
 
 			// Insert the lines into the collection.

@@ -18,6 +18,13 @@ namespace MfGames.TokenizedText
 	{
 		public EventHandler<LinesInsertedEventArgs> LinesInserted;
 
+		public Line this[int lineIndex]
+		{
+			get { return GetLine(lineIndex); }
+		}
+
+		public abstract Line GetLine(int lineIndex);
+
 		protected void RaiseLinesInserted(int afterLineIndex, int count)
 		{
 			var listeners = LinesInserted;

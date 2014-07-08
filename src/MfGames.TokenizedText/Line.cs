@@ -8,9 +8,11 @@ namespace MfGames.TokenizedText
 	public class Line
 	{
 		public IList<Token> Tokens { get; private set; }
+		public LineKey Key { get; private set; }
 
-		public Line()
+		public Line(LineKey lineKey)
 		{
+			Key = lineKey;
 			Tokens = new List<Token>();
 		}
 	}

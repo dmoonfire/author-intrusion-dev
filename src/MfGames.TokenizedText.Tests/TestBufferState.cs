@@ -25,7 +25,7 @@ namespace MfGames.TokenizedText
 
 			for (int i = 0; i < e.Count; i++)
 			{
-				lines[i] = null;
+				lines[i] = Model[i];
 			}
 
 			// Insert the lines into the collection.
