@@ -4,7 +4,7 @@ namespace MfGames.TokenizedText
 	/// A controller associated with a single buffer that handles changes made
 	/// to a given buffer.
 	/// </summary>
-	public class BufferController
+	public abstract class BufferController
 	{
 
 	}

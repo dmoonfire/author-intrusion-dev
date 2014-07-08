@@ -1,4 +1,7 @@
-CSHARP_SOURCE = $(wildcard *.cs)
+CSHARP_SOURCE = \
+	$(wildcard *.cs) \
+	$(wildcard Commands/*.cs) \
+	$(wildcard Changes/*.cs)
 DLL = MfGames.TokenizedText.dll
 
 all: ../../bin/$(DLL)

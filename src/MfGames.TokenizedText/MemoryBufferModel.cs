@@ -8,11 +8,29 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public class MemoryBufferModel : BufferModel
 	{
-		public IList<string> Lines { get; private set; }
+		private List<Line> lines;
+
+		public void InsertLines(int afterLineIndex, int count)
+		{
+			// Create an array of blank lines to insert into the collection.
+			var array = new Line[count];
+
+			for (int i = 0; i < count; i++)
+			{
+				//LineKey lineKey = LineKeyGenerator.Instance.NewLineKey();
+				array[i] = new Line(/*lineKey*/);
+			}
+
+			// Insert the lines into the collection.
+			lines.InsertRange(afterLineIndex, array);
+
+			// Raise an event with the created lines.
+			RaiseLinesInserted(afterLineIndex, count);
+		}
 
 		public MemoryBufferModel()
 		{
-			Lines = new List<string>();
+			lines = new List<Line>();
 		}
 	}
 }

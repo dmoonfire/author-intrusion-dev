@@ -1,3 +1,6 @@
+using System;
+using MfGames.TokenizedText.Changes;
+
 namespace MfGames.TokenizedText
 {
 	/// <summary>
@@ -13,6 +16,17 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public abstract class BufferModel
 	{
+		public EventHandler<LinesInsertedEventArgs> LinesInserted;
 
+		protected void RaiseLinesInserted(int afterLineIndex, int count)
+		{
+			var listeners = LinesInserted;
+
+			if (listeners != null)
+			{
+				var args = new LinesInsertedEventArgs(afterLineIndex, count);
+				listeners(this, args);
+			}
+		}
 	}
 }
