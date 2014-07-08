@@ -10,9 +10,8 @@ namespace MfGames.TokenizedText
 		public string Text { get; private set; }
 
 		public Token(string text)
-		: this(KeyGenerator.Instance.GetNextTokenKey(), text)
-		{
-		}
+			: this(KeyGenerator.Instance.GetNextTokenKey(), text)
+		{}
 
 		public Token(TokenKey key, string text)
 		{

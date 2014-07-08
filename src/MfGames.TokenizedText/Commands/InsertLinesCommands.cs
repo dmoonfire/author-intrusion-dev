@@ -5,7 +5,6 @@ namespace MfGames.TokenizedText.Commands
 	/// given line key or sequence.
 	/// </summary>
 	public class InsertLinesAtSequenceCommand
-		//: IBufferCommand
-	{
-	}
+	//: IBufferCommand
+	{}
 }

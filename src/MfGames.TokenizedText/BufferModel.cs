@@ -1,5 +1,5 @@
-using System;
 using MfGames.TokenizedText.Changes;
+using System;
 
 namespace MfGames.TokenizedText
 {
@@ -25,9 +25,9 @@ namespace MfGames.TokenizedText
 		}
 
 		public abstract Line GetLine(int lineIndex);
-		
+
 		public abstract void InsertLines(int afterLineIndex, int count);
-		
+
 		public void InsertLine(int afterLineIndex)
 		{
 			InsertLines(afterLineIndex, 1);

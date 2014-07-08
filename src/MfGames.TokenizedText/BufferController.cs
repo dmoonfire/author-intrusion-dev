@@ -5,7 +5,5 @@ namespace MfGames.TokenizedText
 	/// to a given buffer.
 	/// </summary>
 	public abstract class BufferController
-	{
-
-	}
+	{}
 }

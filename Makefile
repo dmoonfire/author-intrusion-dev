@@ -11,5 +11,8 @@ test:
 	cp packages/Humanizer.1.28.0/lib/portable-win+net40+sl50+wp8+wpa81/Humanizer.dll bin
 	nunit-console -framework=4.0 bin/*.Tests.dll
 
+format:
+	$(MAKE) -C src format
+
 restore:
 	nuget restore packages/packages.config -PackagesDirectory packages

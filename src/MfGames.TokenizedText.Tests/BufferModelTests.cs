@@ -23,7 +23,9 @@ namespace MfGames.TokenizedText.Tests
 				Setup();
 
 				// Assert
-				Assert.AreEqual(0, state.Lines.Count, "Unexpected number of lines.");
+				Assert.AreEqual(0,
+					state.Lines.Count,
+					"Unexpected number of lines.");
 			}
 
 			[Test]
@@ -36,7 +38,9 @@ namespace MfGames.TokenizedText.Tests
 				model.InsertLines(0, 10);
 
 				// Assert
-				Assert.AreEqual(10, state.Lines.Count, "Unexpected number of lines.");
+				Assert.AreEqual(10,
+					state.Lines.Count,
+					"Unexpected number of lines.");
 			}
 
 			[Test]
@@ -50,7 +54,9 @@ namespace MfGames.TokenizedText.Tests
 				model.InsertLines(0, 5);
 
 				// Assert
-				Assert.AreEqual(10, state.Lines.Count, "Unexpected number of lines.");
+				Assert.AreEqual(10,
+					state.Lines.Count,
+					"Unexpected number of lines.");
 			}
 
 			[Test]
@@ -63,7 +69,9 @@ namespace MfGames.TokenizedText.Tests
 				model.PopulateNumberGrid(10, 10);
 
 				// Assert
-				Assert.AreEqual(10, state.Lines.Count, "Unexpected number of lines.");
+				Assert.AreEqual(10,
+					state.Lines.Count,
+					"Unexpected number of lines.");
 			}
 		}
 	}
