@@ -27,11 +27,40 @@ namespace MfGames.TokenizedText.Tests
 			}
 
 			[Test]
-			public void AfterOneInsetedLine()
+			public void AfterTenInsertedLinesWithOneEvent()
 			{
 				// Arrange
 				Setup();
+
+				// Act
 				model.InsertLines(0, 10);
+
+				// Assert
+				Assert.AreEqual(10, state.Lines.Count, "Unexpected number of lines.");
+			}
+
+			[Test]
+			public void AfterTenInsertedLinesWithTwoEvents()
+			{
+				// Arrange
+				Setup();
+
+				// Act
+				model.InsertLines(0, 5);
+				model.InsertLines(0, 5);
+
+				// Assert
+				Assert.AreEqual(10, state.Lines.Count, "Unexpected number of lines.");
+			}
+
+			[Test]
+			public void AfterTenTestLinesInserted()
+			{
+				// Arrange
+				Setup();
+
+				// Act
+				model.PopulateNumberGrid(10, 10);
 
 				// Assert
 				Assert.AreEqual(10, state.Lines.Count, "Unexpected number of lines.");

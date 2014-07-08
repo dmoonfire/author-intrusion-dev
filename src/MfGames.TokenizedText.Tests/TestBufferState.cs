@@ -25,11 +25,23 @@ namespace MfGames.TokenizedText
 
 			for (int i = 0; i < e.Count; i++)
 			{
-				lines[i] = Model[i];
+				lines[i] = new Line(e.LineKeys[i]);
 			}
 
 			// Insert the lines into the collection.
 			Lines.InsertRange(e.AfterLineIndex, lines);
+		}
+
+		private void OnTokenInserted(object sender, TokenInsertedEventArgs e)
+		{
+			// Find the appropriate line from our collection.
+			Line line = Lines[e.LineIndex];
+
+			// Get the token for that line and add it to our line. This is
+			// always a copy of the token, so we can manipulate it safely.
+			Token token = Model.GetToken(e.LineIndex, e.TokenIndex);
+
+			line.Tokens.Insert(e.TokenIndex - 1, token);
 		}
 	}
 }

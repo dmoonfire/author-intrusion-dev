@@ -15,23 +15,25 @@ namespace MfGames.TokenizedText
 			return lines[lineIndex];
 		}
 
-		public void InsertLines(int afterLineIndex, int count)
+		public override void InsertLines(int afterLineIndex, int count)
 		{
 			// Create an array of blank lines to insert into the collection.
-			var array = new Line[count];
+			var newLines = new Line[count];
+			var newKeys = new LineKey[count];
 
 			for (int i = 0; i < count; i++)
 			{
 				//LineKey lineKey = LineKeyGenerator.Instance.NewLineKey();
 				LineKey lineKey = KeyGenerator.Instance.GetNextLineKey();
-				array[i] = new Line(lineKey);
+				newKeys[i] = lineKey;
+				newLines[i] = new Line(lineKey);
 			}
 
 			// Insert the lines into the collection.
-			lines.InsertRange(afterLineIndex, array);
+			lines.InsertRange(afterLineIndex, newLines);
 
 			// Raise an event with the created lines.
-			RaiseLinesInserted(afterLineIndex, count);
+			RaiseLinesInserted(afterLineIndex, newKeys);
 		}
 
 		public MemoryBufferModel()

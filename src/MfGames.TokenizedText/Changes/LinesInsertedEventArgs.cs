@@ -21,12 +21,20 @@ namespace MfGames.TokenizedText.Changes
 		/// <summary>
 		/// Indicates how many lines were inserted into the buffer.
 		/// </summary>
-		public int Count { get; private set; }
+		public int Count { get { return LineKeys.Length; } }
 
-		public LinesInsertedEventArgs(int afterLineIndex, int count)
+		/// <summary>
+		/// Contains an arrow of LineKeys that represent the new lines inserted.
+		/// There are Count entries, starting at 0.
+		/// </summary>
+		public LineKey[] LineKeys { get; private set; }
+
+		public LinesInsertedEventArgs(
+			int afterLineIndex,
+			LineKey[] lineKeys)
 		{
 			AfterLineIndex = afterLineIndex;
-			Count = count;
+			LineKeys = lineKeys;
 		}
 	}
 }
