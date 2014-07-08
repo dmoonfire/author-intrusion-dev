@@ -1,4 +1,4 @@
-namespace MfGames.TokenizedText
+﻿namespace MfGames.TokenizedText
 {
 	/// <summary>
 	/// Represents a token within the line. The most common type of token is
@@ -6,8 +6,7 @@ namespace MfGames.TokenizedText
 	/// a token may make it non-editable or non-deletable.
 	public class Token
 	{
-		public TokenKey Key { get; private set; }
-		public string Text { get; private set; }
+		#region Constructors
 
 		public Token(string text)
 			: this(KeyGenerator.Instance.GetNextTokenKey(), text)
@@ -25,5 +24,21 @@ namespace MfGames.TokenizedText
 			Key = token.Key;
 			Text = token.Text;
 		}
+
+		#endregion Constructors
+
+		#region Properties
+
+		public TokenKey Key
+		{
+			get; private set;
+		}
+
+		public string Text
+		{
+			get; private set;
+		}
+
+		#endregion Properties
 	}
 }

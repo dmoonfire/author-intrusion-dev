@@ -1,5 +1,6 @@
+﻿using System;
+
 using MfGames.TokenizedText.Changes;
-using System;
 
 namespace MfGames.TokenizedText
 {
@@ -16,32 +17,23 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public abstract class BufferModel
 	{
+		#region Fields
+
 		public EventHandler<LinesInsertedEventArgs> LinesInserted;
 		public EventHandler<TokenInsertedEventArgs> TokenInserted;
+
+		#endregion Fields
+
+		#region Indexers
 
 		public Line this[int lineIndex]
 		{
 			get { return GetLine(lineIndex); }
 		}
 
-		public abstract Line GetLine(int lineIndex);
+		#endregion Indexers
 
-		public abstract void InsertLines(int afterLineIndex, int count);
-
-		public void InsertLine(int afterLineIndex)
-		{
-			InsertLines(afterLineIndex, 1);
-		}
-
-		public Token GetToken(
-			int lineIndex,
-			int tokenIndex)
-		{
-			Line line = GetLine(lineIndex);
-			Token token = line.Tokens[tokenIndex];
-			Token cloned = new Token(token);
-			return token;
-		}
+		#region Methods
 
 		public void AddToken(
 			int lineIndex,
@@ -58,18 +50,24 @@ namespace MfGames.TokenizedText
 			RaiseTokenInserted(lineIndex, tokenIndex);
 		}
 
-		protected void RaiseTokenInserted(
+		public abstract Line GetLine(int lineIndex);
+
+		public Token GetToken(
 			int lineIndex,
 			int tokenIndex)
 		{
-			var listeners = TokenInserted;
-
-			if (listeners != null)
-			{
-				var args = new TokenInsertedEventArgs(lineIndex, tokenIndex);
-				listeners(this, args);
-			}
+			Line line = GetLine(lineIndex);
+			Token token = line.Tokens[tokenIndex];
+			Token cloned = new Token(token);
+			return token;
 		}
+
+		public void InsertLine(int afterLineIndex)
+		{
+			InsertLines(afterLineIndex, 1);
+		}
+
+		public abstract void InsertLines(int afterLineIndex, int count);
 
 		protected void RaiseLinesInserted(
 			int afterLineIndex,
@@ -83,5 +81,20 @@ namespace MfGames.TokenizedText
 				listeners(this, args);
 			}
 		}
+
+		protected void RaiseTokenInserted(
+			int lineIndex,
+			int tokenIndex)
+		{
+			var listeners = TokenInserted;
+
+			if (listeners != null)
+			{
+				var args = new TokenInsertedEventArgs(lineIndex, tokenIndex);
+				listeners(this, args);
+			}
+		}
+
+		#endregion Methods
 	}
 }

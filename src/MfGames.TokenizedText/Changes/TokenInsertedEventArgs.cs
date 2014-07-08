@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MfGames.TokenizedText.Changes
 {
@@ -12,25 +12,38 @@ namespace MfGames.TokenizedText.Changes
 	/// in most cases, this event is just to trigger a changed flag of some matter
 	/// which is then processed after the flurry of events.
 	/// </summary>
-	public class TokenInsertedEventArgs
-		: EventArgs
+	public class TokenInsertedEventArgs : EventArgs
 	{
-		/// <summary>
-		/// The numerical index of the line within the buffer at the point when
-		/// the change was triggered.
-		/// </summary>
-		public int LineIndex { get; private set; }
-
-		/// <summary>
-		/// The numerical index of the token within the line at the point when
-		/// the change was triggered.
-		/// </summary>
-		public int TokenIndex { get; private set; }
+		#region Constructors
 
 		public TokenInsertedEventArgs(int lineIndex, int tokenIndex)
 		{
 			LineIndex = lineIndex;
 			TokenIndex = tokenIndex;
 		}
+
+		#endregion Constructors
+
+		#region Properties
+
+		/// <summary>
+		/// The numerical index of the line within the buffer at the point when
+		/// the change was triggered.
+		/// </summary>
+		public int LineIndex
+		{
+			get; private set;
+		}
+
+		/// <summary>
+		/// The numerical index of the token within the line at the point when
+		/// the change was triggered.
+		/// </summary>
+		public int TokenIndex
+		{
+			get; private set;
+		}
+
+		#endregion Properties
 	}
 }

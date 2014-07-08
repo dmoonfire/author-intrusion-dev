@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MfGames.TokenizedText
 {
@@ -7,13 +7,28 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public class Line
 	{
-		public IList<Token> Tokens { get; private set; }
-		public LineKey Key { get; private set; }
+		#region Constructors
 
 		public Line(LineKey lineKey)
 		{
 			Key = lineKey;
 			Tokens = new List<Token>();
 		}
+
+		#endregion Constructors
+
+		#region Properties
+
+		public LineKey Key
+		{
+			get; private set;
+		}
+
+		public IList<Token> Tokens
+		{
+			get; private set;
+		}
+
+		#endregion Properties
 	}
 }

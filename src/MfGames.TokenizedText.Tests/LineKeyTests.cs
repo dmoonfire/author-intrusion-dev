@@ -1,4 +1,5 @@
-using MfGames.TokenizedText;
+﻿using MfGames.TokenizedText;
+
 using NUnit.Framework;
 
 namespace MfGames.TokenizedText.Tests
@@ -6,8 +7,12 @@ namespace MfGames.TokenizedText.Tests
 	[TestFixture]
 	public class LineKeyTests
 	{
+		#region Nested Types
+
 		public class Constructor
 		{
+			#region Methods
+
 			[Test]
 			public void DefaultValues()
 			{
@@ -27,6 +32,10 @@ namespace MfGames.TokenizedText.Tests
 				// Assert
 				Assert.AreEqual(23, lineKey.Id, "Id is not expected.");
 			}
+
+			#endregion Methods
 		}
+
+		#endregion Nested Types
 	}
 }

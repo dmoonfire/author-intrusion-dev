@@ -1,4 +1,5 @@
-using Humanizer;
+﻿using Humanizer;
+
 using MfGames.TokenizedText;
 
 namespace MfGames.TokenizedText.Tests
@@ -9,6 +10,8 @@ namespace MfGames.TokenizedText.Tests
 	/// </summary>
 	public class TestBufferModel : MemoryBufferModel
 	{
+		#region Methods
+
 		public void PopulateNumberGrid(int rows, int columns)
 		{
 			// We add numerical words (zero, one, two, three, etc).
@@ -37,5 +40,7 @@ namespace MfGames.TokenizedText.Tests
 				}
 			}
 		}
+
+		#endregion Methods
 	}
 }

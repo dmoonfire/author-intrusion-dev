@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MfGames.TokenizedText.Changes
 {
@@ -7,27 +7,9 @@ namespace MfGames.TokenizedText.Changes
 	/// buffer. When this event is processed, then the buffer will have already
 	/// adjusted all following events for the new line numbers.
 	/// </summary>
-	public class LinesInsertedEventArgs
-		: EventArgs
+	public class LinesInsertedEventArgs : EventArgs
 	{
-		/// <summary>
-		/// Indicates the line index that the lines are inserted after. If this
-		/// is zero, then the lines are prepended to the collection. If this
-		/// equals the line count in the buffer, then they were appended to the
-		/// end.
-		/// </summary>
-		public int AfterLineIndex { get; private set; }
-
-		/// <summary>
-		/// Indicates how many lines were inserted into the buffer.
-		/// </summary>
-		public int Count { get { return LineKeys.Length; } }
-
-		/// <summary>
-		/// Contains an arrow of LineKeys that represent the new lines inserted.
-		/// There are Count entries, starting at 0.
-		/// </summary>
-		public LineKey[] LineKeys { get; private set; }
+		#region Constructors
 
 		public LinesInsertedEventArgs(
 			int afterLineIndex,
@@ -36,5 +18,39 @@ namespace MfGames.TokenizedText.Changes
 			AfterLineIndex = afterLineIndex;
 			LineKeys = lineKeys;
 		}
+
+		#endregion Constructors
+
+		#region Properties
+
+		/// <summary>
+		/// Indicates the line index that the lines are inserted after. If this
+		/// is zero, then the lines are prepended to the collection. If this
+		/// equals the line count in the buffer, then they were appended to the
+		/// end.
+		/// </summary>
+		public int AfterLineIndex
+		{
+			get; private set;
+		}
+
+		/// <summary>
+		/// Indicates how many lines were inserted into the buffer.
+		/// </summary>
+		public int Count
+		{
+			get { return LineKeys.Length; }
+		}
+
+		/// <summary>
+		/// Contains an arrow of LineKeys that represent the new lines inserted.
+		/// There are Count entries, starting at 0.
+		/// </summary>
+		public LineKey[] LineKeys
+		{
+			get; private set;
+		}
+
+		#endregion Properties
 	}
 }

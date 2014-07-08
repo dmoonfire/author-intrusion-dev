@@ -1,12 +1,12 @@
+﻿using System.Collections.Generic;
+
 using MfGames.TokenizedText.Changes;
-using System.Collections.Generic;
 
 namespace MfGames.TokenizedText
 {
 	public class TestBufferState
 	{
-		public BufferModel Model { get; private set; }
-		public List<Line> Lines { get; private set; }
+		#region Constructors
 
 		public TestBufferState(BufferModel model)
 		{
@@ -17,6 +17,24 @@ namespace MfGames.TokenizedText
 			// Hoop up the events we listen to.
 			Model.LinesInserted += OnLinesInserted;
 		}
+
+		#endregion Constructors
+
+		#region Properties
+
+		public List<Line> Lines
+		{
+			get; private set;
+		}
+
+		public BufferModel Model
+		{
+			get; private set;
+		}
+
+		#endregion Properties
+
+		#region Methods
 
 		private void OnLinesInserted(object sender, LinesInsertedEventArgs e)
 		{
@@ -43,5 +61,7 @@ namespace MfGames.TokenizedText
 
 			line.Tokens.Insert(e.TokenIndex - 1, token);
 		}
+
+		#endregion Methods
 	}
 }

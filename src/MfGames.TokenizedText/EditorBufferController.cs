@@ -1,4 +1,4 @@
-namespace MfGames.TokenizedText
+﻿namespace MfGames.TokenizedText
 {
 	/// <summary>
 	/// Extends the BufferController to handle editor-specific processing.
@@ -7,16 +7,31 @@ namespace MfGames.TokenizedText
 	/// The methods and fields of this class are intended to be run on the GUI
 	/// thread.
 	/// </remarks>
-	public class EditorBufferController
-		: BufferController
+	public class EditorBufferController : BufferController
 	{
-		public BufferModel Model { get; private set; }
-
-		void InsertLine() {}
+		#region Constructors
 
 		public EditorBufferController(BufferModel model)
 		{
 			Model = model;
 		}
+
+		#endregion Constructors
+
+		#region Properties
+
+		public BufferModel Model
+		{
+			get; private set;
+		}
+
+		#endregion Properties
+
+		#region Methods
+
+		void InsertLine()
+		{}
+
+		#endregion Methods
 	}
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MfGames.TokenizedText
 {
@@ -8,7 +8,22 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public class MemoryBufferModel : BufferModel
 	{
+		#region Fields
+
 		private List<Line> lines;
+
+		#endregion Fields
+
+		#region Constructors
+
+		public MemoryBufferModel()
+		{
+			lines = new List<Line>();
+		}
+
+		#endregion Constructors
+
+		#region Methods
 
 		public override Line GetLine(int lineIndex)
 		{
@@ -36,9 +51,6 @@ namespace MfGames.TokenizedText
 			RaiseLinesInserted(afterLineIndex, newKeys);
 		}
 
-		public MemoryBufferModel()
-		{
-			lines = new List<Line>();
-		}
+		#endregion Methods
 	}
 }

@@ -1,4 +1,4 @@
-namespace MfGames.TokenizedText
+﻿namespace MfGames.TokenizedText
 {
 	/// <summary>
 	/// An immutable, typesafe identifier for a single token.
@@ -9,11 +9,19 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public struct TokenKey
 	{
+		#region Fields
+
 		public readonly int Id;
+
+		#endregion Fields
+
+		#region Constructors
 
 		public TokenKey(int id)
 		{
 			Id = id;
 		}
+
+		#endregion Constructors
 	}
 }

@@ -1,12 +1,18 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace MfGames.TokenizedText.Tests
 {
 	[TestFixture]
 	public class BufferModelTests
 	{
+		#region Fields
+
 		protected TestBufferModel model;
 		protected TestBufferState state;
+
+		#endregion Fields
+
+		#region Methods
 
 		protected void Setup()
 		{
@@ -14,19 +20,13 @@ namespace MfGames.TokenizedText.Tests
 			state = new TestBufferState(model);
 		}
 
+		#endregion Methods
+
+		#region Nested Types
+
 		public class RaiseLinesInserted : BufferModelTests
 		{
-			[Test]
-			public void InitialState()
-			{
-				// Arrange
-				Setup();
-
-				// Assert
-				Assert.AreEqual(0,
-					state.Lines.Count,
-					"Unexpected number of lines.");
-			}
+			#region Methods
 
 			[Test]
 			public void AfterTenInsertedLinesWithOneEvent()
@@ -73,6 +73,22 @@ namespace MfGames.TokenizedText.Tests
 					state.Lines.Count,
 					"Unexpected number of lines.");
 			}
+
+			[Test]
+			public void InitialState()
+			{
+				// Arrange
+				Setup();
+
+				// Assert
+				Assert.AreEqual(0,
+					state.Lines.Count,
+					"Unexpected number of lines.");
+			}
+
+			#endregion Methods
 		}
+
+		#endregion Nested Types
 	}
 }

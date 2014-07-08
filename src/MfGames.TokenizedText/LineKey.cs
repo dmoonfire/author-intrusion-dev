@@ -1,4 +1,4 @@
-namespace MfGames.TokenizedText
+﻿namespace MfGames.TokenizedText
 {
 	/// <summary>
 	/// An immutable, typesafe identifier for a single line.
@@ -9,11 +9,19 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public struct LineKey
 	{
+		#region Fields
+
 		public readonly int Id;
+
+		#endregion Fields
+
+		#region Constructors
 
 		public LineKey(int id)
 		{
 			Id = id;
 		}
+
+		#endregion Constructors
 	}
 }

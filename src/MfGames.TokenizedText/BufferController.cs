@@ -1,4 +1,4 @@
-namespace MfGames.TokenizedText
+﻿namespace MfGames.TokenizedText
 {
 	/// <summary>
 	/// A controller associated with a single buffer that handles changes made

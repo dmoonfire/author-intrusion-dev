@@ -1,4 +1,4 @@
-using System.Threading;
+﻿using System.Threading;
 
 namespace MfGames.TokenizedText
 {
@@ -8,16 +8,31 @@ namespace MfGames.TokenizedText
 	/// </summary>
 	public class KeyGenerator
 	{
+		#region Fields
+
 		private int id;
 
-		public static KeyGenerator Instance { get; private set; }
+		#endregion Fields
 
-		public TokenKey GetNextTokenKey()
+		#region Constructors
+
+		static KeyGenerator()
 		{
-			int keyId = Interlocked.Increment(ref id);
-			TokenKey key = new TokenKey(keyId);
-			return key;
+			Instance = new KeyGenerator();
 		}
+
+		#endregion Constructors
+
+		#region Properties
+
+		public static KeyGenerator Instance
+		{
+			get; private set;
+		}
+
+		#endregion Properties
+
+		#region Methods
 
 		public LineKey GetNextLineKey()
 		{
@@ -26,9 +41,13 @@ namespace MfGames.TokenizedText
 			return key;
 		}
 
-		static KeyGenerator()
+		public TokenKey GetNextTokenKey()
 		{
-			Instance = new KeyGenerator();
+			int keyId = Interlocked.Increment(ref id);
+			TokenKey key = new TokenKey(keyId);
+			return key;
 		}
+
+		#endregion Methods
 	}
 }
