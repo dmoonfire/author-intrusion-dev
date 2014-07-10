@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorIntrusion", "AuthorIntrusion\AuthorIntrusion.csproj", "{36D7F7CB-F006-464F-9E71-F3D2F84D1CEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.TextTokens", "MfGames.TextTokens\MfGames.TextTokens.csproj", "{7B578A31-00BB-4B53-BF51-377F261118D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.TextTokens.Tests", "MfGames.TextTokens.Tests\MfGames.TextTokens.Tests.csproj", "{84DD0764-63F8-4ECC-8860-F3F1A779AFDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{36D7F7CB-F006-464F-9E71-F3D2F84D1CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36D7F7CB-F006-464F-9E71-F3D2F84D1CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36D7F7CB-F006-464F-9E71-F3D2F84D1CEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B578A31-00BB-4B53-BF51-377F261118D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B578A31-00BB-4B53-BF51-377F261118D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B578A31-00BB-4B53-BF51-377F261118D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B578A31-00BB-4B53-BF51-377F261118D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84DD0764-63F8-4ECC-8860-F3F1A779AFDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84DD0764-63F8-4ECC-8860-F3F1A779AFDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84DD0764-63F8-4ECC-8860-F3F1A779AFDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84DD0764-63F8-4ECC-8860-F3F1A779AFDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
