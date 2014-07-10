@@ -12,12 +12,22 @@ namespace MfGames.TextTokens
 		public TokenReplacedEventArgs(
 			LineSequence lineSequence,
 			TokenSequence tokenSequence,
-			IReadOnlyList<IToken> tokenReplacements)
+			IReadOnlyList<IToken> tokenReplacements,
+			bool isIdentityReplacement)
 		{
 			LineSequence = lineSequence;
 			TokenSequence = tokenSequence;
 			TokenReplacements = tokenReplacements;
+			IsIdentity = isIdentityReplacement;
 		}
+
+		/// <summary>
+		/// If this is true, then the replacement is considered an identity replacement. Identity
+		/// replacements are ones where the replaced token's text is identical to the concatenation
+		/// of the replacement tokens. This is used in situations where the editor needs to maintain
+		/// a cursor or selection while manipulations are made to the tokens.
+		/// </summary>
+		public bool IsIdentity { get; private set; }
 
 		public LineSequence LineSequence { get; private set; }
 		public TokenSequence TokenSequence { get; set; }

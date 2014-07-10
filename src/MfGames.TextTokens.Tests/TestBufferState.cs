@@ -7,13 +7,6 @@
 	/// </summary>
 	public class TestBufferState
 	{
-		/// <summary>
-		/// Called when the buffer splits a token into two tokens.
-		/// </summary>
-		private void OnTokenSplit(object sender, TokenSplitEventArgs e)
-		{
-		}
-
 		private void OnTokenReplaced(object sender, TokenReplacedEventArgs e)
 		{
 		}
