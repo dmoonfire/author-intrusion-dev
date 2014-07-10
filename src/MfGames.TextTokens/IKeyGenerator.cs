@@ -12,14 +12,18 @@ namespace MfGames.TextTokens
         #region Public Methods and Operators
 
         /// <summary>
+        /// Generates and retrieves the next LineKey.
         /// </summary>
         /// <returns>
+        /// A LineKey that represents the next ID.
         /// </returns>
         LineKey GetNextLineKey();
 
         /// <summary>
+        /// Generates and retrieves the next TokenKey.
         /// </summary>
         /// <returns>
+        /// A TokenKey that represents the next ID.
         /// </returns>
         TokenKey GetNextTokenKey();
 

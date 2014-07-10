@@ -14,10 +14,13 @@ namespace MfGames.TextTokens.Tests
         #region Methods
 
         /// <summary>
+        /// Called when a token is replaced with zero or more other tokens.
         /// </summary>
         /// <param name="sender">
+        /// The sender.
         /// </param>
         /// <param name="e">
+        /// The <see cref="TokenReplacedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnTokenReplaced(object sender, TokenReplacedEventArgs e)
         {

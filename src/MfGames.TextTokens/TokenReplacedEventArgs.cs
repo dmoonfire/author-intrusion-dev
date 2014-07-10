@@ -16,23 +16,28 @@ namespace MfGames.TextTokens
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplacedEventArgs"/> class.
         /// </summary>
-        /// <param name="lineSequence">
+        /// <param name="lineIndex">
+        /// Index of the line.
         /// </param>
-        /// <param name="tokenSequence">
+        /// <param name="tokenIndex">
+        /// Index of the token.
         /// </param>
         /// <param name="tokenReplacements">
+        /// The token replacements.
         /// </param>
         /// <param name="isIdentityReplacement">
+        /// if set to <c>true</c> [is identity replacement].
         /// </param>
         public TokenReplacedEventArgs(
-            LineSequence lineSequence, 
-            TokenSequence tokenSequence, 
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex, 
             IReadOnlyList<IToken> tokenReplacements, 
             bool isIdentityReplacement)
         {
-            this.LineSequence = lineSequence;
-            this.TokenSequence = tokenSequence;
+            this.LineIndex = lineIndex;
+            this.TokenIndex = tokenIndex;
             this.TokenReplacements = tokenReplacements;
             this.IsIdentity = isIdentityReplacement;
         }
@@ -42,24 +47,36 @@ namespace MfGames.TextTokens
         #region Public Properties
 
         /// <summary>
-        /// If this is true, then the replacement is considered an identity replacement. Identity
-        /// replacements are ones where the replaced token's text is identical to the concatenation
-        /// of the replacement tokens. This is used in situations where the editor needs to maintain
-        /// a cursor or selection while manipulations are made to the tokens.
+        /// Gets a value indicating whether the replacement is considered an identity replacement.
+        /// Identity replacements are ones where the replaced token's text is identical to the
+        /// concatenation of the replacement tokens. This is used in situations where the editor
+        /// needs to maintain a cursor or selection while manipulations are made to the tokens.
         /// </summary>
         public bool IsIdentity { get; private set; }
 
         /// <summary>
+        /// Gets the index of the line.
         /// </summary>
-        public LineSequence LineSequence { get; private set; }
+        /// <value>
+        /// The index of the line.
+        /// </value>
+        public LineIndex LineIndex { get; private set; }
 
         /// <summary>
+        /// Gets or sets the index of the token.
         /// </summary>
+        /// <value>
+        /// The index of the token.
+        /// </value>
+        public TokenIndex TokenIndex { get; set; }
+
+        /// <summary>
+        /// Gets the tokens that will replace the given token.
+        /// </summary>
+        /// <value>
+        /// The token replacements.
+        /// </value>
         public IReadOnlyList<IToken> TokenReplacements { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        public TokenSequence TokenSequence { get; set; }
 
         #endregion
     }

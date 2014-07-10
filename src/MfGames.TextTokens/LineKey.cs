@@ -14,6 +14,7 @@ namespace MfGames.TextTokens
         #region Fields
 
         /// <summary>
+        /// Contains the integer key that represents a given line.
         /// </summary>
         public int Id;
 
@@ -22,8 +23,10 @@ namespace MfGames.TextTokens
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LineKey"/> struct.
         /// </summary>
         /// <param name="id">
+        /// The numerical line identifier.
         /// </param>
         public LineKey(int id)
         {
@@ -35,12 +38,12 @@ namespace MfGames.TextTokens
         #region Public Methods and Operators
 
         /// <summary>
+        /// Implements the operator ==.
         /// </summary>
-        /// <param name="left">
-        /// </param>
-        /// <param name="right">
-        /// </param>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         /// <returns>
+        /// The result of the operator.
         /// </returns>
         public static bool operator ==(LineKey left, LineKey right)
         {
@@ -48,12 +51,12 @@ namespace MfGames.TextTokens
         }
 
         /// <summary>
+        /// Implements the operator !=.
         /// </summary>
-        /// <param name="left">
-        /// </param>
-        /// <param name="right">
-        /// </param>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         /// <returns>
+        /// The result of the operator.
         /// </returns>
         public static bool operator !=(LineKey left, LineKey right)
         {
@@ -61,10 +64,13 @@ namespace MfGames.TextTokens
         }
 
         /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">
+        /// An object to compare with this object.
         /// </param>
         /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         public bool Equals(LineKey other)
         {
@@ -72,10 +78,13 @@ namespace MfGames.TextTokens
         }
 
         /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/>, is equal to this instance.
         /// </summary>
         /// <param name="obj">
+        /// The <see cref="System.Object"/> to compare with this instance.
         /// </param>
         /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -88,8 +97,10 @@ namespace MfGames.TextTokens
         }
 
         /// <summary>
+        /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
         public override int GetHashCode()
         {

@@ -7,12 +7,15 @@ namespace MfGames.TextTokens
     using System.Threading;
 
     /// <summary>
+    /// A simplistic key generator which starts the ID at 1 and simply increments it
+    /// in a thread-safe manner for both lines and tokens.
     /// </summary>
     public class KeyGenerator : IKeyGenerator
     {
         #region Fields
 
         /// <summary>
+        /// Contains the next ID for either lines or tokens.
         /// </summary>
         private int nextId;
 
@@ -21,6 +24,7 @@ namespace MfGames.TextTokens
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes static members of the <see cref="KeyGenerator"/> class.
         /// </summary>
         static KeyGenerator()
         {
@@ -28,6 +32,7 @@ namespace MfGames.TextTokens
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="KeyGenerator"/> class.
         /// </summary>
         public KeyGenerator()
         {
@@ -39,6 +44,7 @@ namespace MfGames.TextTokens
         #region Public Properties
 
         /// <summary>
+        /// Gets or sets a singleton instance of the current key generator.
         /// </summary>
         public static IKeyGenerator Instance { get; set; }
 
@@ -47,8 +53,10 @@ namespace MfGames.TextTokens
         #region Public Methods and Operators
 
         /// <summary>
+        /// Generates and retrieves the next line key.
         /// </summary>
         /// <returns>
+        /// A LineKey that represents the next ID.
         /// </returns>
         public LineKey GetNextLineKey()
         {
@@ -58,8 +66,10 @@ namespace MfGames.TextTokens
         }
 
         /// <summary>
+        /// Generates and retrieves the next token key.
         /// </summary>
         /// <returns>
+        /// A TokenKey that represents the next ID.
         /// </returns>
         public TokenKey GetNextTokenKey()
         {
