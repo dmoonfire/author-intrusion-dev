@@ -1,50 +1,101 @@
-﻿using System;
-
+﻿// <copyright file="LineSequence.cs" company="Moonfire Games">
+//     Copyright (c) Moonfire Games. Some Rights Reserved.
+// </copyright>
+// MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens
 {
-	/// <summary>
-	/// A simple, low-overhead sequence for tokens.
-	/// </summary>
-	public struct LineSequence : IEquatable<LineSequence>
-	{
-		public int Id;
+    using System;
 
-		public LineSequence(int id)
-		{
-			Id = id;
-		}
+    /// <summary>
+    /// A simple, low-overhead sequence for tokens.
+    /// </summary>
+    public struct LineSequence : IEquatable<LineSequence>
+    {
+        #region Fields
 
-		#region IEquatable<LineSequence> Members
+        /// <summary>
+        /// </summary>
+        public int Id;
 
-		public bool Equals(LineSequence other)
-		{
-			return Id == other.Id;
-		}
+        #endregion
 
-		#endregion
+        #region Constructors and Destructors
 
-		public override bool Equals(object obj)
-		{
-			if (ReferenceEquals(null, obj))
-			{
-				return false;
-			}
-			return obj is LineSequence && Equals((LineSequence) obj);
-		}
+        /// <summary>
+        /// </summary>
+        /// <param name="id">
+        /// </param>
+        public LineSequence(int id)
+        {
+            this.Id = id;
+        }
 
-		public override int GetHashCode()
-		{
-			return Id;
-		}
+        #endregion
 
-		public static bool operator ==(LineSequence left, LineSequence right)
-		{
-			return left.Equals(right);
-		}
+        #region Public Methods and Operators
 
-		public static bool operator !=(LineSequence left, LineSequence right)
-		{
-			return !left.Equals(right);
-		}
-	}
+        /// <summary>
+        /// </summary>
+        /// <param name="left">
+        /// </param>
+        /// <param name="right">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static bool operator ==(LineSequence left, LineSequence right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="left">
+        /// </param>
+        /// <param name="right">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static bool operator !=(LineSequence left, LineSequence right)
+        {
+            return !left.Equals(right);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="other">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public bool Equals(LineSequence other)
+        {
+            return this.Id == other.Id;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="obj">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return obj is LineSequence && this.Equals((LineSequence)obj);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return this.Id;
+        }
+
+        #endregion
+    }
 }

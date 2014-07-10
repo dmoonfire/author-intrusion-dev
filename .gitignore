@@ -1,5 +1,9 @@
 *~
 *.suo
 
+# StyleCop
+StyleCop.Cache
+
+# Output Directories
 bin/
 obj/

@@ -1,39 +1,73 @@
-﻿using System.Threading;
-
+﻿// <copyright file="KeyGenerator.cs" company="Moonfire Games">
+//     Copyright (c) Moonfire Games. Some Rights Reserved.
+// </copyright>
+// MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens
 {
-	public class KeyGenerator : IKeyGenerator
-	{
-		private int nextId;
+    using System.Threading;
 
-		static KeyGenerator()
-		{
-			Instance = new KeyGenerator();
-		}
+    /// <summary>
+    /// </summary>
+    public class KeyGenerator : IKeyGenerator
+    {
+        #region Fields
 
-		public KeyGenerator()
-		{
-			nextId = 1;
-		}
+        /// <summary>
+        /// </summary>
+        private int nextId;
 
-		public static IKeyGenerator Instance { get; set; }
+        #endregion
 
-		#region IKeyGenerator Members
+        #region Constructors and Destructors
 
-		public TokenKey GetNextTokenKey()
-		{
-			int id = Interlocked.Increment(ref nextId);
-			var tokenKey = new TokenKey(id);
-			return tokenKey;
-		}
+        /// <summary>
+        /// </summary>
+        static KeyGenerator()
+        {
+            Instance = new KeyGenerator();
+        }
 
-		public LineKey GetNextLineKey()
-		{
-			int id = Interlocked.Increment(ref nextId);
-			var lineKey = new LineKey(id);
-			return lineKey;
-		}
+        /// <summary>
+        /// </summary>
+        public KeyGenerator()
+        {
+            this.nextId = 1;
+        }
 
-		#endregion
-	}
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// </summary>
+        public static IKeyGenerator Instance { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public LineKey GetNextLineKey()
+        {
+            int id = Interlocked.Increment(ref this.nextId);
+            var lineKey = new LineKey(id);
+            return lineKey;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public TokenKey GetNextTokenKey()
+        {
+            int id = Interlocked.Increment(ref this.nextId);
+            var tokenKey = new TokenKey(id);
+            return tokenKey;
+        }
+
+        #endregion
+    }
 }
