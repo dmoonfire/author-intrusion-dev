@@ -22,8 +22,10 @@ namespace MfGames.TextTokens.Tests
     {
         #region Constructors and Destructors
 
-        /// <summary></summary>
-        /// <param name="buffer"></param>
+        /// <summary>
+        /// </summary>
+        /// <param name="buffer">
+        /// </param>
         public TestBufferState(IBuffer buffer)
         {
             // Establish our contracts.
@@ -34,6 +36,7 @@ namespace MfGames.TextTokens.Tests
 
             // Hook up the events to the buffer.
             this.Buffer.LinesInserted += this.OnLinesInserted;
+            this.Buffer.TokensInserted += this.OnTokensInserted;
 
             // Initialize the collections.
             this.Lines = new List<Line>();
@@ -59,9 +62,12 @@ namespace MfGames.TextTokens.Tests
 
         #region Methods
 
-        /// <summary></summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <summary>
+        /// </summary>
+        /// <param name="sender">
+        /// </param>
+        /// <param name="e">
+        /// </param>
         private void OnLinesInserted(
             object sender, LineIndexLinesInsertedEventArgs e)
         {
@@ -82,12 +88,39 @@ namespace MfGames.TextTokens.Tests
             this.Lines.InsertRange(e.LineIndex.Index, insertedLines);
         }
 
-        /// <summary>Called when a token is replaced with zero or more other tokens.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="LineIndexTokenIndexTokenReplacedEventArgs"/> instance containing the event data.</param>
+        /// <summary>
+        /// Called when a token is replaced with zero or more other tokens.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="LineIndexTokenIndexTokenReplacedEventArgs"/> instance containing the event data.
+        /// </param>
         private void OnTokenReplaced(
             object sender, LineIndexTokenIndexTokenReplacedEventArgs e)
         {
+        }
+
+        /// <summary>
+        /// Called when tokens are inserted into a line.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="LineIndexTokenIndexTokensInsertedEventArgs"/> instance containing the event data.
+        /// </param>
+        private void OnTokensInserted(
+            object sender, LineIndexTokenIndexTokensInsertedEventArgs e)
+        {
+            string tokenList = string.Join(
+                ", ", 
+                e.TokensInserted.Select(t => t.TokenKey.ToString()).ToArray());
+
+            Console.WriteLine(
+                "Inserted lines: @(" + e.LineIndex.Index + ", "
+                + e.TokenIndex.Index + ") " + tokenList);
         }
 
         #endregion

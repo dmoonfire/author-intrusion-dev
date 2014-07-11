@@ -17,9 +17,15 @@ namespace MfGames.TextTokens.Events
     {
         #region Constructors and Destructors
 
-        /// <summary>Initializes a new instance of the <see cref="LineIndexLinesInsertedEventArgs"/> class.</summary>
-        /// <param name="lineIndex">Index of the line.</param>
-        /// <param name="linesInserted">The lines inserted.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineIndexLinesInsertedEventArgs"/> class.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="linesInserted">
+        /// The lines inserted.
+        /// </param>
         public LineIndexLinesInsertedEventArgs(
             LineIndex lineIndex, IReadOnlyList<ILine> linesInserted)
             : base(lineIndex)

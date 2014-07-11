@@ -18,11 +18,21 @@ namespace MfGames.TextTokens.Events
     {
         #region Constructors and Destructors
 
-        /// <summary>Initializes a new instance of the <see cref="LineIndexTokenIndexTokenReplacedEventArgs"/> class.</summary>
-        /// <param name="lineIndex">Index of the line.</param>
-        /// <param name="tokenIndex">Index of the token.</param>
-        /// <param name="tokenReplacements">The token replacements.</param>
-        /// <param name="isIdentityReplacement">if set to <c>true</c> [is identity replacement].</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineIndexTokenIndexTokenReplacedEventArgs"/> class.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="tokenIndex">
+        /// Index of the token.
+        /// </param>
+        /// <param name="tokenReplacements">
+        /// The token replacements.
+        /// </param>
+        /// <param name="isIdentityReplacement">
+        /// if set to <c>true</c> [is identity replacement].
+        /// </param>
         public LineIndexTokenIndexTokenReplacedEventArgs(
             LineIndex lineIndex, 
             TokenIndex tokenIndex, 

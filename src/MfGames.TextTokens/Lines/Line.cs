@@ -4,9 +4,12 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Lines
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Linq;
 
+    using MfGames.TextTokens.Events;
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
@@ -34,16 +37,24 @@ namespace MfGames.TextTokens.Lines
             this.tokens = new List<IToken>();
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Line"/> class.</summary>
-        /// <param name="lineKey">The line key.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Line"/> class.
+        /// </summary>
+        /// <param name="lineKey">
+        /// The line key.
+        /// </param>
         public Line(LineKey lineKey)
             : this()
         {
             this.LineKey = lineKey;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Line"/> class.</summary>
-        /// <param name="line">The line.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Line"/> class.
+        /// </summary>
+        /// <param name="line">
+        /// The line.
+        /// </param>
         public Line(ILine line)
             : this()
         {
@@ -51,6 +62,15 @@ namespace MfGames.TextTokens.Lines
 
             this.LineKey = line.LineKey;
         }
+
+        #endregion
+
+        #region Public Events
+
+        /// <summary>
+        /// Occurs when tokens are inserted into the line.
+        /// </summary>
+        public event EventHandler<TokenIndexTokensInsertedEventArgs> TokensInserted;
 
         #endregion
 
@@ -79,27 +99,85 @@ namespace MfGames.TextTokens.Lines
 
         #region Public Methods and Operators
 
-        /// <summary>Appends the token to the end of the list, raising events as
-        /// appropriate.</summary>
-        /// <param name="token">The token to append.</param>
-        public void AddToken(IToken token)
+        /// <summary>
+        /// Appends the token to the end of the list, raising events as
+        /// appropriate.
+        /// </summary>
+        /// <param name="newTokens">
+        /// The new tokens.
+        /// </param>
+        public void AddTokens(params IToken[] newTokens)
         {
-            this.InsertToken(this.tokens.Count, token);
+            var afterTokenIndex = new TokenIndex(this.tokens.Count);
+            this.InsertTokens(afterTokenIndex, newTokens);
         }
 
-        /// <summary>Inserts a token into the token list after the given index and then
-        /// raises a token inserted event.</summary>
-        /// <param name="afterTokenIndex">Index of the token to insert after.</param>
-        /// <param name="token">The token to insert.</param>
-        public void InsertToken(int afterTokenIndex, IToken token)
+        /// <summary>
+        /// Adds the tokens.
+        /// </summary>
+        /// <param name="newTokens">
+        /// The new tokens.
+        /// </param>
+        public void AddTokens(IEnumerable<IToken> newTokens)
+        {
+            IToken[] tokenArray = newTokens.ToArray();
+            this.AddTokens(tokenArray);
+        }
+
+        /// <summary>
+        /// Inserts a token into the token list after the given index and then
+        /// raises a token inserted event.
+        /// </summary>
+        /// <param name="afterTokenIndex">
+        /// Index of the token to insert after.
+        /// </param>
+        /// <param name="newTokens">
+        /// The token to insert.
+        /// </param>
+        public void InsertTokens(
+            TokenIndex afterTokenIndex, IEnumerable<IToken> newTokens)
         {
             // Establish our contracts.
-            Contract.Requires(afterTokenIndex >= 0);
+            Contract.Requires(afterTokenIndex.Index >= 0);
+            Contract.Requires(newTokens != null);
 
             // Insert the token into the list.
-            this.tokens.Insert(afterTokenIndex, token);
+            IToken[] tokenArray = newTokens.ToArray();
+
+            this.tokens.InsertRange(afterTokenIndex.Index, tokenArray);
 
             // Raise an event to indicate we've inserted a token.
+            this.RaiseTokensInserted(afterTokenIndex, tokenArray);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Raises the TokensInserted event.
+        /// </summary>
+        /// <param name="tokenIndex">
+        /// Index of the token.
+        /// </param>
+        /// <param name="tokensInserted">
+        /// The tokens inserted.
+        /// </param>
+        protected void RaiseTokensInserted(
+            TokenIndex tokenIndex, IEnumerable<IToken> tokensInserted)
+        {
+            EventHandler<TokenIndexTokensInsertedEventArgs> listeners =
+                this.TokensInserted;
+
+            if (listeners == null)
+            {
+                return;
+            }
+
+            var args = new TokenIndexTokensInsertedEventArgs(
+                tokenIndex, tokensInserted.ToList().AsReadOnly());
+
+            listeners(this, args);
         }
 
         #endregion

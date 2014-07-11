@@ -22,8 +22,12 @@ namespace MfGames.TextTokens.Tokens
 
         #region Constructors and Destructors
 
-        /// <summary>Initializes a new instance of the <see cref="TokenIndex"/> struct.</summary>
-        /// <param name="index">The index.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenIndex"/> struct.
+        /// </summary>
+        /// <param name="index">
+        /// The index.
+        /// </param>
         public TokenIndex(int index)
         {
             this.Index = index;
@@ -59,17 +63,29 @@ namespace MfGames.TextTokens.Tokens
             return !left.Equals(right);
         }
 
-        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">
+        /// An object to compare with this object.
+        /// </param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
         public bool Equals(TokenIndex other)
         {
             return this.Index == other.Index;
         }
 
-        /// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/>, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">
+        /// The <see cref="System.Object"/> to compare with this instance.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))

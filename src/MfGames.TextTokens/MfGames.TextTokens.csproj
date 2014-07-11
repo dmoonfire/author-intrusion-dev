@@ -85,6 +85,8 @@
     <Compile Include="Events\LineIndexLinesInsertedEventArgs.cs" />
     <Compile Include="Events\LineIndexTokenIndexEventArgs.cs" />
     <Compile Include="Events\LineIndexTokenIndexTokensInsertedEventArgs.cs" />
+    <Compile Include="Events\TokenIndexEventArgs.cs" />
+    <Compile Include="Events\TokenIndexTokensInsertedEventArgs.cs" />
     <Compile Include="IKeyGenerator.cs" />
     <Compile Include="Lines\ILine.cs" />
     <Compile Include="Lines\Line.cs" />

@@ -8,9 +8,11 @@ namespace MfGames.TextTokens.Buffers
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics.Contracts;
+    using System.Linq;
 
     using MfGames.TextTokens.Events;
     using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Tokens;
 
     /// <summary>
     /// Implements an IBuffer that is based by an in-memory array of line objects.
@@ -82,10 +84,38 @@ namespace MfGames.TextTokens.Buffers
 
         #region Public Methods and Operators
 
-        /// <summary>Inserts the lines.</summary>
-        /// <param name="afterLineIndex">Index of the after line.</param>
-        /// <param name="count">The count.</param>
-        /// <returns>An enumerable of the created lines.</returns>
+        /// <summary>
+        /// Gets the index of the line.
+        /// </summary>
+        /// <param name="line">
+        /// The line.
+        /// </param>
+        /// <returns>
+        /// A line index of the given line.
+        /// </returns>
+        public LineIndex GetLineIndex(ILine line)
+        {
+            // Establish our contracts.
+            Contract.Requires(line != null);
+
+            // Find the line's index, wrap it, and return it.
+            int index = this.lines.FindIndex(l => l.LineKey == line.LineKey);
+            var lineIndex = new LineIndex(index);
+            return lineIndex;
+        }
+
+        /// <summary>
+        /// Inserts the lines.
+        /// </summary>
+        /// <param name="afterLineIndex">
+        /// Index of the after line.
+        /// </param>
+        /// <param name="count">
+        /// The count.
+        /// </param>
+        /// <returns>
+        /// An enumerable of the created lines.
+        /// </returns>
         public IEnumerable<ILine> InsertLines(
             LineIndex afterLineIndex, int count)
         {
@@ -109,9 +139,15 @@ namespace MfGames.TextTokens.Buffers
             return insertedLines;
         }
 
-        /// <summary>Inserts the lines.</summary>
-        /// <param name="afterLineIndex">Index of the after line.</param>
-        /// <param name="insertedLines">The inserted lines.</param>
+        /// <summary>
+        /// Inserts the lines.
+        /// </summary>
+        /// <param name="afterLineIndex">
+        /// Index of the after line.
+        /// </param>
+        /// <param name="insertedLines">
+        /// The inserted lines.
+        /// </param>
         public void InsertLines(
             LineIndex afterLineIndex, params Line[] insertedLines)
         {
@@ -123,9 +159,15 @@ namespace MfGames.TextTokens.Buffers
             this.InsertLines(afterLineIndex, (IEnumerable<Line>)insertedLines);
         }
 
-        /// <summary>Inserts the lines into the buffer.</summary>
-        /// <param name="afterLineIndex">Index of the after line.</param>
-        /// <param name="insertedLines">The inserted lines.</param>
+        /// <summary>
+        /// Inserts the lines into the buffer.
+        /// </summary>
+        /// <param name="afterLineIndex">
+        /// Index of the after line.
+        /// </param>
+        /// <param name="insertedLines">
+        /// The inserted lines.
+        /// </param>
         public void InsertLines(
             LineIndex afterLineIndex, IEnumerable<Line> insertedLines)
         {
@@ -133,20 +175,32 @@ namespace MfGames.TextTokens.Buffers
             Contract.Requires(afterLineIndex.Index >= 0);
             Contract.Requires(insertedLines != null);
 
+            // Subscribe to the events of these lines.
+            List<Line> lineArray = insertedLines as List<Line>
+                                   ?? insertedLines.ToList();
+
+            lineArray.ForEach(l => l.TokensInserted += this.OnTokensInserted);
+
             // Insert the lines into the buffer at the given position.
-            this.lines.InsertRange(afterLineIndex.Index, insertedLines);
+            this.lines.InsertRange(afterLineIndex.Index, lineArray);
 
             // Raise an event for the inserted lines.
-            this.RaiseLinesInserted(afterLineIndex, insertedLines);
+            this.RaiseLinesInserted(afterLineIndex, lineArray);
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>Raises the LinesInserted event.</summary>
-        /// <param name="afterLineIndex">Index of the after line.</param>
-        /// <param name="insertedLines">The inserted lines.</param>
+        /// <summary>
+        /// Raises the LinesInserted event.
+        /// </summary>
+        /// <param name="afterLineIndex">
+        /// Index of the after line.
+        /// </param>
+        /// <param name="insertedLines">
+        /// The inserted lines.
+        /// </param>
         protected void RaiseLinesInserted(
             LineIndex afterLineIndex, IEnumerable<ILine> insertedLines)
         {
@@ -164,6 +218,62 @@ namespace MfGames.TextTokens.Buffers
                 afterLineIndex, readOnlyLines);
 
             listener(this, args);
+        }
+
+        /// <summary>
+        /// Raises the tokens inserted.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="tokenIndex">
+        /// Index of the token.
+        /// </param>
+        /// <param name="insertedTokens">
+        /// The inserted tokens.
+        /// </param>
+        protected void RaiseTokensInserted(
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex, 
+            IEnumerable<IToken> insertedTokens)
+        {
+            EventHandler<LineIndexTokenIndexTokensInsertedEventArgs> listener =
+                this.TokensInserted;
+
+            if (listener == null)
+            {
+                return;
+            }
+
+            ReadOnlyCollection<IToken> readOnlyTokens =
+                new List<IToken>(insertedTokens).AsReadOnly();
+            var args = new LineIndexTokenIndexTokensInsertedEventArgs(
+                lineIndex, tokenIndex, readOnlyTokens);
+
+            listener(this, args);
+        }
+
+        /// <summary>
+        /// Called when tokens are inserted into line.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="TokenIndexTokensInsertedEventArgs"/> instance containing the event data.
+        /// </param>
+        private void OnTokensInserted(
+            object sender, TokenIndexTokensInsertedEventArgs e)
+        {
+            // Establish our contracts.
+            Contract.Requires(sender is Line);
+
+            // Get our line and its index.
+            var line = (Line)sender;
+            LineIndex lineIndex = this.GetLineIndex(line);
+
+            // Pass the event to our listeners.
+            this.RaiseTokensInserted(lineIndex, e.TokenIndex, e.TokensInserted);
         }
 
         #endregion

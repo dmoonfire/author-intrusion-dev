@@ -19,10 +19,18 @@ namespace MfGames.TextTokens.Events
     {
         #region Constructors and Destructors
 
-        /// <summary>Initializes a new instance of the <see cref="LineIndexTokenIndexTokensInsertedEventArgs"/> class.</summary>
-        /// <param name="lineIndex">Index of the line.</param>
-        /// <param name="tokenIndex">Index of the token to insert after.</param>
-        /// <param name="tokensInserted">The tokens inserted.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineIndexTokenIndexTokensInsertedEventArgs"/> class.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="tokenIndex">
+        /// Index of the token to insert after.
+        /// </param>
+        /// <param name="tokensInserted">
+        /// The tokens inserted.
+        /// </param>
         public LineIndexTokenIndexTokensInsertedEventArgs(
             LineIndex lineIndex, 
             TokenIndex tokenIndex, 

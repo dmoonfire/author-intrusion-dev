@@ -1,31 +1,27 @@
-﻿// <copyright file="LineIndexTokenIndexEventArgs.cs" company="Moonfire Games">
+﻿// <copyright file="TokenIndexEventArgs.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Events
 {
-    using MfGames.TextTokens.Lines;
+    using System;
+
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
     /// Base class for events that perform an action at a specific line and token index.
     /// </summary>
-    public abstract class LineIndexTokenIndexEventArgs : LineIndexEventArgs
+    public abstract class TokenIndexEventArgs : EventArgs
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineIndexTokenIndexEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="TokenIndexEventArgs"/> class.
         /// </summary>
-        /// <param name="lineIndex">
-        /// Index of the line.
-        /// </param>
         /// <param name="tokenIndex">
         /// Index of the token.
         /// </param>
-        protected LineIndexTokenIndexEventArgs(
-            LineIndex lineIndex, TokenIndex tokenIndex)
-            : base(lineIndex)
+        protected TokenIndexEventArgs(TokenIndex tokenIndex)
         {
             this.TokenIndex = tokenIndex;
         }

@@ -16,9 +16,15 @@ namespace MfGames.TextTokens.Events
     {
         #region Constructors and Destructors
 
-        /// <summary>Initializes a new instance of the <see cref="LineIndexLinesDeletedEventArgs"/> class.</summary>
-        /// <param name="lineIndex">Index of the line.</param>
-        /// <param name="count">The count.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineIndexLinesDeletedEventArgs"/> class.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="count">
+        /// The count.
+        /// </param>
         public LineIndexLinesDeletedEventArgs(LineIndex lineIndex, int count)
             : base(lineIndex)
         {

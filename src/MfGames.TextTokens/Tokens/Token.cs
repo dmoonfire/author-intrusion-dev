@@ -11,9 +11,15 @@ namespace MfGames.TextTokens.Tokens
     {
         #region Constructors and Destructors
 
-        /// <summary>Initializes a new instance of the <see cref="Token"/> class.</summary>
-        /// <param name="tokenKey">The token key.</param>
-        /// <param name="text">The text.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Token"/> class.
+        /// </summary>
+        /// <param name="tokenKey">
+        /// The token key.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
         public Token(TokenKey tokenKey, string text)
         {
             this.TokenKey = tokenKey;

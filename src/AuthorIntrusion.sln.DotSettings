@@ -449,7 +449,7 @@ MIT Licensed (http://opensource.org/licenses/MIT)</s:String>
 	<s:String x:Key="/Default/FilterSettingsManager/AttributeFilterXml/@EntryValue">&lt;data /&gt;</s:String>
 	<s:Int64 x:Key="/Default/StyleCopOptions/DashesCountInFileHeader/@EntryValue">80</s:Int64>
 	<s:Boolean x:Key="/Default/StyleCopOptions/InsertTextIntoDocumentation/@EntryValue">False</s:Boolean>
-	<s:Boolean x:Key="/Default/StyleCopOptions/UseSingleLineDeclarationComments/@EntryValue">True</s:Boolean>
+	
 	
 	
 	</wpf:ResourceDictionary>
