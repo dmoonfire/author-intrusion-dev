@@ -4,6 +4,9 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens
 {
+    using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Tokens;
+
     /// <summary>
     /// Represents a generator which creates the unique keys for tokens and lines.
     /// </summary>

@@ -2,7 +2,7 @@
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace MfGames.TextTokens
+namespace MfGames.TextTokens.Tokens
 {
     /// <summary>
     /// <para>Represents a single token within a line. Most tokens are text tokens

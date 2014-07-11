@@ -2,16 +2,18 @@
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace MfGames.TextTokens
+namespace MfGames.TextTokens.Events
 {
-    using System;
     using System.Collections.Generic;
+
+    using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Tokens;
 
     /// <summary>
     /// Indicates an event where a single token is replaced by zero or more tokens. This is
     /// also used to delete tokens, by providing an empty list of tokens.
     /// </summary>
-    public class TokenReplacedEventArgs : EventArgs
+    public class TokenReplacedEventArgs : LineEventArgs
     {
         #region Constructors and Destructors
 
@@ -35,8 +37,8 @@ namespace MfGames.TextTokens
             TokenIndex tokenIndex, 
             IReadOnlyList<IToken> tokenReplacements, 
             bool isIdentityReplacement)
+            : base(lineIndex)
         {
-            this.LineIndex = lineIndex;
             this.TokenIndex = tokenIndex;
             this.TokenReplacements = tokenReplacements;
             this.IsIdentity = isIdentityReplacement;
@@ -53,14 +55,6 @@ namespace MfGames.TextTokens
         /// needs to maintain a cursor or selection while manipulations are made to the tokens.
         /// </summary>
         public bool IsIdentity { get; private set; }
-
-        /// <summary>
-        /// Gets the index of the line.
-        /// </summary>
-        /// <value>
-        /// The index of the line.
-        /// </value>
-        public LineIndex LineIndex { get; private set; }
 
         /// <summary>
         /// Gets or sets the index of the token.

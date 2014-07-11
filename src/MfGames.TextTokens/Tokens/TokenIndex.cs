@@ -1,36 +1,36 @@
-﻿// <copyright file="LineKey.cs" company="Moonfire Games">
+﻿// <copyright file="TokenIndex.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace MfGames.TextTokens
+namespace MfGames.TextTokens.Tokens
 {
     using System;
 
     /// <summary>
     /// A simple, low-overhead identifiers for tokens.
     /// </summary>
-    public struct LineKey : IEquatable<LineKey>
+    public struct TokenIndex : IEquatable<TokenIndex>
     {
         #region Fields
 
         /// <summary>
-        /// Contains the integer key that represents a given line.
+        /// Contains the zero-based index of a token within a given line.
         /// </summary>
-        public int Id;
+        public int Index;
 
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineKey"/> struct.
+        /// Initializes a new instance of the <see cref="TokenIndex"/> struct.
         /// </summary>
-        /// <param name="id">
-        /// The numerical line identifier.
+        /// <param name="index">
+        /// The index.
         /// </param>
-        public LineKey(int id)
+        public TokenIndex(int index)
         {
-            this.Id = id;
+            this.Index = index;
         }
 
         #endregion
@@ -45,7 +45,7 @@ namespace MfGames.TextTokens
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(LineKey left, LineKey right)
+        public static bool operator ==(TokenIndex left, TokenIndex right)
         {
             return left.Equals(right);
         }
@@ -58,7 +58,7 @@ namespace MfGames.TextTokens
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(LineKey left, LineKey right)
+        public static bool operator !=(TokenIndex left, TokenIndex right)
         {
             return !left.Equals(right);
         }
@@ -72,9 +72,9 @@ namespace MfGames.TextTokens
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(LineKey other)
+        public bool Equals(TokenIndex other)
         {
-            return this.Id == other.Id;
+            return this.Index == other.Index;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace MfGames.TextTokens
                 return false;
             }
 
-            return obj is LineKey && this.Equals((LineKey)obj);
+            return obj is TokenIndex && this.Equals((TokenIndex)obj);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace MfGames.TextTokens
         /// </returns>
         public override int GetHashCode()
         {
-            return this.Id;
+            return this.Index;
         }
 
         #endregion

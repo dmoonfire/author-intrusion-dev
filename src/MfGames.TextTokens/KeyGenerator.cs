@@ -6,6 +6,9 @@ namespace MfGames.TextTokens
 {
     using System.Threading;
 
+    using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Tokens;
+
     /// <summary>
     /// A simplistic key generator which starts the ID at 1 and simply increments it
     /// in a thread-safe manner for both lines and tokens.

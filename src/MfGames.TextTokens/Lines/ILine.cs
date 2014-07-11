@@ -2,9 +2,11 @@
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace MfGames.TextTokens
+namespace MfGames.TextTokens.Lines
 {
     using System.Collections.Generic;
+
+    using MfGames.TextTokens.Tokens;
 
     /// <summary>
     /// Represents a single line inside the buffer. Each line consists of zero or more
@@ -13,6 +15,14 @@ namespace MfGames.TextTokens
     public interface ILine
     {
         #region Public Properties
+
+        /// <summary>
+        /// Gets the line key associated with this line.
+        /// </summary>
+        /// <value>
+        /// The line key.
+        /// </value>
+        LineKey LineKey { get; }
 
         /// <summary>
         /// Gets an ordered list of tokens within the line.
