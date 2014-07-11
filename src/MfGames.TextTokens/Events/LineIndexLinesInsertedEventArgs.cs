@@ -1,4 +1,4 @@
-﻿// <copyright file="LinesInsertedEventArgs.cs" company="Moonfire Games">
+﻿// <copyright file="LineIndexLinesInsertedEventArgs.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -13,20 +13,14 @@ namespace MfGames.TextTokens.Events
     /// after a given index. If the index is 0, then these lines are prepending to
     /// the buffer. If they equal the count of the buffer's line, it is an append.
     /// </summary>
-    public class LinesInsertedEventArgs : LineEventArgs
+    public class LineIndexLinesInsertedEventArgs : LineIndexEventArgs
     {
         #region Constructors and Destructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LinesInsertedEventArgs"/> class.
-        /// </summary>
-        /// <param name="lineIndex">
-        /// Index of the line.
-        /// </param>
-        /// <param name="linesInserted">
-        /// The lines inserted.
-        /// </param>
-        public LinesInsertedEventArgs(
+        /// <summary>Initializes a new instance of the <see cref="LineIndexLinesInsertedEventArgs"/> class.</summary>
+        /// <param name="lineIndex">Index of the line.</param>
+        /// <param name="linesInserted">The lines inserted.</param>
+        public LineIndexLinesInsertedEventArgs(
             LineIndex lineIndex, IReadOnlyList<ILine> linesInserted)
             : base(lineIndex)
         {

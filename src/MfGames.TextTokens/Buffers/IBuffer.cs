@@ -23,22 +23,22 @@ namespace MfGames.TextTokens.Buffers
         /// <summary>
         /// Occurs when lines are deleted from the buffer.
         /// </summary>
-        event EventHandler<LinesDeletedEventArgs> LinesDeleted;
+        event EventHandler<LineIndexLinesDeletedEventArgs> LinesDeleted;
 
         /// <summary>
         /// Occurs when lines are inserted into the buffer.
         /// </summary>
-        event EventHandler<LinesInsertedEventArgs> LinesInserted;
+        event EventHandler<LineIndexLinesInsertedEventArgs> LinesInserted;
 
         /// <summary>
         /// Occurs when a token is replaced by zero or more tokens.
         /// </summary>
-        event EventHandler<TokenReplacedEventArgs> TokenReplaced;
+        event EventHandler<LineIndexTokenIndexTokenReplacedEventArgs> TokenReplaced;
 
         /// <summary>
         /// Occurs when tokens are inserted into a buffer line.
         /// </summary>
-        event EventHandler<TokensInsertedEventArgs> TokensInserted;
+        event EventHandler<LineIndexTokenIndexTokensInsertedEventArgs> TokensInserted;
 
         #endregion
 

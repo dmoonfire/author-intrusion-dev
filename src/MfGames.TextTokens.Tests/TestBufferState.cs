@@ -62,7 +62,8 @@ namespace MfGames.TextTokens.Tests
         /// <summary></summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnLinesInserted(object sender, LinesInsertedEventArgs e)
+        private void OnLinesInserted(
+            object sender, LineIndexLinesInsertedEventArgs e)
         {
             // Wrap the lines in a line object.
             var insertedLines = new List<Line>(e.LinesInserted.Count);
@@ -83,8 +84,9 @@ namespace MfGames.TextTokens.Tests
 
         /// <summary>Called when a token is replaced with zero or more other tokens.</summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="TokenReplacedEventArgs"/> instance containing the event data.</param>
-        private void OnTokenReplaced(object sender, TokenReplacedEventArgs e)
+        /// <param name="e">The <see cref="LineIndexTokenIndexTokenReplacedEventArgs"/> instance containing the event data.</param>
+        private void OnTokenReplaced(
+            object sender, LineIndexTokenIndexTokenReplacedEventArgs e)
         {
         }
 

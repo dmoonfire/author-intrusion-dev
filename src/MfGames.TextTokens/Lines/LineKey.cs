@@ -22,12 +22,8 @@ namespace MfGames.TextTokens.Lines
 
         #region Constructors and Destructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineKey"/> struct.
-        /// </summary>
-        /// <param name="id">
-        /// The numerical line identifier.
-        /// </param>
+        /// <summary>Initializes a new instance of the <see cref="LineKey"/> struct.</summary>
+        /// <param name="id">The numerical line identifier.</param>
         public LineKey(int id)
         {
             this.Id = id;
@@ -63,29 +59,17 @@ namespace MfGames.TextTokens.Lines
             return !left.Equals(right);
         }
 
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">
-        /// An object to compare with this object.
-        /// </param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(LineKey other)
         {
             return this.Id == other.Id;
         }
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/>, is equal to this instance.
-        /// </summary>
-        /// <param name="obj">
-        /// The <see cref="System.Object"/> to compare with this instance.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
+        /// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -117,6 +101,7 @@ namespace MfGames.TextTokens.Lines
         {
             return "LineKey(" + this.Id + ")";
         }
+
         #endregion
     }
 }

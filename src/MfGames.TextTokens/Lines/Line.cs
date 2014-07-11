@@ -34,9 +34,7 @@ namespace MfGames.TextTokens.Lines
             this.tokens = new List<IToken>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Line"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Line"/> class.</summary>
         /// <param name="lineKey">The line key.</param>
         public Line(LineKey lineKey)
             : this()
@@ -44,12 +42,8 @@ namespace MfGames.TextTokens.Lines
             this.LineKey = lineKey;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Line"/> class.
-        /// </summary>
-        /// <param name="line">
-        /// The line.
-        /// </param>
+        /// <summary>Initializes a new instance of the <see cref="Line"/> class.</summary>
+        /// <param name="line">The line.</param>
         public Line(ILine line)
             : this()
         {
@@ -85,20 +79,16 @@ namespace MfGames.TextTokens.Lines
 
         #region Public Methods and Operators
 
-        /// <summary>
-        /// Appends the token to the end of the list, raising events as
-        /// appropriate.
-        /// </summary>
+        /// <summary>Appends the token to the end of the list, raising events as
+        /// appropriate.</summary>
         /// <param name="token">The token to append.</param>
         public void AddToken(IToken token)
         {
             this.InsertToken(this.tokens.Count, token);
         }
 
-        /// <summary>
-        /// Inserts a token into the token list after the given index and then
-        /// raises a token inserted event.
-        /// </summary>
+        /// <summary>Inserts a token into the token list after the given index and then
+        /// raises a token inserted event.</summary>
         /// <param name="afterTokenIndex">Index of the token to insert after.</param>
         /// <param name="token">The token to insert.</param>
         public void InsertToken(int afterTokenIndex, IToken token)

@@ -43,22 +43,22 @@ namespace MfGames.TextTokens.Buffers
         /// <summary>
         /// Occurs when lines are deleted from the buffer.
         /// </summary>
-        public event EventHandler<LinesDeletedEventArgs> LinesDeleted;
+        public event EventHandler<LineIndexLinesDeletedEventArgs> LinesDeleted;
 
         /// <summary>
         /// Occurs when lines are inserted into the buffer.
         /// </summary>
-        public event EventHandler<LinesInsertedEventArgs> LinesInserted;
+        public event EventHandler<LineIndexLinesInsertedEventArgs> LinesInserted;
 
         /// <summary>
         /// Occurs when a token is replaced by zero or more tokens.
         /// </summary>
-        public event EventHandler<TokenReplacedEventArgs> TokenReplaced;
+        public event EventHandler<LineIndexTokenIndexTokenReplacedEventArgs> TokenReplaced;
 
         /// <summary>
         /// Occurs when tokens are inserted into a buffer line.
         /// </summary>
-        public event EventHandler<TokensInsertedEventArgs> TokensInserted;
+        public event EventHandler<LineIndexTokenIndexTokensInsertedEventArgs> TokensInserted;
 
         #endregion
 
@@ -150,7 +150,8 @@ namespace MfGames.TextTokens.Buffers
         protected void RaiseLinesInserted(
             LineIndex afterLineIndex, IEnumerable<ILine> insertedLines)
         {
-            EventHandler<LinesInsertedEventArgs> listener = this.LinesInserted;
+            EventHandler<LineIndexLinesInsertedEventArgs> listener =
+                this.LinesInserted;
 
             if (listener == null)
             {
@@ -159,7 +160,8 @@ namespace MfGames.TextTokens.Buffers
 
             ReadOnlyCollection<ILine> readOnlyLines =
                 new List<ILine>(insertedLines).AsReadOnly();
-            var args = new LinesInsertedEventArgs(afterLineIndex, readOnlyLines);
+            var args = new LineIndexLinesInsertedEventArgs(
+                afterLineIndex, readOnlyLines);
 
             listener(this, args);
         }

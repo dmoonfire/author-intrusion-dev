@@ -80,10 +80,11 @@
   <ItemGroup>
     <Compile Include="Buffers\IBuffer.cs" />
     <Compile Include="Buffers\MemoryBuffer.cs" />
-    <Compile Include="Events\LineEventArgs.cs" />
-    <Compile Include="Events\LinesDeletedEventArgs.cs" />
-    <Compile Include="Events\LinesInsertedEventArgs.cs" />
-    <Compile Include="Events\TokensInsertedEventArgs.cs" />
+    <Compile Include="Events\LineIndexEventArgs.cs" />
+    <Compile Include="Events\LineIndexLinesDeletedEventArgs.cs" />
+    <Compile Include="Events\LineIndexLinesInsertedEventArgs.cs" />
+    <Compile Include="Events\LineIndexTokenIndexEventArgs.cs" />
+    <Compile Include="Events\LineIndexTokenIndexTokensInsertedEventArgs.cs" />
     <Compile Include="IKeyGenerator.cs" />
     <Compile Include="Lines\ILine.cs" />
     <Compile Include="Lines\Line.cs" />
@@ -94,7 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokens\Token.cs" />
     <Compile Include="Tokens\TokenKey.cs" />
-    <Compile Include="Events\TokenReplacedEventArgs.cs" />
+    <Compile Include="Events\LineIndexTokenIndexTokenReplacedEventArgs.cs" />
     <Compile Include="Tokens\TokenIndex.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
