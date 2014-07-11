@@ -20,7 +20,7 @@ namespace MfGames.TextTokens
         /// <summary>
         /// Contains the next ID for either lines or tokens.
         /// </summary>
-        private int nextId;
+        private int currentId;
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace MfGames.TextTokens
         /// </summary>
         public KeyGenerator()
         {
-            this.nextId = 1;
+            this.currentId = 0;
         }
 
         #endregion
@@ -63,7 +63,7 @@ namespace MfGames.TextTokens
         /// </returns>
         public LineKey GetNextLineKey()
         {
-            int id = Interlocked.Increment(ref this.nextId);
+            int id = Interlocked.Increment(ref this.currentId);
             var lineKey = new LineKey(id);
             return lineKey;
         }
@@ -76,7 +76,7 @@ namespace MfGames.TextTokens
         /// </returns>
         public TokenKey GetNextTokenKey()
         {
-            int id = Interlocked.Increment(ref this.nextId);
+            int id = Interlocked.Increment(ref this.currentId);
             var tokenKey = new TokenKey(id);
             return tokenKey;
         }

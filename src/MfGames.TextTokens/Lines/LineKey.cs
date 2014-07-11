@@ -16,7 +16,7 @@ namespace MfGames.TextTokens.Lines
         /// <summary>
         /// Contains the integer key that represents a given line.
         /// </summary>
-        public int Id;
+        public readonly int Id;
 
         #endregion
 
@@ -107,6 +107,16 @@ namespace MfGames.TextTokens.Lines
             return this.Id;
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return "LineKey(" + this.Id + ")";
+        }
         #endregion
     }
 }

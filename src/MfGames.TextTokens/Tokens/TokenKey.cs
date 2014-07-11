@@ -16,18 +16,14 @@ namespace MfGames.TextTokens.Tokens
         /// <summary>
         /// Contains the numerical identifier for a token.
         /// </summary>
-        public int Id;
+        public readonly int Id;
 
         #endregion
 
         #region Constructors and Destructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenKey"/> struct.
-        /// </summary>
-        /// <param name="id">
-        /// The identifier.
-        /// </param>
+        /// <summary>Initializes a new instance of the <see cref="TokenKey"/> struct.</summary>
+        /// <param name="id">The identifier.</param>
         public TokenKey(int id)
         {
             this.Id = id;
@@ -63,29 +59,17 @@ namespace MfGames.TextTokens.Tokens
             return !left.Equals(right);
         }
 
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">
-        /// An object to compare with this object.
-        /// </param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
         public bool Equals(TokenKey other)
         {
             return this.Id == other.Id;
         }
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/>, is equal to this instance.
-        /// </summary>
-        /// <param name="obj">
-        /// The <see cref="System.Object"/> to compare with this instance.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
+        /// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -105,6 +89,17 @@ namespace MfGames.TextTokens.Tokens
         public override int GetHashCode()
         {
             return this.Id;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return "TokenKey(" + this.Id + ")";
         }
 
         #endregion

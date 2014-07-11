@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Lines
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     using MfGames.TextTokens.Tokens;
 
@@ -34,10 +35,11 @@ namespace MfGames.TextTokens.Lines
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Line"/> class.
         /// </summary>
-        /// <param name="lineKey">
-        /// </param>
+        /// <param name="lineKey">The line key.</param>
         public Line(LineKey lineKey)
+            : this()
         {
             this.LineKey = lineKey;
         }
@@ -49,7 +51,10 @@ namespace MfGames.TextTokens.Lines
         /// The line.
         /// </param>
         public Line(ILine line)
+            : this()
         {
+            Contract.Requires(line != null);
+
             this.LineKey = line.LineKey;
         }
 
@@ -74,6 +79,37 @@ namespace MfGames.TextTokens.Lines
             {
                 return this.tokens.AsReadOnly();
             }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Appends the token to the end of the list, raising events as
+        /// appropriate.
+        /// </summary>
+        /// <param name="token">The token to append.</param>
+        public void AddToken(IToken token)
+        {
+            this.InsertToken(this.tokens.Count, token);
+        }
+
+        /// <summary>
+        /// Inserts a token into the token list after the given index and then
+        /// raises a token inserted event.
+        /// </summary>
+        /// <param name="afterTokenIndex">Index of the token to insert after.</param>
+        /// <param name="token">The token to insert.</param>
+        public void InsertToken(int afterTokenIndex, IToken token)
+        {
+            // Establish our contracts.
+            Contract.Requires(afterTokenIndex >= 0);
+
+            // Insert the token into the list.
+            this.tokens.Insert(afterTokenIndex, token);
+
+            // Raise an event to indicate we've inserted a token.
         }
 
         #endregion

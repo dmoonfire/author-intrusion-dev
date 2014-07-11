@@ -6,6 +6,7 @@ namespace MfGames.TextTokens.Buffers
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics.Contracts;
 
     using MfGames.TextTokens.Events;
@@ -81,21 +82,15 @@ namespace MfGames.TextTokens.Buffers
 
         #region Public Methods and Operators
 
-        /// <summary>
-        /// Inserts the lines.
-        /// </summary>
-        /// <param name="afterLineIndex">
-        /// Index of the after line.
-        /// </param>
-        /// <param name="count">
-        /// The count.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <summary>Inserts the lines.</summary>
+        /// <param name="afterLineIndex">Index of the after line.</param>
+        /// <param name="count">The count.</param>
+        /// <returns>An enumerable of the created lines.</returns>
         public IEnumerable<ILine> InsertLines(
             LineIndex afterLineIndex, int count)
         {
             // Establish our contracts.
+            Contract.Requires(afterLineIndex.Index >= 0);
             Contract.Requires(count > 0);
 
             // First populate a list of line keys for the new lines.
@@ -107,40 +102,63 @@ namespace MfGames.TextTokens.Buffers
                 insertedLines[index] = new Line(lineKey);
             }
 
+            // Insert the lines into the buffer.
+            this.InsertLines(afterLineIndex, insertedLines);
+
+            // Return the resulting lines.
+            return insertedLines;
+        }
+
+        /// <summary>Inserts the lines.</summary>
+        /// <param name="afterLineIndex">Index of the after line.</param>
+        /// <param name="insertedLines">The inserted lines.</param>
+        public void InsertLines(
+            LineIndex afterLineIndex, params Line[] insertedLines)
+        {
+            // Establish our contracts.
+            Contract.Requires(afterLineIndex.Index >= 0);
+            Contract.Requires(insertedLines != null);
+
+            // Insert the lines into the buffer.
+            this.InsertLines(afterLineIndex, (IEnumerable<Line>)insertedLines);
+        }
+
+        /// <summary>Inserts the lines into the buffer.</summary>
+        /// <param name="afterLineIndex">Index of the after line.</param>
+        /// <param name="insertedLines">The inserted lines.</param>
+        public void InsertLines(
+            LineIndex afterLineIndex, IEnumerable<Line> insertedLines)
+        {
+            // Establish our contracts.
+            Contract.Requires(afterLineIndex.Index >= 0);
+            Contract.Requires(insertedLines != null);
+
             // Insert the lines into the buffer at the given position.
             this.lines.InsertRange(afterLineIndex.Index, insertedLines);
 
             // Raise an event for the inserted lines.
             this.RaiseLinesInserted(afterLineIndex, insertedLines);
-
-            // Return the resulting lines.
-            return insertedLines;
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Raises the LinesInserted event.
-        /// </summary>
-        /// <param name="afterLineIndex">
-        /// Index of the after line.
-        /// </param>
-        /// <param name="insertedLines">
-        /// The inserted lines.
-        /// </param>
+        /// <summary>Raises the LinesInserted event.</summary>
+        /// <param name="afterLineIndex">Index of the after line.</param>
+        /// <param name="insertedLines">The inserted lines.</param>
         protected void RaiseLinesInserted(
             LineIndex afterLineIndex, IEnumerable<ILine> insertedLines)
         {
-            var listener = this.LinesInserted;
+            EventHandler<LinesInsertedEventArgs> listener = this.LinesInserted;
 
             if (listener == null)
             {
                 return;
             }
 
-            var readOnlyLines = new List<ILine>(insertedLines).AsReadOnly();
+            ReadOnlyCollection<ILine> readOnlyLines =
+                new List<ILine>(insertedLines).AsReadOnly();
             var args = new LinesInsertedEventArgs(afterLineIndex, readOnlyLines);
 
             listener(this, args);

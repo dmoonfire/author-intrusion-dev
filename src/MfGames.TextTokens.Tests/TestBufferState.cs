@@ -4,7 +4,9 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Tests
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using MfGames.TextTokens.Buffers;
@@ -20,12 +22,13 @@ namespace MfGames.TextTokens.Tests
     {
         #region Constructors and Destructors
 
-        /// <summary>
-        /// </summary>
-        /// <param name="buffer">
-        /// </param>
+        /// <summary></summary>
+        /// <param name="buffer"></param>
         public TestBufferState(IBuffer buffer)
         {
+            // Establish our contracts.
+            Contract.Requires(buffer != null);
+
             // Keep track of the backing variables.
             this.Buffer = buffer;
 
@@ -56,32 +59,31 @@ namespace MfGames.TextTokens.Tests
 
         #region Methods
 
-        /// <summary>
-        /// </summary>
-        /// <param name="sender">
-        /// </param>
-        /// <param name="e">
-        /// </param>
+        /// <summary></summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLinesInserted(object sender, LinesInsertedEventArgs e)
         {
             // Wrap the lines in a line object.
-            List<Line> insertedLines = new List<Line>(e.LinesInserted.Count);
+            var insertedLines = new List<Line>(e.LinesInserted.Count);
+
             insertedLines.AddRange(
                 e.LinesInserted.Select(line => new Line(line)));
+
+            // Report which lines we've inserted.
+            Console.WriteLine(
+                "Inserted lines: "
+                + string.Join(
+                    ", ", 
+                    insertedLines.Select(l => l.LineKey.ToString()).ToArray()));
 
             // Insert our copy of the line into the buffer.
             this.Lines.InsertRange(e.LineIndex.Index, insertedLines);
         }
 
-        /// <summary>
-        /// Called when a token is replaced with zero or more other tokens.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="TokenReplacedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <summary>Called when a token is replaced with zero or more other tokens.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="TokenReplacedEventArgs"/> instance containing the event data.</param>
         private void OnTokenReplaced(object sender, TokenReplacedEventArgs e)
         {
         }

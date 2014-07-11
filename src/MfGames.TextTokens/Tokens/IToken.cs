@@ -15,5 +15,16 @@ namespace MfGames.TextTokens.Tokens
     /// </summary>
     public interface IToken
     {
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the token key associated with the token.
+        /// </summary>
+        /// <value>
+        /// The token key.
+        /// </value>
+        TokenKey TokenKey { get; }
+
+        #endregion
     }
 }

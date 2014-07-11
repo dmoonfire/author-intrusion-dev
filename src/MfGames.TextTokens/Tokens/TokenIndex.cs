@@ -16,9 +16,20 @@ namespace MfGames.TextTokens.Tokens
         /// <summary>
         /// Contains the zero-based index of a token within a given line.
         /// </summary>
-        public int Index;
+        public readonly int Index;
 
         #endregion
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return "TokenIndex(" + this.Index + ")";
+        }
 
         #region Constructors and Destructors
 
