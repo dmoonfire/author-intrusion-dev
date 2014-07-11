@@ -18,6 +18,14 @@ namespace MfGames.TextTokens.Tokens
         #region Public Properties
 
         /// <summary>
+        /// Gets the text associated with this token.
+        /// </summary>
+        /// <value>
+        /// The text.
+        /// </value>
+        string Text { get; }
+
+        /// <summary>
         /// Gets the token key associated with the token.
         /// </summary>
         /// <value>

@@ -11,7 +11,6 @@ namespace MfGames.TextTokens.Tests
 
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Events;
-    using MfGames.TextTokens.Lines;
 
     /// <summary>
     /// A testing class that listens to events of the Buffer like a text editor and
@@ -23,8 +22,10 @@ namespace MfGames.TextTokens.Tests
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TestBufferState"/> class.
         /// </summary>
         /// <param name="buffer">
+        /// The buffer.
         /// </param>
         public TestBufferState(IBuffer buffer)
         {
@@ -39,7 +40,7 @@ namespace MfGames.TextTokens.Tests
             this.Buffer.TokensInserted += this.OnTokensInserted;
 
             // Initialize the collections.
-            this.Lines = new List<Line>();
+            this.Lines = new List<TestLine>();
         }
 
         #endregion
@@ -47,15 +48,23 @@ namespace MfGames.TextTokens.Tests
         #region Public Properties
 
         /// <summary>
+        /// Gets the lines.
         /// </summary>
-        public List<Line> Lines { get; private set; }
+        /// <value>
+        /// The lines.
+        /// </value>
+        public List<TestLine> Lines { get; private set; }
 
         #endregion
 
         #region Properties
 
         /// <summary>
+        /// Gets the buffer.
         /// </summary>
+        /// <value>
+        /// The buffer.
+        /// </value>
         protected IBuffer Buffer { get; private set; }
 
         #endregion
@@ -72,10 +81,10 @@ namespace MfGames.TextTokens.Tests
             object sender, LineIndexLinesInsertedEventArgs e)
         {
             // Wrap the lines in a line object.
-            var insertedLines = new List<Line>(e.LinesInserted.Count);
+            var insertedLines = new List<TestLine>(e.LinesInserted.Count);
 
             insertedLines.AddRange(
-                e.LinesInserted.Select(line => new Line(line)));
+                e.LinesInserted.Select(line => new TestLine(line)));
 
             // Report which lines we've inserted.
             Console.WriteLine(
@@ -114,6 +123,7 @@ namespace MfGames.TextTokens.Tests
         private void OnTokensInserted(
             object sender, LineIndexTokenIndexTokensInsertedEventArgs e)
         {
+            // Report which tokens are being added.
             string tokenList = string.Join(
                 ", ", 
                 e.TokensInserted.Select(t => t.TokenKey.ToString()).ToArray());
@@ -121,6 +131,12 @@ namespace MfGames.TextTokens.Tests
             Console.WriteLine(
                 "Inserted lines: @(" + e.LineIndex.Index + ", "
                 + e.TokenIndex.Index + ") " + tokenList);
+
+            // Get the referenced line.
+            TestLine line = this.Lines[e.LineIndex.Index];
+
+            // Insert the tokens into the line.
+            line.InsertTokens(e.TokenIndex, e.TokensInserted);
         }
 
         #endregion
