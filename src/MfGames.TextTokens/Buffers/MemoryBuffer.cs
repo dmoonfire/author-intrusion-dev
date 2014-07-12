@@ -250,8 +250,17 @@ namespace MfGames.TextTokens.Buffers
             IEnumerable<IToken> newTokens)
         {
             // Establish our contracts.
-            Contract.Requires(count >= 0);
-            Contract.Requires(newTokens != null);
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    "count", "Count cannot be less than zero.");
+            }
+
+            if (newTokens == null)
+            {
+                throw new ArgumentNullException(
+                    "newTokens", "newTokens cannot be null.");
+            }
 
             // Get the line and tokens for this request.
             Line line = this.lines[lineIndex.Index];

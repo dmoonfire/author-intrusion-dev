@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Tests
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     using MfGames.TextTokens.Lines;
     using MfGames.TextTokens.Tokens;
@@ -32,6 +33,9 @@ namespace MfGames.TextTokens.Tests
         public TestLine(ILine line)
             : this(line.LineKey)
         {
+            // Establish our contracts.
+            Contract.Requires(line != null);
+
             // Add in all the tokens already existing on the line.
             foreach (IToken token in line.Tokens)
             {
@@ -65,6 +69,9 @@ namespace MfGames.TextTokens.Tests
         public void InsertTokens(
             TokenIndex tokenIndex, IEnumerable<IToken> tokensInserted)
         {
+            // Establish our contracts.
+            Contract.Requires(tokensInserted != null);
+
             // First wrap the tokens in a test token layer.
             var tokens = new List<TestToken>();
 

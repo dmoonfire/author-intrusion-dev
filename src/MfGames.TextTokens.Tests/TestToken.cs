@@ -4,6 +4,8 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Tests
 {
+    using System.Diagnostics.Contracts;
+
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
@@ -31,6 +33,9 @@ namespace MfGames.TextTokens.Tests
         public TestToken(IToken token)
             : this(token.TokenKey, token.Text)
         {
+            // Establish our contracts.
+            Contract.Requires(token != null);
+
         }
 
         #endregion
