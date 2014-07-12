@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Commands
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using MfGames.TextTokens.Buffers;
 
@@ -37,7 +38,10 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public void Undo(IBuffer buffer)
         {
-            foreach (IBufferOperation operation in this)
+            List<IBufferOperation> reversed = this.ToList();
+            reversed.Reverse();
+
+            foreach (IBufferOperation operation in reversed)
             {
                 operation.Undo(buffer);
             }

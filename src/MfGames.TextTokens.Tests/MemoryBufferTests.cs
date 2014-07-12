@@ -82,7 +82,7 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa aaa aaa", 
+                    "twenty twenty-one twenty-two twenty-three twenty-four", 
                     this.State.Lines[4].Tokens.GetVisibleText());
             }
 
@@ -102,7 +102,7 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa aaa aaa", 
+                    "zero one two three four", 
                     this.State.Lines[0].Tokens.GetVisibleText());
             }
 
@@ -113,7 +113,7 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa aaa aaa", 
+                    "fifteen sixteen seventeen eighteen nineteen", 
                     this.State.Lines[3].Tokens.GetVisibleText());
             }
 
@@ -133,7 +133,7 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa aaa aaa", 
+                    "five six seven eight nine", 
                     this.State.Lines[1].Tokens.GetVisibleText());
             }
 
@@ -144,7 +144,7 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa aaa aaa", 
+                    "ten eleven twelve thirteen fourteen", 
                     this.State.Lines[2].Tokens.GetVisibleText());
             }
 
@@ -157,7 +157,7 @@ namespace MfGames.TextTokens.Tests
             protected override void Setup()
             {
                 base.Setup();
-                this.Buffer.PopulateRowColumn(5, 5, "aaa");
+                this.Buffer.PopulateRowColumn(5, 5);
             }
 
             #endregion
@@ -173,7 +173,7 @@ namespace MfGames.TextTokens.Tests
             /// <summary>
             /// </summary>
             [Test]
-            public void FirstLineHasFiveTokens()
+            public void FirstLineHasCorrectTokenCount()
             {
                 this.Setup();
                 Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
@@ -186,7 +186,7 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaBa aaa", this.State.Lines[0].Tokens.GetVisibleText());
+                    "zero onBe two", this.State.Lines[0].Tokens.GetVisibleText());
             }
 
             /// <summary>
@@ -208,9 +208,121 @@ namespace MfGames.TextTokens.Tests
             protected override void Setup()
             {
                 base.Setup();
-                this.Buffer.PopulateRowColumn(1, 3, "aaa");
+                this.Buffer.PopulateRowColumn(1, 3);
                 var textLocation = new TextLocation(0, 2, 2);
                 this.Controller.InsertText(textLocation, "B");
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        [TestFixture]
+        public class InsertTextIntoSingleLineSelection : MemoryBufferTests
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public virtual void FirstLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(1, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public virtual void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "zeBo", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            /// <summary>
+            /// Verifies that there is only a single line in the buffer.
+            /// </summary>
+            [Test]
+            public void HasOneLine()
+            {
+                this.Setup();
+                Assert.AreEqual(1, this.State.Lines.Count);
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
+                this.Buffer.PopulateRowColumn(1, 3);
+                var anchor = new TextLocation(0, 0, 2);
+                var cursor = new TextLocation(0, 4, 2);
+                this.Controller.SetCursor(anchor);
+                this.Controller.Select(cursor);
+                this.Controller.InsertText("B");
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        [TestFixture]
+        public class InsertTextIntoSingleTokenSelection : MemoryBufferTests
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public virtual void FirstLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public virtual void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "zero oBe two", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            /// <summary>
+            /// Verifies that there is only a single line in the buffer.
+            /// </summary>
+            [Test]
+            public void HasOneLine()
+            {
+                this.Setup();
+                Assert.AreEqual(1, this.State.Lines.Count);
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
+                this.Buffer.PopulateRowColumn(1, 3);
+                var anchor = new TextLocation(0, 2, 1);
+                var cursor = new TextLocation(0, 2, 2);
+                this.Controller.SetCursor(anchor);
+                this.Controller.Select(cursor);
+                this.Controller.InsertText("B");
             }
 
             #endregion
@@ -231,7 +343,48 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa", this.State.Lines[0].Tokens.GetVisibleText());
+                    "zero onBe two", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
+                this.Controller.Redo();
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        public class RedoUndoInsertTextIntoSingleLineSelection :
+            UndoInsertTextIntoSingleLineSelection
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(1, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "zeBo", this.State.Lines[0].Tokens.GetVisibleText());
             }
 
             #endregion
@@ -264,7 +417,48 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa", this.State.Lines[0].Tokens.GetVisibleText());
+                    "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
+                this.Controller.Undo();
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        public class UndoInsertTextIntoSingleLineSelection :
+            InsertTextIntoSingleLineSelection
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
             }
 
             #endregion
@@ -297,7 +491,48 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "aaa aaa aaa", this.State.Lines[0].Tokens.GetVisibleText());
+                    "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
+                this.Controller.Undo();
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        public class UndoRedoUndoInsertTextIntoSingleLineSelection :
+            RedoUndoInsertTextIntoSingleLineSelection
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
             }
 
             #endregion

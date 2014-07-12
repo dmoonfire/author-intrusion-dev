@@ -104,6 +104,37 @@ namespace MfGames.TextTokens.Buffers
         #region Public Methods and Operators
 
         /// <summary>
+        /// Creates a new token.
+        /// </summary>
+        /// <param name="newText">
+        /// The new text.
+        /// </param>
+        /// <returns>
+        /// A constructed token.
+        /// </returns>
+        public IToken CreateToken(string newText)
+        {
+            TokenKey tokenKey = KeyGenerator.Instance.GetNextTokenKey();
+            var token = new Token(tokenKey, newText);
+            return token;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="oldToken">
+        /// </param>
+        /// <param name="newText">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public IToken CreateToken(IToken oldToken, string newText)
+        {
+            TokenKey tokenKey = KeyGenerator.Instance.GetNextTokenKey();
+            var token = new Token(tokenKey, newText);
+            return token;
+        }
+
+        /// <summary>
         /// Executes a command on the buffer, running through each operation in turn.
         /// </summary>
         /// <param name="command">
@@ -239,21 +270,6 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
-        /// </summary>
-        /// <param name="oldToken">
-        /// </param>
-        /// <param name="newText">
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public IToken NewToken(IToken oldToken, string newText)
-        {
-            TokenKey tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-            var token = new Token(tokenKey, newText);
-            return token;
-        }
-
-        /// <summary>
         /// Re-executes the last undone command (reverses the undo) or do nothing if
         /// there are no redoable commands.
         /// </summary>
@@ -268,6 +284,7 @@ namespace MfGames.TextTokens.Buffers
 
             // Grab the last command and reexecute it.
             BufferCommand command = this.RedoCommands.Pop();
+            this.UndoCommands.Push(command);
 
             command.Do(this);
         }
@@ -358,6 +375,7 @@ namespace MfGames.TextTokens.Buffers
 
             // Grab the last command and reexecute it.
             BufferCommand command = this.UndoCommands.Pop();
+            this.RedoCommands.Push(command);
 
             command.Undo(this);
         }

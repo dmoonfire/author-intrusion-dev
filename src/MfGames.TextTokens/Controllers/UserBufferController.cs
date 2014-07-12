@@ -73,6 +73,10 @@ namespace MfGames.TextTokens.Controllers
         /// </param>
         public void InsertText(TextLocation textLocation, string text)
         {
+            // Establish our contracts.
+            Contract.Requires(text != null);
+
+            // Set the cursor and then insert the text.
             this.SetCursor(textLocation);
             this.InsertText(text);
         }
@@ -89,22 +93,26 @@ namespace MfGames.TextTokens.Controllers
             // Establish our contracts.
             Contract.Requires(text != null);
 
-            // We'll be populating the lines.
+            // We'll be gathering up lines to perform the insert.
             var command = new BufferCommand();
 
-            // Get the token at this point in the buffer.
-            TextLocation cursor = this.Selection.Cursor;
-            IToken oldToken = this.Buffer.GetToken(
-                cursor.LineIndex, cursor.TokenIndex);
+            // Allow the selection to add any operations to remove the selection.
+            IToken selectionToken = this.Selection.AddOperations(command);
+
+            // Get the token at the first point of the buffer. If we had a selection, it would
+            // have been deleted by the first command.
+            TextLocation cursor = this.Selection.First;
+            IToken oldToken = selectionToken
+                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
 
             // Figure out the new text of the string and create a new token with the modified
             // version. This will also copy the attributes of the old token.
             string newText = oldToken.Text.Insert(cursor.TextIndex.Index, text);
-            IToken newToken = this.Buffer.NewToken(oldToken, newText);
+            IToken newToken = this.Buffer.CreateToken(oldToken, newText);
 
-            // Create a buffer command, add the replacement operation, and then
-            // submit it to the buffer.
+            // Add the text replacement command into the buffer.
             const int SingleTokenReplacement = 1;
+
             command.Add(
                 new ReplaceTokenOperation(
                     cursor.LineIndex, 
@@ -112,6 +120,7 @@ namespace MfGames.TextTokens.Controllers
                     SingleTokenReplacement, 
                     newToken));
 
+            // Submit the command to the buffer.
             this.Buffer.Do(command);
         }
 
@@ -122,6 +131,17 @@ namespace MfGames.TextTokens.Controllers
         public void Redo()
         {
             this.Buffer.Redo();
+        }
+
+        /// <summary>
+        /// Extends the selection to the new location.
+        /// </summary>
+        /// <param name="cursor">
+        /// The cursor.
+        /// </param>
+        public void Select(TextLocation cursor)
+        {
+            this.Selection.Select(cursor);
         }
 
         /// <summary>

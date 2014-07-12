@@ -124,6 +124,10 @@ namespace MfGames.TextTokens.Lines
         /// </param>
         public void AddTokens(params IToken[] newTokens)
         {
+            // Establish our contracts.
+            Contract.Requires(newTokens != null);
+
+            // Insert the tokens.
             var afterTokenIndex = new TokenIndex(this.tokens.Count);
             this.InsertTokens(afterTokenIndex, newTokens);
         }
@@ -136,6 +140,10 @@ namespace MfGames.TextTokens.Lines
         /// </param>
         public void AddTokens(IEnumerable<IToken> newTokens)
         {
+            // Establish our contracts.
+            Contract.Requires(newTokens != null);
+
+            // Insert the tokens.
             IToken[] tokenArray = newTokens.ToArray();
             this.AddTokens(tokenArray);
         }

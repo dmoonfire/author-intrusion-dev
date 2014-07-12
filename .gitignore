@@ -8,3 +8,4 @@ StyleCop.Cache
 # Output Directories
 bin/
 obj/
+packages/

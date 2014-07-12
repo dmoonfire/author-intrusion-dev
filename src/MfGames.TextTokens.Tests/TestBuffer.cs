@@ -7,6 +7,8 @@ namespace MfGames.TextTokens.Tests
     using System;
     using System.Linq;
 
+    using Humanizer;
+
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Lines;
     using MfGames.TextTokens.Tokens;
@@ -20,22 +22,22 @@ namespace MfGames.TextTokens.Tests
         #region Public Methods and Operators
 
         /// <summary>
-        /// Populates the memory buffer with the given text for a number of rows
-        /// and columns as given.
+        /// Populates the text with a given number of rows and columns with words.
         /// </summary>
         /// <param name="lineCount">
-        /// The number of lines to add.
+        /// The line count.
         /// </param>
         /// <param name="columnCount">
-        /// The number of times to put the text in each line.
+        /// The column count.
         /// </param>
-        /// <param name="text">
-        /// The text to insert.
-        /// </param>
-        public void PopulateRowColumn(
-            int lineCount, int columnCount, string text)
+        /// <exception cref="System.InvalidOperationException">
+        /// Could not get a line after inserting into bufer.
+        /// </exception>
+        public void PopulateRowColumn(int lineCount, int columnCount)
         {
             // Go through the lines and each add one in turn.
+            int word = 0;
+
             for (int lineIndex = 0; lineIndex < lineCount; lineIndex++)
             {
                 // We create lines in two different ways. The first is to create an empty
@@ -65,7 +67,7 @@ namespace MfGames.TextTokens.Tests
 
                     // Create the initial text for the line.
                     tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                    token = new Token(tokenKey, text);
+                    token = new Token(tokenKey, (word++).ToWords());
                     line.AddTokens(token);
 
                     for (int index = 1; index < initialTokens; index++)
@@ -77,7 +79,7 @@ namespace MfGames.TextTokens.Tests
 
                         // Add in the next text token.
                         tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                        token = new Token(tokenKey, text);
+                        token = new Token(tokenKey, (word++).ToWords());
                         line.AddTokens(token);
                     }
 
@@ -106,7 +108,7 @@ namespace MfGames.TextTokens.Tests
 
                     // Add in the next text token.
                     tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                    token = new Token(tokenKey, text);
+                    token = new Token(tokenKey, (word++).ToWords());
                     line.AddTokens(token);
                 }
             }

@@ -54,6 +54,32 @@ namespace MfGames.TextTokens.Buffers
         #region Public Methods and Operators
 
         /// <summary>
+        /// Constructs a new token that is copied from the old one except
+        /// for the given text.
+        /// </summary>
+        /// <param name="oldToken">
+        /// The old token.
+        /// </param>
+        /// <param name="newText">
+        /// The new text.
+        /// </param>
+        /// <returns>
+        /// A new token.
+        /// </returns>
+        IToken CreateToken(IToken oldToken, string newText);
+
+        /// <summary>
+        /// Creates a new token.
+        /// </summary>
+        /// <param name="newText">
+        /// The new text.
+        /// </param>
+        /// <returns>
+        /// A constructed token.
+        /// </returns>
+        IToken CreateToken(string newText);
+
+        /// <summary>
         /// Executes a command on the buffer, running through each operation in turn.
         /// </summary>
         /// <param name="command">
@@ -74,21 +100,6 @@ namespace MfGames.TextTokens.Buffers
         /// The token at the given indexes.
         /// </returns>
         IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex);
-
-        /// <summary>
-        /// Constructs a new token that is copied from the old one except
-        /// for the given text.
-        /// </summary>
-        /// <param name="oldToken">
-        /// The old token.
-        /// </param>
-        /// <param name="newText">
-        /// The new text.
-        /// </param>
-        /// <returns>
-        /// A new token.
-        /// </returns>
-        IToken NewToken(IToken oldToken, string newText);
 
         /// <summary>
         /// Re-executes the last undone command (reverses the undo) or do nothing if
