@@ -45,6 +45,28 @@ namespace MfGames.TextTokens.Controllers
         /// </value>
         public IBuffer Buffer { get; private set; }
 
+        /// <summary>
+        /// Gets the anchor position of the selection.
+        /// </summary>
+        public TextLocation SelectionAnchor
+        {
+            get
+            {
+                return this.Selection.Anchor;
+            }
+        }
+
+        /// <summary>
+        /// Gets the cursor position of the selection.
+        /// </summary>
+        public TextLocation SelectionCursor
+        {
+            get
+            {
+                return this.Selection.Cursor;
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -119,6 +141,12 @@ namespace MfGames.TextTokens.Controllers
                     cursor.TokenIndex, 
                     SingleTokenReplacement, 
                     newToken));
+
+            // Update the cursor location.
+            TextLocation newCursor =
+                this.Selection.First.AddTextIndex(text.Length);
+
+            command.Add(new ReplaceSelectionOperation(newCursor));
 
             // Submit the command to the buffer.
             this.Buffer.Do(command);

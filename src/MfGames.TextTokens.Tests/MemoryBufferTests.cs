@@ -171,6 +171,28 @@ namespace MfGames.TextTokens.Tests
             #region Public Methods and Operators
 
             /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public virtual void AnchorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 3), this.Controller.SelectionAnchor);
+            }
+
+            /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public virtual void CursorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 3), this.Controller.SelectionCursor);
+            }
+
+            /// <summary>
             /// </summary>
             [Test]
             public void FirstLineHasCorrectTokenCount()
@@ -337,6 +359,28 @@ namespace MfGames.TextTokens.Tests
             #region Public Methods and Operators
 
             /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public override void AnchorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 3), this.Controller.SelectionAnchor);
+            }
+
+            /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public override void CursorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 3), this.Controller.SelectionCursor);
+            }
+
+            /// <summary>
             /// </summary>
             [Test]
             public override void FirstLineTextIsCorrect()
@@ -411,6 +455,28 @@ namespace MfGames.TextTokens.Tests
             #region Public Methods and Operators
 
             /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public override void AnchorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 2), this.Controller.SelectionAnchor);
+            }
+
+            /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public override void CursorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 2), this.Controller.SelectionCursor);
+            }
+
+            /// <summary>
             /// </summary>
             [Test]
             public override void FirstLineTextIsCorrect()
@@ -483,6 +549,28 @@ namespace MfGames.TextTokens.Tests
             RedoUndoInsertTextIntoSingleLineMiddleToken
         {
             #region Public Methods and Operators
+
+            /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public override void AnchorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 2), this.Controller.SelectionAnchor);
+            }
+
+            /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public override void CursorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(0, 2, 2), this.Controller.SelectionCursor);
+            }
 
             /// <summary>
             /// </summary>

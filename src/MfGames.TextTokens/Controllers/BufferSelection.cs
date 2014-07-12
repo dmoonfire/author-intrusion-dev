@@ -8,6 +8,7 @@ namespace MfGames.TextTokens.Controllers
 
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Commands;
+    using MfGames.TextTokens.Events;
     using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
@@ -28,7 +29,12 @@ namespace MfGames.TextTokens.Controllers
         /// </param>
         public BufferSelection(IBuffer buffer)
         {
+            // Save the member variables.
             this.Buffer = buffer;
+
+            // Attach to the events.
+            this.Buffer.ReplaceSelection += this.OnReplaceSelection;
+            this.Buffer.RestoreSelection += this.OnRestoreSelection;
         }
 
         #endregion
@@ -116,6 +122,10 @@ namespace MfGames.TextTokens.Controllers
                 return null;
             }
 
+            // Regardless of what happens, the selection is going to be collapsed down to
+            // the First of the selection.
+            command.Add(new ReplaceSelectionOperation(this.ToTextRange()));
+
             // Pull out the first and last token and their associated texts.
             IToken firstToken = this.Buffer.GetToken(
                 this.First.LineIndex, this.First.TokenIndex);
@@ -176,6 +186,58 @@ namespace MfGames.TextTokens.Controllers
         {
             this.Cursor = location;
             this.Anchor = location;
+        }
+
+        /// <summary>
+        /// Converts the buffer selection into a text range.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public TextRange ToTextRange()
+        {
+            return new TextRange(this.Anchor, this.Cursor);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Called when the selection is replaced.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="ReplaceSelectionEventArgs"/> instance containing the event data.
+        /// </param>
+        private void OnReplaceSelection(
+            object sender, ReplaceSelectionEventArgs e)
+        {
+            e.OldTextRanges[this] = this.ToTextRange();
+            this.Anchor = e.TextRange.Anchor;
+            this.Cursor = e.TextRange.Cursor;
+        }
+
+        /// <summary>
+        /// Called when [restore selection].
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="RestoreSelectionEventArgs"/> instance containing the event data.
+        /// </param>
+        private void OnRestoreSelection(
+            object sender, RestoreSelectionEventArgs e)
+        {
+            TextRange newTextRange;
+
+            if (e.PreviousTextRanges.TryGetValue(this, out newTextRange))
+            {
+                this.Anchor = newTextRange.Anchor;
+                this.Cursor = newTextRange.Cursor;
+            }
         }
 
         #endregion

@@ -14,6 +14,7 @@ namespace MfGames.TextTokens.Buffers
     using MfGames.TextTokens.Commands;
     using MfGames.TextTokens.Events;
     using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
@@ -55,6 +56,17 @@ namespace MfGames.TextTokens.Buffers
         /// Occurs when lines are inserted into the buffer.
         /// </summary>
         public event EventHandler<LineIndexLinesInsertedEventArgs> LinesInserted;
+
+        /// <summary>
+        /// Occurs when the selection should be replaced because of a command.
+        /// </summary>
+        public event EventHandler<ReplaceSelectionEventArgs> ReplaceSelection;
+
+        /// <summary>
+        /// Occurs when the selection should be restored, typically after
+        /// undoing a command.
+        /// </summary>
+        public event EventHandler<RestoreSelectionEventArgs> RestoreSelection;
 
         /// <summary>
         /// Occurs when a token is replaced by zero or more tokens.
@@ -267,6 +279,63 @@ namespace MfGames.TextTokens.Buffers
 
             // Raise an event for the inserted lines.
             this.RaiseLinesInserted(afterLineIndex, lineArray);
+        }
+
+        /// <summary>
+        /// Raises the ReplaceSelection event with the given arguments.
+        /// </summary>
+        /// <param name="newTextRange">
+        /// The new text range.
+        /// </param>
+        /// <returns>
+        /// A dictionary of the old selection items.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException">
+        /// </exception>
+        public Dictionary<object, TextRange> RaiseReplaceSelection(
+            TextRange newTextRange)
+        {
+            // If we don't have any listeners, then return an empty selection.
+            EventHandler<ReplaceSelectionEventArgs> listeners =
+                this.ReplaceSelection;
+
+            if (listeners == null)
+            {
+                return new Dictionary<object, TextRange>();
+            }
+
+            // Otherwise, raise the event.
+            var args = new ReplaceSelectionEventArgs(newTextRange);
+
+            listeners(this, args);
+
+            return args.OldTextRanges;
+        }
+
+        /// <summary>
+        /// Raises the restore selection event.
+        /// </summary>
+        /// <param name="oldTextRanges">
+        /// The old text ranges.
+        /// </param>
+        /// <exception cref="System.NotImplementedException">
+        /// </exception>
+        public void RaiseRestoreSelection(
+            Dictionary<object, TextRange> oldTextRanges)
+        {
+            // If we have no listeners, then don't do anything.
+            EventHandler<RestoreSelectionEventArgs> listeners =
+                this.RestoreSelection;
+
+            if (listeners == null)
+            {
+                return;
+            }
+
+            // Otherwise, raise the event.
+            var args = new RestoreSelectionEventArgs(oldTextRanges);
+
+            listeners(this, args);
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ namespace MfGames.TextTokens.Buffers
     using MfGames.TextTokens.Commands;
     using MfGames.TextTokens.Events;
     using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
@@ -31,6 +32,17 @@ namespace MfGames.TextTokens.Buffers
         /// Occurs when lines are inserted into the buffer.
         /// </summary>
         event EventHandler<LineIndexLinesInsertedEventArgs> LinesInserted;
+
+        /// <summary>
+        /// Occurs when the selection should be replaced because of a command.
+        /// </summary>
+        event EventHandler<ReplaceSelectionEventArgs> ReplaceSelection;
+
+        /// <summary>
+        /// Occurs when the selection should be restored, typically after
+        /// undoing a command.
+        /// </summary>
+        event EventHandler<RestoreSelectionEventArgs> RestoreSelection;
 
         /// <summary>
         /// Occurs when a token is replaced by zero or more tokens.
@@ -102,8 +114,28 @@ namespace MfGames.TextTokens.Buffers
         IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex);
 
         /// <summary>
+        /// Raises the ReplaceSelection event with the given arguments.
+        /// </summary>
+        /// <param name="newTextRange">
+        /// The new text range.
+        /// </param>
+        /// <returns>
+        /// A dictionary of the old selection items.
+        /// </returns>
+        Dictionary<object, TextRange> RaiseReplaceSelection(
+            TextRange newTextRange);
+
+        /// <summary>
+        /// Raises the restore selection event.
+        /// </summary>
+        /// <param name="oldTextRanges">
+        /// The old text ranges.
+        /// </param>
+        void RaiseRestoreSelection(Dictionary<object, TextRange> oldTextRanges);
+
+        /// <summary>
         /// Re-executes the last undone command (reverses the undo) or do nothing if
-        /// there are no redoable commands.
+        /// there are no re-doable commands.
         /// </summary>
         void Redo();
 

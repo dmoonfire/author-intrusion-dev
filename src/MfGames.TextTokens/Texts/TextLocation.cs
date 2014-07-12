@@ -172,6 +172,24 @@ namespace MfGames.TextTokens.Texts
         }
 
         /// <summary>
+        /// Moves the text index within the location.
+        /// </summary>
+        /// <param name="textIndexDelta">
+        /// The text index delta.
+        /// </param>
+        /// <returns>
+        /// The adjusted text index.
+        /// </returns>
+        public TextLocation AddTextIndex(int textIndexDelta)
+        {
+            var location = new TextLocation(
+                this.LineIndex.Index, 
+                this.TokenIndex.Index, 
+                this.TextIndex.Index + textIndexDelta);
+            return location;
+        }
+
+        /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">
@@ -221,6 +239,21 @@ namespace MfGames.TextTokens.Texts
                 hashCode = (hashCode * 397) ^ this.TokenIndex.GetHashCode();
                 return hashCode;
             }
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(
+                "TextLocation({0}, {1}, {2})", 
+                this.LineIndex.Index, 
+                this.TokenIndex.Index, 
+                this.TextIndex.Index);
         }
 
         #endregion
