@@ -86,6 +86,7 @@
     <Compile Include="Commands\BufferCommand.cs" />
     <Compile Include="Commands\IBufferOperation.cs" />
     <Compile Include="Commands\ReplaceTokenOperation.cs" />
+    <Compile Include="Controllers\BufferSelection.cs" />
     <Compile Include="Controllers\UserBufferController.cs" />
     <Compile Include="Events\LineIndexEventArgs.cs" />
     <Compile Include="Events\LineIndexLinesDeletedEventArgs.cs" />
