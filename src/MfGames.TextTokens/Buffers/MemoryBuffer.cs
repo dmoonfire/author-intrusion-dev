@@ -6,10 +6,12 @@ namespace MfGames.TextTokens.Buffers
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Collections.ObjectModel;
     using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using MfGames.TextTokens.Commands;
     using MfGames.TextTokens.Events;
     using MfGames.TextTokens.Lines;
     using MfGames.TextTokens.Tokens;
@@ -55,12 +57,7 @@ namespace MfGames.TextTokens.Buffers
         /// <summary>
         /// Occurs when a token is replaced by zero or more tokens.
         /// </summary>
-        public event EventHandler<LineIndexTokenIndexTokenReplacedEventArgs> TokenReplaced;
-
-        /// <summary>
-        /// Occurs when tokens are inserted into a buffer line.
-        /// </summary>
-        public event EventHandler<LineIndexTokenIndexTokensInsertedEventArgs> TokensInserted;
+        public event EventHandler<LineIndexTokenIndexTokensReplacedEventArgs> TokensReplaced;
 
         #endregion
 
@@ -85,6 +82,19 @@ namespace MfGames.TextTokens.Buffers
         #region Public Methods and Operators
 
         /// <summary>
+        /// </summary>
+        /// <param name="command">
+        /// </param>
+        public void Do(BufferCommand command)
+        {
+            // Performs the operation of the command.
+            foreach (IBufferOperation operation in command)
+            {
+                operation.Do(this);
+            }
+        }
+
+        /// <summary>
         /// Gets the index of the line.
         /// </summary>
         /// <param name="line">
@@ -102,6 +112,21 @@ namespace MfGames.TextTokens.Buffers
             int index = this.lines.FindIndex(l => l.LineKey == line.LineKey);
             var lineIndex = new LineIndex(index);
             return lineIndex;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="lineIndex">
+        /// </param>
+        /// <param name="tokenIndex">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex)
+        {
+            ILine line = this.Lines[lineIndex.Index];
+            IToken token = line.Tokens[tokenIndex.Index];
+            return token;
         }
 
         /// <summary>
@@ -177,15 +202,80 @@ namespace MfGames.TextTokens.Buffers
 
             // Subscribe to the events of these lines.
             List<Line> lineArray = insertedLines as List<Line>
-                                   ?? insertedLines.ToList();
+                ?? insertedLines.ToList();
 
-            lineArray.ForEach(l => l.TokensInserted += this.OnTokensInserted);
+            lineArray.ForEach(
+                l => l.TokensReplaced += this.OnLineTokensReplaced);
 
             // Insert the lines into the buffer at the given position.
             this.lines.InsertRange(afterLineIndex.Index, lineArray);
 
             // Raise an event for the inserted lines.
             this.RaiseLinesInserted(afterLineIndex, lineArray);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="oldToken">
+        /// </param>
+        /// <param name="newText">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public IToken NewToken(IToken oldToken, string newText)
+        {
+            TokenKey tokenKey = KeyGenerator.Instance.GetNextTokenKey();
+            var token = new Token(tokenKey, newText);
+            return token;
+        }
+
+        /// <summary>
+        /// Replaces the tokens.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="tokenIndex">
+        /// Index of the token.
+        /// </param>
+        /// <param name="count">
+        /// </param>
+        /// <param name="newTokens">
+        /// The new tokens.
+        /// </param>
+        public void ReplaceTokens(
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex, 
+            int count, 
+            IEnumerable<IToken> newTokens)
+        {
+            // Establish our contracts.
+            Contract.Requires(count >= 0);
+            Contract.Requires(newTokens != null);
+
+            // Get the line and tokens for this request.
+            Line line = this.lines[lineIndex.Index];
+            List<Token> oldTokens = line.Tokens.GetRange(
+                tokenIndex.Index, count);
+
+            // Make sure we have the right type.
+            Token[] tokenArray =
+                newTokens.Select(t => t as Token ?? new Token(t)).ToArray();
+
+            // Figure out if these two tokens are identity.
+            string oldText = oldTokens.GetVisibleText();
+            string newText = tokenArray.GetVisibleText();
+            TokenReplacement replacementType = oldText != newText
+                ? TokenReplacement.Identity
+                : TokenReplacement.Different;
+
+            // Replace the tokens in our collection.
+            line.Tokens.RemoveAt(tokenIndex.Index);
+            line.Tokens.InsertRange(tokenIndex.Index, tokenArray);
+
+            // Raise an event about the change.
+            this.RaiseTokensReplaced(
+                lineIndex, tokenIndex, count, tokenArray, replacementType);
         }
 
         #endregion
@@ -221,7 +311,7 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
-        /// Raises the tokens inserted.
+        /// Raises the token replaced event.
         /// </summary>
         /// <param name="lineIndex">
         /// Index of the line.
@@ -229,26 +319,38 @@ namespace MfGames.TextTokens.Buffers
         /// <param name="tokenIndex">
         /// Index of the token.
         /// </param>
-        /// <param name="insertedTokens">
-        /// The inserted tokens.
+        /// <param name="count">
+        /// The number of tokens to replace.
         /// </param>
-        protected void RaiseTokensInserted(
+        /// <param name="replacementTokens">
+        /// The replacement tokens.
+        /// </param>
+        /// <param name="replacementType">
+        /// Type of the replacement.
+        /// </param>
+        protected void RaiseTokensReplaced(
             LineIndex lineIndex, 
             TokenIndex tokenIndex, 
-            IEnumerable<IToken> insertedTokens)
+            int count, 
+            IEnumerable<IToken> replacementTokens, 
+            TokenReplacement replacementType)
         {
-            EventHandler<LineIndexTokenIndexTokensInsertedEventArgs> listener =
-                this.TokensInserted;
+            // Make sure we have at least one listener for this event.
+            EventHandler<LineIndexTokenIndexTokensReplacedEventArgs> listener =
+                this.TokensReplaced;
 
             if (listener == null)
             {
                 return;
             }
 
-            ReadOnlyCollection<IToken> readOnlyTokens =
-                new List<IToken>(insertedTokens).AsReadOnly();
-            var args = new LineIndexTokenIndexTokensInsertedEventArgs(
-                lineIndex, tokenIndex, readOnlyTokens);
+            // Ensure that the collection is wrapped properly.
+            ImmutableArray<IToken> tokenArray =
+                replacementTokens.ToImmutableArray();
+
+            // Call the event with the property event arguments.
+            var args = new LineIndexTokenIndexTokensReplacedEventArgs(
+                lineIndex, tokenIndex, count, tokenArray, replacementType);
 
             listener(this, args);
         }
@@ -260,10 +362,10 @@ namespace MfGames.TextTokens.Buffers
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="TokenIndexTokensInsertedEventArgs"/> instance containing the event data.
+        /// The <see cref="TokenIndexTokensReplacedEventArgs"/> instance containing the event data.
         /// </param>
-        private void OnTokensInserted(
-            object sender, TokenIndexTokensInsertedEventArgs e)
+        private void OnLineTokensReplaced(
+            object sender, TokenIndexTokensReplacedEventArgs e)
         {
             // Establish our contracts.
             Contract.Requires(sender is Line);
@@ -273,7 +375,12 @@ namespace MfGames.TextTokens.Buffers
             LineIndex lineIndex = this.GetLineIndex(line);
 
             // Pass the event to our listeners.
-            this.RaiseTokensInserted(lineIndex, e.TokenIndex, e.TokensInserted);
+            this.RaiseTokensReplaced(
+                lineIndex, 
+                e.TokenIndex, 
+                e.Count, 
+                e.TokensInserted, 
+                e.ReplacementType);
         }
 
         #endregion

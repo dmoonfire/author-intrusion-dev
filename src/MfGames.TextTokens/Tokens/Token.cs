@@ -26,6 +26,17 @@ namespace MfGames.TextTokens.Tokens
             this.Text = text;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Token"/> class.
+        /// </summary>
+        /// <param name="token">
+        /// The token.
+        /// </param>
+        public Token(IToken token)
+            : this(token.TokenKey, token.Text)
+        {
+        }
+
         #endregion
 
         #region Public Properties

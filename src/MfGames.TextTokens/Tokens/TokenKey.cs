@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Tokens
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// A simple, low-overhead identifiers for tokens.
@@ -30,6 +31,8 @@ namespace MfGames.TextTokens.Tokens
         /// </param>
         public TokenKey(int id)
         {
+            Contract.Requires(id > 0);
+
             this.Id = id;
         }
 

@@ -7,8 +7,10 @@ namespace MfGames.TextTokens.Buffers
     using System;
     using System.Collections.Generic;
 
+    using MfGames.TextTokens.Commands;
     using MfGames.TextTokens.Events;
     using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Tokens;
 
     /// <summary>
     /// Defines the public signature of a buffer which consists of zero or more lines which
@@ -33,12 +35,7 @@ namespace MfGames.TextTokens.Buffers
         /// <summary>
         /// Occurs when a token is replaced by zero or more tokens.
         /// </summary>
-        event EventHandler<LineIndexTokenIndexTokenReplacedEventArgs> TokenReplaced;
-
-        /// <summary>
-        /// Occurs when tokens are inserted into a buffer line.
-        /// </summary>
-        event EventHandler<LineIndexTokenIndexTokensInsertedEventArgs> TokensInserted;
+        event EventHandler<LineIndexTokenIndexTokensReplacedEventArgs> TokensReplaced;
 
         #endregion
 
@@ -51,6 +48,67 @@ namespace MfGames.TextTokens.Buffers
         /// The lines.
         /// </value>
         IReadOnlyList<ILine> Lines { get; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Executes a command on the buffer, running through each operation in turn.
+        /// </summary>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        void Do(BufferCommand command);
+
+        /// <summary>
+        /// Retrieves the token at the given indexes.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="tokenIndex">
+        /// Index of the token.
+        /// </param>
+        /// <returns>
+        /// The token at the given indexes.
+        /// </returns>
+        IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex);
+
+        /// <summary>
+        /// Constructs a new token that is copied from the old one except
+        /// for the given text.
+        /// </summary>
+        /// <param name="oldToken">
+        /// The old token.
+        /// </param>
+        /// <param name="newText">
+        /// The new text.
+        /// </param>
+        /// <returns>
+        /// A new token.
+        /// </returns>
+        IToken NewToken(IToken oldToken, string newText);
+
+        /// <summary>
+        /// Replaces the given token with a set of zero or more next tokens.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="tokenIndex">
+        /// Index of the token.
+        /// </param>
+        /// <param name="count">
+        /// </param>
+        /// <param name="newTokens">
+        /// The new tokens.
+        /// </param>
+        void ReplaceTokens(
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex, 
+            int count, 
+            IEnumerable<IToken> newTokens);
 
         #endregion
     }

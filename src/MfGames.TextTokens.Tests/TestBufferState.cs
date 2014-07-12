@@ -37,7 +37,7 @@ namespace MfGames.TextTokens.Tests
 
             // Hook up the events to the buffer.
             this.Buffer.LinesInserted += this.OnLinesInserted;
-            this.Buffer.TokensInserted += this.OnTokensInserted;
+            this.Buffer.TokensReplaced += this.OnTokensReplaced;
 
             // Initialize the collections.
             this.Lines = new List<TestLine>();
@@ -89,9 +89,10 @@ namespace MfGames.TextTokens.Tests
             // Report which lines we've inserted.
             Console.WriteLine(
                 "Inserted lines: "
-                + string.Join(
-                    ", ", 
-                    insertedLines.Select(l => l.LineKey.ToString()).ToArray()));
+                    + string.Join(
+                        ", ", 
+                        insertedLines.Select(l => l.LineKey.ToString())
+                            .ToArray()));
 
             // Insert our copy of the line into the buffer.
             this.Lines.InsertRange(e.LineIndex.Index, insertedLines);
@@ -104,39 +105,38 @@ namespace MfGames.TextTokens.Tests
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="LineIndexTokenIndexTokenReplacedEventArgs"/> instance containing the event data.
+        /// The <see cref="LineIndexTokenIndexTokensReplacedEventArgs"/> instance containing the event data.
         /// </param>
-        private void OnTokenReplaced(
-            object sender, LineIndexTokenIndexTokenReplacedEventArgs e)
+        private void OnTokensReplaced(
+            object sender, LineIndexTokenIndexTokensReplacedEventArgs e)
         {
-        }
-
-        /// <summary>
-        /// Called when tokens are inserted into a line.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="LineIndexTokenIndexTokensInsertedEventArgs"/> instance containing the event data.
-        /// </param>
-        private void OnTokensInserted(
-            object sender, LineIndexTokenIndexTokensInsertedEventArgs e)
-        {
-            // Report which tokens are being added.
+            // Report which tokens are being replaced and added.
             string tokenList = string.Join(
                 ", ", 
-                e.TokensInserted.Select(t => t.TokenKey.ToString()).ToArray());
+                e.ReplacementTokens.Select(t => t.TokenKey.ToString()).ToArray());
 
             Console.WriteLine(
-                "Inserted lines: @(" + e.LineIndex.Index + ", "
-                + e.TokenIndex.Index + ") " + tokenList);
+                "Replaced tokens: @({0}, {1}x{2}): {3}", 
+                e.LineIndex.Index, 
+                e.TokenIndex.Index, 
+                e.Count, 
+                tokenList);
 
-            // Get the referenced line.
+            // Get the line we are making these changes.
             TestLine line = this.Lines[e.LineIndex.Index];
 
-            // Insert the tokens into the line.
-            line.InsertTokens(e.TokenIndex, e.TokensInserted);
+            // First remove the tokens, if we have at least one.
+            if (e.Count > 0)
+            {
+                line.Tokens.RemoveRange(e.TokenIndex.Index, e.Count);
+            }
+
+            // Insert the newly created lines, if we have any.
+            if (e.ReplacementTokens.Length > 0)
+            {
+                // Insert the tokens into the line.
+                line.InsertTokens(e.TokenIndex, e.ReplacementTokens);
+            }
         }
 
         #endregion

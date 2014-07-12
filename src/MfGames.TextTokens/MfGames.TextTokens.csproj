@@ -70,6 +70,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.1.22-beta\lib\portable-net45+win8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -80,16 +83,23 @@
   <ItemGroup>
     <Compile Include="Buffers\IBuffer.cs" />
     <Compile Include="Buffers\MemoryBuffer.cs" />
+    <Compile Include="Commands\BufferCommand.cs" />
+    <Compile Include="Commands\IBufferOperation.cs" />
+    <Compile Include="Commands\ReplaceTokenOperation.cs" />
+    <Compile Include="Controllers\UserBufferController.cs" />
     <Compile Include="Events\LineIndexEventArgs.cs" />
     <Compile Include="Events\LineIndexLinesDeletedEventArgs.cs" />
     <Compile Include="Events\LineIndexLinesInsertedEventArgs.cs" />
     <Compile Include="Events\LineIndexTokenIndexEventArgs.cs" />
-    <Compile Include="Events\LineIndexTokenIndexTokensInsertedEventArgs.cs" />
     <Compile Include="Events\TokenIndexEventArgs.cs" />
-    <Compile Include="Events\TokenIndexTokensInsertedEventArgs.cs" />
+    <Compile Include="Events\TokenIndexTokensReplacedEventArgs.cs" />
+    <Compile Include="Events\TokenReplacement.cs" />
     <Compile Include="IKeyGenerator.cs" />
     <Compile Include="Lines\ILine.cs" />
     <Compile Include="Lines\Line.cs" />
+    <Compile Include="Texts\TextIndex.cs" />
+    <Compile Include="Texts\TextLocation.cs" />
+    <Compile Include="Tokens\EnumerableTokenExtensions.cs" />
     <Compile Include="Tokens\IToken.cs" />
     <Compile Include="KeyGenerator.cs" />
     <Compile Include="Lines\LineKey.cs" />
@@ -97,9 +107,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokens\Token.cs" />
     <Compile Include="Tokens\TokenKey.cs" />
-    <Compile Include="Events\LineIndexTokenIndexTokenReplacedEventArgs.cs" />
+    <Compile Include="Events\LineIndexTokenIndexTokensReplacedEventArgs.cs" />
     <Compile Include="Tokens\TokenIndex.cs" />
     <Compile Include="Tokens\TokenList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Lines
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// A simple, low-overhead sequence for tokens.
@@ -30,6 +31,8 @@ namespace MfGames.TextTokens.Lines
         /// </param>
         public LineIndex(int index)
         {
+            Contract.Requires(index >= 0);
+
             this.Index = index;
         }
 

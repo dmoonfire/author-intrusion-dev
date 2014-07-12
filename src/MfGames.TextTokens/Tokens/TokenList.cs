@@ -43,6 +43,25 @@ namespace MfGames.TextTokens.Tokens
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="TToken"/> at the specified index.
+        /// </summary>
+        /// <value>
+        /// The <see cref="TToken"/>.
+        /// </value>
+        /// <param name="index">
+        /// The index.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public TToken this[TokenIndex index]
+        {
+            get
+            {
+                return this[index.Index];
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
