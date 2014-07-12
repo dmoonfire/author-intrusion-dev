@@ -90,9 +90,21 @@ namespace MfGames.TextTokens.Controllers
         }
 
         /// <summary>
+        /// Rexecutes the last reverses command on the buffer, or do nothing if there are no
+        /// commands that can be redone.
+        /// </summary>
+        public void Redo()
+        {
+            this.Buffer.Redo();
+        }
+
+        /// <summary>
+        /// Reverses the last command on the buffer or nothing if there are no reversable
+        /// commands.
         /// </summary>
         public void Undo()
         {
+            this.Buffer.Undo();
         }
 
         #endregion

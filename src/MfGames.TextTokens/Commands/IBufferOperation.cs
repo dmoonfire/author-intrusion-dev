@@ -22,6 +22,13 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         void Do(IBuffer buffer);
 
+        /// <summary>
+        /// Reverses the operation on the given buffer.
+        /// </summary>
+        /// <param name="buffer">
+        /// </param>
+        void Undo(IBuffer buffer);
+
         #endregion
     }
 }

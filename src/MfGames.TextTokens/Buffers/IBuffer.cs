@@ -91,6 +91,12 @@ namespace MfGames.TextTokens.Buffers
         IToken NewToken(IToken oldToken, string newText);
 
         /// <summary>
+        /// Re-executes the last undone command (reverses the undo) or do nothing if
+        /// there are no redoable commands.
+        /// </summary>
+        void Redo();
+
+        /// <summary>
         /// Replaces the given token with a set of zero or more next tokens.
         /// </summary>
         /// <param name="lineIndex">
@@ -100,15 +106,25 @@ namespace MfGames.TextTokens.Buffers
         /// Index of the token.
         /// </param>
         /// <param name="count">
+        /// The count.
         /// </param>
         /// <param name="newTokens">
         /// The new tokens.
         /// </param>
-        void ReplaceTokens(
+        /// <returns>
+        /// The tokens replaced.
+        /// </returns>
+        IEnumerable<IToken> ReplaceTokens(
             LineIndex lineIndex, 
             TokenIndex tokenIndex, 
             int count, 
             IEnumerable<IToken> newTokens);
+
+        /// <summary>
+        /// Executes the reverse operation of the last command or do nothing if there
+        /// are no undoable commands.
+        /// </summary>
+        void Undo();
 
         #endregion
     }

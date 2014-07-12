@@ -35,7 +35,6 @@ namespace MfGames.TextTokens.Tests
         {
             // Establish our contracts.
             Contract.Requires(token != null);
-
         }
 
         #endregion

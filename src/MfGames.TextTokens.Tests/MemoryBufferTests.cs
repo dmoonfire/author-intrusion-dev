@@ -182,7 +182,7 @@ namespace MfGames.TextTokens.Tests
             /// <summary>
             /// </summary>
             [Test]
-            public void FirstLineTextIsCorrect()
+            public virtual void FirstLineTextIsCorrect()
             {
                 this.Setup();
                 Assert.AreEqual(
@@ -219,37 +219,19 @@ namespace MfGames.TextTokens.Tests
         /// <summary>
         /// </summary>
         [TestFixture]
-        public class UndoInsertTextIntoSingleLineMiddleToken : MemoryBufferTests
+        public class RedoUndoInsertTextIntoSingleLineMiddleToken :
+            UndoInsertTextIntoSingleLineMiddleToken
         {
             #region Public Methods and Operators
 
             /// <summary>
             /// </summary>
             [Test]
-            public void FirstLineHasFiveTokens()
-            {
-                this.Setup();
-                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
-            }
-
-            /// <summary>
-            /// </summary>
-            [Test]
-            public void FirstLineTextIsCorrect()
+            public override void FirstLineTextIsCorrect()
             {
                 this.Setup();
                 Assert.AreEqual(
                     "aaa aaa aaa", this.State.Lines[0].Tokens.GetVisibleText());
-            }
-
-            /// <summary>
-            /// Verifies that there is only a single line in the buffer.
-            /// </summary>
-            [Test]
-            public void HasOneLine()
-            {
-                this.Setup();
-                Assert.AreEqual(1, this.State.Lines.Count);
             }
 
             #endregion
@@ -261,9 +243,72 @@ namespace MfGames.TextTokens.Tests
             protected override void Setup()
             {
                 base.Setup();
-                this.Buffer.PopulateRowColumn(1, 3, "aaa");
-                var textLocation = new TextLocation(0, 2, 2);
-                this.Controller.InsertText(textLocation, "B");
+                this.Controller.Redo();
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        [TestFixture]
+        public class UndoInsertTextIntoSingleLineMiddleToken :
+            InsertTextIntoSingleLineMiddleToken
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "aaa aaa aaa", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
+                this.Controller.Undo();
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        [TestFixture]
+        public class UndoRedoUndoInsertTextIntoSingleLineMiddleToken :
+            RedoUndoInsertTextIntoSingleLineMiddleToken
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public override void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "aaa aaa aaa", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
                 this.Controller.Undo();
             }
 

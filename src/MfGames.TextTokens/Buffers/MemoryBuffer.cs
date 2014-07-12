@@ -38,6 +38,8 @@ namespace MfGames.TextTokens.Buffers
         public MemoryBuffer()
         {
             this.lines = new List<Line>();
+            this.UndoCommands = new Stack<BufferCommand>();
+            this.RedoCommands = new Stack<BufferCommand>();
         }
 
         #endregion
@@ -79,19 +81,41 @@ namespace MfGames.TextTokens.Buffers
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the redo commands.
+        /// </summary>
+        /// <value>
+        /// The redo commands.
+        /// </value>
+        private Stack<BufferCommand> RedoCommands { get; set; }
+
+        /// <summary>
+        /// Gets or sets the undo commands currently on the buffer.
+        /// </summary>
+        /// <value>
+        /// The undo commands.
+        /// </value>
+        private Stack<BufferCommand> UndoCommands { get; set; }
+
+        #endregion
+
         #region Public Methods and Operators
 
         /// <summary>
+        /// Executes a command on the buffer, running through each operation in turn.
         /// </summary>
         /// <param name="command">
+        /// The command.
         /// </param>
         public void Do(BufferCommand command)
         {
-            // Performs the operation of the command.
-            foreach (IBufferOperation operation in command)
-            {
-                operation.Do(this);
-            }
+            // Performs the operations of the command.
+            command.Do(this);
+
+            // Add this command to our undo stack.
+            this.UndoCommands.Push(command);
         }
 
         /// <summary>
@@ -230,6 +254,25 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
+        /// Re-executes the last undone command (reverses the undo) or do nothing if
+        /// there are no redoable commands.
+        /// </summary>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void Redo()
+        {
+            // If there are no undo commands, then do nothing.
+            if (this.RedoCommands.Count == 0)
+            {
+                return;
+            }
+
+            // Grab the last command and reexecute it.
+            BufferCommand command = this.RedoCommands.Pop();
+
+            command.Do(this);
+        }
+
+        /// <summary>
         /// Replaces the tokens.
         /// </summary>
         /// <param name="lineIndex">
@@ -239,11 +282,21 @@ namespace MfGames.TextTokens.Buffers
         /// Index of the token.
         /// </param>
         /// <param name="count">
+        /// The count.
         /// </param>
         /// <param name="newTokens">
         /// The new tokens.
         /// </param>
-        public void ReplaceTokens(
+        /// <returns>
+        /// The tokens replaced.
+        /// </returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// count;Count cannot be less than zero.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// newTokens;newTokens cannot be null.
+        /// </exception>
+        public IEnumerable<IToken> ReplaceTokens(
             LineIndex lineIndex, 
             TokenIndex tokenIndex, 
             int count, 
@@ -285,6 +338,28 @@ namespace MfGames.TextTokens.Buffers
             // Raise an event about the change.
             this.RaiseTokensReplaced(
                 lineIndex, tokenIndex, count, tokenArray, replacementType);
+
+            // Return the replaced tokens.
+            return oldTokens;
+        }
+
+        /// <summary>
+        /// Executes the reverse operation of the last command or do nothing if there
+        /// are no undoable commands.
+        /// </summary>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void Undo()
+        {
+            // If there are no undo commands, then do nothing.
+            if (this.UndoCommands.Count == 0)
+            {
+                return;
+            }
+
+            // Grab the last command and reexecute it.
+            BufferCommand command = this.UndoCommands.Pop();
+
+            command.Undo(this);
         }
 
         #endregion

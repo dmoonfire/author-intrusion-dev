@@ -4,6 +4,9 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Commands
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Lines;
     using MfGames.TextTokens.Tokens;
@@ -28,19 +31,19 @@ namespace MfGames.TextTokens.Commands
         /// <param name="count">
         /// The count.
         /// </param>
-        /// <param name="newTokens">
+        /// <param name="replacementTokens">
         /// The new tokens.
         /// </param>
         public ReplaceTokenOperation(
             LineIndex lineIndex, 
             TokenIndex tokenIndex, 
             int count, 
-            params IToken[] newTokens)
+            params IToken[] replacementTokens)
         {
             this.LineIndex = lineIndex;
             this.TokenIndex = tokenIndex;
             this.Count = count;
-            this.Tokens = newTokens;
+            this.ReplacementTokens = replacementTokens;
         }
 
         #endregion
@@ -64,12 +67,10 @@ namespace MfGames.TextTokens.Commands
         public LineIndex LineIndex { get; set; }
 
         /// <summary>
-        /// Gets the index of the token.
+        /// Gets the tokens that were replaced or null if the operation has not been
+        /// completed.
         /// </summary>
-        /// <value>
-        /// The index of the token.
-        /// </value>
-        public TokenIndex TokenIndex { get; private set; }
+        public IToken[] ReplacedTokens { get; private set; }
 
         /// <summary>
         /// Gets or sets the new tokens.
@@ -77,7 +78,15 @@ namespace MfGames.TextTokens.Commands
         /// <value>
         /// The new tokens.
         /// </value>
-        public IToken[] Tokens { get; set; }
+        public IToken[] ReplacementTokens { get; private set; }
+
+        /// <summary>
+        /// Gets the index of the token.
+        /// </summary>
+        /// <value>
+        /// The index of the token.
+        /// </value>
+        public TokenIndex TokenIndex { get; private set; }
 
         #endregion
 
@@ -91,8 +100,28 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public void Do(IBuffer buffer)
         {
+            IEnumerable<IToken> replacedTokens =
+                buffer.ReplaceTokens(
+                    this.LineIndex, 
+                    this.TokenIndex, 
+                    this.Count, 
+                    this.ReplacementTokens);
+
+            this.ReplacedTokens = replacedTokens.ToArray();
+        }
+
+        /// <summary>
+        /// Reverses the operation on the given buffer.
+        /// </summary>
+        /// <param name="buffer">
+        /// </param>
+        public void Undo(IBuffer buffer)
+        {
             buffer.ReplaceTokens(
-                this.LineIndex, this.TokenIndex, this.Count, this.Tokens);
+                this.LineIndex, 
+                this.TokenIndex, 
+                this.ReplacementTokens.Length, 
+                this.ReplacedTokens);
         }
 
         #endregion
