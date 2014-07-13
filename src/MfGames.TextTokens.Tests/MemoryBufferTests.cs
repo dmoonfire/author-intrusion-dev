@@ -4,8 +4,11 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Tests
 {
+    using System;
+
     using MfGames.TextTokens.Controllers;
     using MfGames.TextTokens.Texts;
+    using MfGames.TextTokens.Tokens;
 
     using NUnit.Framework;
 
@@ -31,6 +34,34 @@ namespace MfGames.TextTokens.Tests
         /// the buffer.
         /// </summary>
         protected TestBufferState State { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// </summary>
+        [TearDown]
+        public void TearDown()
+        {
+            // Report the state of the final buffer.
+            Console.WriteLine();
+            Console.WriteLine("Buffer State:");
+
+            for (int index = 0; index < this.Buffer.Lines.Count; index++)
+            {
+                // For each line, give the line index and each token separated by [] brackets.
+                Console.Write("{0}: ", index.ToString().PadLeft(4));
+
+                foreach (IToken token in this.Buffer.Lines[index].Tokens)
+                {
+                    Console.Write("[{0}]", token.Text);
+                }
+
+                // Finish up the line.
+                Console.WriteLine();
+            }
+        }
 
         #endregion
 
@@ -158,6 +189,101 @@ namespace MfGames.TextTokens.Tests
             {
                 base.Setup();
                 this.Buffer.PopulateRowColumn(5, 5);
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// </summary>
+        [TestFixture]
+        public class InsertMultilineTextIntoSingleLineMiddleToken :
+            MemoryBufferTests
+        {
+            #region Public Methods and Operators
+
+            /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public virtual void AnchorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(1, 0, 1), this.Controller.SelectionAnchor);
+            }
+
+            /// <summary>
+            /// Verifies the cursor is in the correct location.
+            /// </summary>
+            [Test]
+            public virtual void CursorPositionIsRight()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    new TextLocation(1, 0, 1), this.Controller.SelectionCursor);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public void FirstLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(3, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public virtual void FirstLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "zero on_", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            /// <summary>
+            /// Verifies that there is only a single line in the buffer.
+            /// </summary>
+            [Test]
+            public void HasProperNumberOfLines()
+            {
+                this.Setup();
+                Assert.AreEqual(2, this.State.Lines.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public void SecondLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(3, this.State.Lines[1].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
+            public virtual void SecondLineTextIsCorrect()
+            {
+                this.Setup();
+                Assert.AreEqual(
+                    "_e two", this.State.Lines[1].Tokens.GetVisibleText());
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// </summary>
+            protected override void Setup()
+            {
+                base.Setup();
+                this.Buffer.PopulateRowColumn(1, 3);
+                var textLocation = new TextLocation(0, 2, 2);
+                this.Controller.InsertText(textLocation, "_\n_");
             }
 
             #endregion

@@ -103,11 +103,11 @@ namespace MfGames.TextTokens.Lines
         /// <summary>
         /// Gets an ordered list of tokens within the line.
         /// </summary>
-        IReadOnlyList<IToken> ILine.Tokens
+        ImmutableList<IToken> ILine.Tokens
         {
             get
             {
-                return this.tokens.AsReadOnly();
+                return this.tokens.Cast<IToken>().ToImmutableList();
             }
         }
 

@@ -46,6 +46,33 @@ namespace MfGames.TextTokens.Commands
             this.ReplacementTokens = replacementTokens;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceTokenOperation"/> class.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="tokenIndex">
+        /// Index of the token.
+        /// </param>
+        /// <param name="count">
+        /// The count.
+        /// </param>
+        /// <param name="replacementTokens">
+        /// The replacement tokens.
+        /// </param>
+        public ReplaceTokenOperation(
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex, 
+            int count, 
+            IEnumerable<IToken> replacementTokens)
+        {
+            this.LineIndex = lineIndex;
+            this.TokenIndex = tokenIndex;
+            this.Count = count;
+            this.ReplacementTokens = replacementTokens.ToArray();
+        }
+
         #endregion
 
         #region Public Properties

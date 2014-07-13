@@ -4,10 +4,13 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Controllers
 {
+    using System;
+    using System.Collections.Immutable;
     using System.Diagnostics.Contracts;
 
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Commands;
+    using MfGames.TextTokens.Lines;
     using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
@@ -125,32 +128,19 @@ namespace MfGames.TextTokens.Controllers
             // Allow the selection to add any operations to remove the selection.
             IToken selectionToken = this.Selection.AddOperations(command);
 
-            // Get the token at the first point of the buffer. If we had a selection, it would
-            // have been deleted by the first command.
-            TextLocation cursor = this.Selection.First;
-            IToken oldToken = selectionToken
-                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
+            // Determine if we are doing a single or multi-line insert.
+            text = text.NormalizeNewlines();
 
-            // Figure out the new text of the string and create a new token with the modified
-            // version. This will also copy the attributes of the old token.
-            string newText = oldToken.Text.Insert(cursor.TextIndex.Index, text);
-            IToken newToken = this.Buffer.CreateToken(oldToken, newText);
-
-            // Add the text replacement command into the buffer.
-            const int SingleTokenReplacement = 1;
-
-            command.Add(
-                new ReplaceTokenOperation(
-                    cursor.LineIndex, 
-                    cursor.TokenIndex, 
-                    SingleTokenReplacement, 
-                    newToken));
-
-            // Update the cursor location.
-            TextLocation newCursor =
-                this.Selection.First.AddTextIndex(text.Length);
-
-            command.Add(new ReplaceSelectionOperation(newCursor));
+            if (text.Contains("\n"))
+            {
+                // Insert multiple lines of text.
+                this.InsertMultipleLines(text, selectionToken, command);
+            }
+            else
+            {
+                // Insert a single line text.
+                this.InsertSingleLine(text, selectionToken, command);
+            }
 
             // Submit the command to the buffer.
             this.Buffer.Do(command);
@@ -194,6 +184,153 @@ namespace MfGames.TextTokens.Controllers
         public void Undo()
         {
             this.Buffer.Undo();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Sets up the various operations to insert multiple lines of text into
+        /// the buffer.
+        /// </summary>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="selectionToken">
+        /// The selection token.
+        /// </param>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        private void InsertMultipleLines(
+            string text, IToken selectionToken, BufferCommand command)
+        {
+            // Get the token at the first point of the buffer. If we had a selection, it would
+            // have been deleted by the first command.
+            TextLocation cursor = this.Selection.First;
+            IToken oldToken = selectionToken
+                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
+
+            // Split the text of the old token where we're going to insert the values. We
+            // append the first line to the before token and prepend the last line to the
+            // after token to get a complete token. We don't have to worry about splitting
+            // the tokens since the buffer will handle that.
+            string[] lines = text.Split(new[] { '\n' }, StringSplitOptions.None);
+            int lastTokenlength = lines[lines.Length - 1].Length;
+            string before = oldToken.Text.Substring(0, cursor.TextIndex.Index)
+                + lines[0];
+            string after = lines[lines.Length - 1]
+                + oldToken.Text.Substring(cursor.TextIndex.Index);
+
+            lines[lines.Length - 1] = after;
+
+            // We need to create lines for all but the first one.
+            int newLineCount = lines.Length - 1;
+
+            command.Add(
+                new InsertLinesOperation(cursor.LineIndex.Add(1), newLineCount));
+
+            // Move all tokens to the right of the first line into the last one.
+            ILine beforeLine = this.Buffer.Lines[cursor.LineIndex.Index];
+            ImmutableList<IToken> movedTokens =
+                beforeLine.Tokens.GetRange(
+                    cursor.TextIndex.Index + 1, 
+                    beforeLine.Tokens.Count - cursor.TextIndex.Index - 1);
+
+            // Remove the tokens from the first line.
+            command.Add(
+                new ReplaceTokenOperation(
+                    cursor.LineIndex, 
+                    cursor.TokenIndex.Add(1), 
+                    movedTokens.Count));
+
+            // Add the tokens into the last line.
+            command.Add(
+                new ReplaceTokenOperation(
+                    cursor.LineIndex.Add(newLineCount), 
+                    TokenIndex.First, 
+                    0, 
+                    movedTokens));
+
+            // Append the new tokens into each line after the first one.
+            for (int index = 1; index < lines.Length; index++)
+            {
+                // Create a token for this line's text and add it to that line.
+                IToken lineToken = this.Buffer.CreateToken(lines[index]);
+
+                command.Add(
+                    new ReplaceTokenOperation(
+                        cursor.LineIndex.Add(index), 
+                        TokenIndex.First, 
+                        0, 
+                        lineToken));
+            }
+
+            // Figure out the new text of the string and create a new token with the modified
+            // version. This will also copy the attributes of the old token.
+            IToken newToken = this.Buffer.CreateToken(oldToken, before);
+
+            // Add the text replacement command into the buffer.
+            const int SingleTokenReplacement = 1;
+
+            command.Add(
+                new ReplaceTokenOperation(
+                    cursor.LineIndex, 
+                    cursor.TokenIndex, 
+                    SingleTokenReplacement, 
+                    newToken));
+
+            // Update the cursor location.
+            var newCursor = new TextLocation(
+                cursor.LineIndex.Add(newLineCount), 
+                TokenIndex.First, 
+                new TextIndex(lastTokenlength));
+
+            command.Add(new ReplaceSelectionOperation(newCursor));
+        }
+
+        /// <summary>
+        /// Sets up the various operations to insert a single line text into the buffer.
+        /// </summary>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="selectionToken">
+        /// The selection token.
+        /// </param>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        private void InsertSingleLine(
+            string text, IToken selectionToken, BufferCommand command)
+        {
+            // Get the token at the first point of the buffer. If we had a selection, it would
+            // have been deleted by the first command.
+            TextLocation cursor = this.Selection.First;
+            IToken oldToken = selectionToken
+                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
+
+            // Figure out the new text of the string and create a new token with the modified
+            // version. This will also copy the attributes of the old token.
+            string newText = oldToken.Text.Insert(cursor.TextIndex.Index, text);
+            IToken newToken = this.Buffer.CreateToken(oldToken, newText);
+
+            // Add the text replacement command into the buffer.
+            const int SingleTokenReplacement = 1;
+
+            command.Add(
+                new ReplaceTokenOperation(
+                    cursor.LineIndex, 
+                    cursor.TokenIndex, 
+                    SingleTokenReplacement, 
+                    newToken));
+
+            // Update the cursor location.
+            TextLocation newCursor =
+                this.Selection.First.AddTextIndex(text.Length);
+
+            command.Add(new ReplaceSelectionOperation(newCursor));
         }
 
         #endregion

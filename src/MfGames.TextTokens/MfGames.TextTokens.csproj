@@ -87,6 +87,7 @@
     <Compile Include="Buffers\MemoryBuffer.cs" />
     <Compile Include="Commands\BufferCommand.cs" />
     <Compile Include="Commands\IBufferOperation.cs" />
+    <Compile Include="Commands\InsertLinesOperation.cs" />
     <Compile Include="Commands\ReplaceSelectionOperation.cs" />
     <Compile Include="Commands\ReplaceTokenOperation.cs" />
     <Compile Include="Controllers\BufferSelection.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="IKeyGenerator.cs" />
     <Compile Include="Lines\ILine.cs" />
     <Compile Include="Lines\Line.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="Texts\TextRange.cs" />
     <Compile Include="Texts\TextIndex.cs" />
     <Compile Include="Texts\TextLocation.cs" />

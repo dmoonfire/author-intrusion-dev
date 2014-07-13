@@ -147,6 +147,23 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
+        /// Deletes lines from the buffer, starting with the given index.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line to start deleting.
+        /// </param>
+        /// <param name="count">
+        /// The number of lines to delete.
+        /// </param>
+        /// <exception cref="System.NotImplementedException">
+        /// </exception>
+        public void DeleteLines(LineIndex lineIndex, int count)
+        {
+            this.lines.RemoveRange(lineIndex.Index, count);
+            this.RaiseLinesDeleted(lineIndex, count);
+        }
+
+        /// <summary>
         /// Executes a command on the buffer, running through each operation in turn.
         /// </summary>
         /// <param name="command">
@@ -413,12 +430,12 @@ namespace MfGames.TextTokens.Buffers
             // Figure out if these two tokens are identity.
             string oldText = oldTokens.GetVisibleText();
             string newText = tokenArray.GetVisibleText();
-            TokenReplacement replacementType = oldText != newText
+            TokenReplacement replacementType = oldText == newText
                 ? TokenReplacement.Identity
                 : TokenReplacement.Different;
 
             // Replace the tokens in our collection.
-            line.Tokens.RemoveAt(tokenIndex.Index);
+            line.Tokens.RemoveRange(tokenIndex.Index, count);
             line.Tokens.InsertRange(tokenIndex.Index, tokenArray);
 
             // Raise an event about the change.
@@ -552,6 +569,32 @@ namespace MfGames.TextTokens.Buffers
                 e.Count, 
                 e.TokensInserted, 
                 e.ReplacementType);
+        }
+
+        /// <summary>
+        /// Raises the lines deleted event.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="count">
+        /// The count.
+        /// </param>
+        private void RaiseLinesDeleted(LineIndex lineIndex, int count)
+        {
+            // Make sure we have listeners for this event.
+            EventHandler<LineIndexLinesDeletedEventArgs> listeners =
+                this.LinesDeleted;
+
+            if (listeners == null)
+            {
+                return;
+            }
+
+            // Construct the event arguments and raise the event.
+            var args = new LineIndexLinesDeletedEventArgs(lineIndex, count);
+
+            listeners(this, args);
         }
 
         #endregion

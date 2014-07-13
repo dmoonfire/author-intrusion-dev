@@ -12,6 +12,15 @@ namespace MfGames.TextTokens.Lines
     /// </summary>
     public struct LineIndex : IEquatable<LineIndex>
     {
+        #region Static Fields
+
+        /// <summary>
+        /// A common index for 0 for the beginning.
+        /// </summary>
+        public static readonly LineIndex First = new LineIndex(0);
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -64,6 +73,21 @@ namespace MfGames.TextTokens.Lines
         public static bool operator !=(LineIndex left, LineIndex right)
         {
             return !left.Equals(right);
+        }
+
+        /// <summary>
+        /// Adds the specified offset to the index and returns the results.
+        /// </summary>
+        /// <param name="offset">
+        /// The offset.
+        /// </param>
+        /// <returns>
+        /// An adjusted index.
+        /// </returns>
+        [Pure]
+        public LineIndex Add(int offset)
+        {
+            return new LineIndex(this.Index + offset);
         }
 
         /// <summary>

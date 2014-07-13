@@ -92,6 +92,17 @@ namespace MfGames.TextTokens.Buffers
         IToken CreateToken(string newText);
 
         /// <summary>
+        /// Deletes lines from the buffer, starting with the given index.
+        /// </summary>
+        /// <param name="lineIndex">
+        /// Index of the line to start deleting.
+        /// </param>
+        /// <param name="count">
+        /// The number of lines to delete.
+        /// </param>
+        void DeleteLines(LineIndex lineIndex, int count);
+
+        /// <summary>
         /// Executes a command on the buffer, running through each operation in turn.
         /// </summary>
         /// <param name="command">
@@ -112,6 +123,20 @@ namespace MfGames.TextTokens.Buffers
         /// The token at the given indexes.
         /// </returns>
         IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex);
+
+        /// <summary>
+        /// Inserts the lines.
+        /// </summary>
+        /// <param name="afterLineIndex">
+        /// Index of the after line.
+        /// </param>
+        /// <param name="count">
+        /// The count.
+        /// </param>
+        /// <returns>
+        /// An enumerable of the created lines.
+        /// </returns>
+        IEnumerable<ILine> InsertLines(LineIndex afterLineIndex, int count);
 
         /// <summary>
         /// Raises the ReplaceSelection event with the given arguments.

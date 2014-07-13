@@ -36,6 +36,7 @@ namespace MfGames.TextTokens.Tests
             this.Buffer = buffer;
 
             // Hook up the events to the buffer.
+            this.Buffer.LinesDeleted += this.OnLinesDeleted;
             this.Buffer.LinesInserted += this.OnLinesInserted;
             this.Buffer.TokensReplaced += this.OnTokensReplaced;
 
@@ -70,6 +71,21 @@ namespace MfGames.TextTokens.Tests
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Called when the lines are deleted.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="LineIndexLinesDeletedEventArgs"/> instance containing the event data.
+        /// </param>
+        private void OnLinesDeleted(
+            object sender, LineIndexLinesDeletedEventArgs e)
+        {
+            this.Lines.RemoveRange(e.LineIndex.Index, e.Count);
+        }
 
         /// <summary>
         /// </summary>

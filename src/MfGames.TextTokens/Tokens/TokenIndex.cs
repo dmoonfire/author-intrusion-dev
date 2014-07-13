@@ -12,6 +12,15 @@ namespace MfGames.TextTokens.Tokens
     /// </summary>
     public struct TokenIndex : IEquatable<TokenIndex>
     {
+        #region Static Fields
+
+        /// <summary>
+        /// A common index for 0 for the beginning.
+        /// </summary>
+        public static readonly TokenIndex First = new TokenIndex(0);
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -64,6 +73,21 @@ namespace MfGames.TextTokens.Tokens
         public static bool operator !=(TokenIndex left, TokenIndex right)
         {
             return !left.Equals(right);
+        }
+
+        /// <summary>
+        /// Adds the specified offset to the index and returns the results.
+        /// </summary>
+        /// <param name="offset">
+        /// The offset.
+        /// </param>
+        /// <returns>
+        /// An adjusted index.
+        /// </returns>
+        [Pure]
+        public TokenIndex Add(int offset)
+        {
+            return new TokenIndex(this.Index + offset);
         }
 
         /// <summary>

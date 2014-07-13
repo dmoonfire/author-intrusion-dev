@@ -4,7 +4,7 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Lines
 {
-    using System.Collections.Generic;
+    using System.Collections.Immutable;
 
     using MfGames.TextTokens.Tokens;
 
@@ -27,7 +27,7 @@ namespace MfGames.TextTokens.Lines
         /// <summary>
         /// Gets an ordered list of tokens within the line.
         /// </summary>
-        IReadOnlyList<IToken> Tokens { get; }
+        ImmutableList<IToken> Tokens { get; }
 
         #endregion
     }
