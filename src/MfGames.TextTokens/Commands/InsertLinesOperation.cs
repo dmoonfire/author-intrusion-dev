@@ -71,7 +71,7 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public void Undo(IBuffer buffer)
         {
-            buffer.DeleteLines(this.LineIndex.Add(1), this.Count);
+            buffer.DeleteLines(this.LineIndex, this.Count);
         }
 
         #endregion
