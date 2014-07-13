@@ -4,6 +4,7 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Events
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
@@ -12,7 +13,7 @@ namespace MfGames.TextTokens.Events
     /// <summary>
     /// Event arguments for restoring the selection after a change.
     /// </summary>
-    public class RestoreSelectionEventArgs
+    public class RestoreSelectionEventArgs : EventArgs
     {
         #region Constructors and Destructors
 
