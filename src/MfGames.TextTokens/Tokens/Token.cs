@@ -4,6 +4,8 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Tokens
 {
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// A concrete implementation of Token which is used by the internal classes.
     /// </summary>
@@ -35,6 +37,8 @@ namespace MfGames.TextTokens.Tokens
         public Token(IToken token)
             : this(token.TokenKey, token.Text)
         {
+            // Establish our contracts.
+            Contract.Requires(token != null);
         }
 
         #endregion

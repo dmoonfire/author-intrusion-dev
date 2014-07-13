@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Controllers
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Commands;
@@ -29,6 +30,10 @@ namespace MfGames.TextTokens.Controllers
         /// </param>
         public BufferSelection(IBuffer buffer)
         {
+            // Establish our contracts.
+            Contract.Requires(buffer != null);
+
+            // Append all of the visible strings together.
             // Save the member variables.
             this.Buffer = buffer;
 

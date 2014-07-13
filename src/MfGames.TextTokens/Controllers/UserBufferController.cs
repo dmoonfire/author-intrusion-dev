@@ -29,6 +29,10 @@ namespace MfGames.TextTokens.Controllers
         /// </param>
         public UserBufferController(IBuffer buffer)
         {
+            // Establish our contracts.
+            Contract.Requires(buffer != null);
+
+            // Copy the values together.
             this.Buffer = buffer;
             this.Selection = new BufferSelection(buffer);
         }

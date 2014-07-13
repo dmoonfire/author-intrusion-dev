@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Tokens
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Text;
 
     /// <summary>
@@ -24,6 +25,10 @@ namespace MfGames.TextTokens.Tokens
         /// </returns>
         public static string GetVisibleText(this IEnumerable<IToken> tokens)
         {
+            // Establish our contracts.
+            Contract.Requires(tokens != null);
+
+            // Append all of the visible strings together.
             var buffer = new StringBuilder();
 
             foreach (IToken token in tokens)
