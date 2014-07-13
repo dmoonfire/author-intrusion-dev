@@ -89,7 +89,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InsertMultilineTextIntoSingleLineMiddleToken.cs" />
+    <Compile Include="InitialState.cs" />
+    <Compile Include="InsertFiveLines.cs" />
+    <Compile Include="InsertThreeLinesIntoSingleLineMiddleToken.cs" />
+    <Compile Include="InsertTwoLinesTextIntoSingleLineMiddleToken.cs" />
+    <Compile Include="InsertTextIntoSingleLineMiddleToken.cs" />
+    <Compile Include="InsertTextIntoSingleLineSelection.cs" />
+    <Compile Include="InsertTextIntoSingleTokenSelection.cs" />
     <Compile Include="MemoryBufferTests.cs" />
     <Compile Include="TestBuffer.cs" />
     <Compile Include="TestBufferState.cs" />
