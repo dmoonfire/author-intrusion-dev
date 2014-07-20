@@ -9,6 +9,7 @@ namespace MfGames.TextTokens.Commands
 
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Lines;
+    using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
@@ -71,6 +72,24 @@ namespace MfGames.TextTokens.Commands
             this.TokenIndex = tokenIndex;
             this.Count = count;
             this.ReplacementTokens = replacementTokens.ToArray();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceTokenOperation"/> class.
+        /// </summary>
+        /// <param name="location">
+        /// The location.
+        /// </param>
+        /// <param name="count">
+        /// The count.
+        /// </param>
+        /// <param name="newToken">
+        /// The new token.
+        /// </param>
+        public ReplaceTokenOperation(
+            TextLocation location, int count, IToken newToken)
+            : this(location.LineIndex, location.TokenIndex, count, newToken)
+        {
         }
 
         #endregion

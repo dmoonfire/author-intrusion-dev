@@ -119,12 +119,15 @@ namespace MfGames.TextTokens.Controllers
         /// </param>
         /// <returns>
         /// </returns>
-        public IToken AddOperations(BufferCommand command)
+        public PostSelectionDeleteState AddDeleteOperations(
+            BufferCommand command)
         {
             // If we don't have a selection, then don't do anything.
             if (!this.HasSelection)
             {
-                return null;
+                var noopState = new PostSelectionDeleteState(
+                    this.Cursor, this.Buffer.GetToken(this.Cursor));
+                return noopState;
             }
 
             // Regardless of what happens, the selection is going to be collapsed down to
@@ -162,7 +165,9 @@ namespace MfGames.TextTokens.Controllers
                         newToken));
 
                 // Replace the modified token which is the new "first".
-                return newToken;
+                var singleLineState = new PostSelectionDeleteState(
+                    this.First, newToken);
+                return singleLineState;
             }
 
             // We don't know how to handle this yet.

@@ -91,6 +91,42 @@ namespace MfGames.TextTokens.Controllers
         #region Public Methods and Operators
 
         /// <summary>
+        /// Deletes a number of characters to the right of the cursor position.
+        /// </summary>
+        /// <param name="textCount">
+        /// The text count.
+        /// </param>
+        public void DeleteRight(int textCount)
+        {
+            // Establish our contracts.
+            Contract.Requires(textCount > 0);
+
+            // We'll be gathering up lines to perform the insert.
+            var command = new BufferCommand();
+
+            // Allow the selection to add any operations to remove the selection.
+            PostSelectionDeleteState state =
+                this.Selection.AddDeleteOperations(command);
+
+            // Figure out how much text needs to be deleted from the token.
+            string beforeCursorText = state.CursorToken.Text.Substring(
+                0, state.Cursor.TextIndex.Index);
+            string afterCursorText =
+                state.CursorToken.Text.Substring(
+                    state.Cursor.TextIndex.Index + textCount);
+            string newText = beforeCursorText + afterCursorText;
+            IToken newToken = this.Buffer.CreateToken(newText);
+
+            // Create the command and add it.
+            var replaceOperation = new ReplaceTokenOperation(
+                state.Cursor, 1, newToken);
+            command.Add(replaceOperation);
+
+            // Submit the command to the buffer.
+            this.Buffer.Do(command);
+        }
+
+        /// <summary>
         /// Inserts text into a given location, choosing the appropriate token to modify
         /// and passing it into the buffer as an undoable command.
         /// </summary>
@@ -126,7 +162,8 @@ namespace MfGames.TextTokens.Controllers
             var command = new BufferCommand();
 
             // Allow the selection to add any operations to remove the selection.
-            IToken selectionToken = this.Selection.AddOperations(command);
+            PostSelectionDeleteState state =
+                this.Selection.AddDeleteOperations(command);
 
             // Determine if we are doing a single or multi-line insert.
             text = text.NormalizeNewlines();
@@ -134,12 +171,12 @@ namespace MfGames.TextTokens.Controllers
             if (text.Contains("\n"))
             {
                 // Insert multiple lines of text.
-                this.InsertMultipleLines(text, selectionToken, command);
+                this.InsertMultipleLines(text, state, command);
             }
             else
             {
                 // Insert a single line text.
-                this.InsertSingleLine(text, selectionToken, command);
+                this.InsertSingleLine(text, state, command);
             }
 
             // Submit the command to the buffer.
@@ -197,31 +234,25 @@ namespace MfGames.TextTokens.Controllers
         /// <param name="text">
         /// The text.
         /// </param>
-        /// <param name="selectionToken">
-        /// The selection token.
+        /// <param name="state">
+        /// The state after the selection.
         /// </param>
         /// <param name="command">
         /// The command.
         /// </param>
         private void InsertMultipleLines(
-            string text, IToken selectionToken, BufferCommand command)
+            string text, PostSelectionDeleteState state, BufferCommand command)
         {
-            // Get the token at the first point of the buffer. If we had a selection, it would
-            // have been deleted by the first command.
-            TextLocation cursor = this.Selection.First;
-            IToken oldToken = selectionToken
-                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
-
             // Split the text of the old token where we're going to insert the values. We
             // append the first line to the before token and prepend the last line to the
             // after token to get a complete token. We don't have to worry about splitting
             // the tokens since the buffer will handle that.
             string[] lines = text.Split(new[] { '\n' }, StringSplitOptions.None);
             int lastTokenlength = lines[lines.Length - 1].Length;
-            string before = oldToken.Text.Substring(0, cursor.TextIndex.Index)
-                + lines[0];
+            string before = state.CursorToken.Text.Substring(
+                0, state.Cursor.TextIndex.Index) + lines[0];
             string after = lines[lines.Length - 1]
-                + oldToken.Text.Substring(cursor.TextIndex.Index);
+                + state.CursorToken.Text.Substring(state.Cursor.TextIndex.Index);
 
             lines[lines.Length - 1] = after;
 
@@ -229,26 +260,27 @@ namespace MfGames.TextTokens.Controllers
             int newLineCount = lines.Length - 1;
 
             command.Add(
-                new InsertLinesOperation(cursor.LineIndex.Add(1), newLineCount));
+                new InsertLinesOperation(
+                    state.Cursor.LineIndex.Add(1), newLineCount));
 
             // Move all tokens to the right of the first line into the last one.
-            ILine beforeLine = this.Buffer.Lines[cursor.LineIndex.Index];
+            ILine beforeLine = this.Buffer.Lines[state.Cursor.LineIndex.Index];
             ImmutableList<IToken> movedTokens =
                 beforeLine.Tokens.GetRange(
-                    cursor.TextIndex.Index + 1, 
-                    beforeLine.Tokens.Count - cursor.TextIndex.Index - 1);
+                    state.Cursor.TextIndex.Index + 1, 
+                    beforeLine.Tokens.Count - state.Cursor.TextIndex.Index - 1);
 
             // Remove the tokens from the first line.
             command.Add(
                 new ReplaceTokenOperation(
-                    cursor.LineIndex, 
-                    cursor.TokenIndex.Add(1), 
+                    state.Cursor.LineIndex, 
+                    state.Cursor.TokenIndex.Add(1), 
                     movedTokens.Count));
 
             // Add the tokens into the last line.
             command.Add(
                 new ReplaceTokenOperation(
-                    cursor.LineIndex.Add(newLineCount), 
+                    state.Cursor.LineIndex.Add(newLineCount), 
                     TokenIndex.First, 
                     0, 
                     movedTokens));
@@ -261,7 +293,7 @@ namespace MfGames.TextTokens.Controllers
 
                 command.Add(
                     new ReplaceTokenOperation(
-                        cursor.LineIndex.Add(index), 
+                        state.Cursor.LineIndex.Add(index), 
                         TokenIndex.First, 
                         0, 
                         lineToken));
@@ -269,23 +301,24 @@ namespace MfGames.TextTokens.Controllers
 
             // Figure out the new text of the string and create a new token with the modified
             // version. This will also copy the attributes of the old token.
-            IToken newToken = this.Buffer.CreateToken(oldToken, before);
+            IToken newToken = this.Buffer.CreateToken(state.CursorToken, before);
 
             // Add the text replacement command into the buffer.
             const int SingleTokenReplacement = 1;
 
             command.Add(
                 new ReplaceTokenOperation(
-                    cursor.LineIndex, 
-                    cursor.TokenIndex, 
+                    state.Cursor.LineIndex, 
+                    state.Cursor.TokenIndex, 
                     SingleTokenReplacement, 
                     newToken));
 
             // Update the cursor location.
-            var newCursor = new TextLocation(
-                cursor.LineIndex.Add(newLineCount), 
-                TokenIndex.First, 
-                new TextIndex(lastTokenlength));
+            var newCursor =
+                new TextLocation(
+                    state.Cursor.LineIndex.Add(newLineCount), 
+                    TokenIndex.First, 
+                    new TextIndex(lastTokenlength));
 
             command.Add(new ReplaceSelectionOperation(newCursor));
         }
@@ -296,33 +329,30 @@ namespace MfGames.TextTokens.Controllers
         /// <param name="text">
         /// The text.
         /// </param>
-        /// <param name="selectionToken">
-        /// The selection token.
+        /// <param name="state">
+        /// The state.
         /// </param>
         /// <param name="command">
         /// The command.
         /// </param>
         private void InsertSingleLine(
-            string text, IToken selectionToken, BufferCommand command)
+            string text, PostSelectionDeleteState state, BufferCommand command)
         {
-            // Get the token at the first point of the buffer. If we had a selection, it would
-            // have been deleted by the first command.
-            TextLocation cursor = this.Selection.First;
-            IToken oldToken = selectionToken
-                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
-
             // Figure out the new text of the string and create a new token with the modified
             // version. This will also copy the attributes of the old token.
-            string newText = oldToken.Text.Insert(cursor.TextIndex.Index, text);
-            IToken newToken = this.Buffer.CreateToken(oldToken, newText);
+            string newText =
+                state.CursorToken.Text.Insert(
+                    state.Cursor.TextIndex.Index, text);
+            IToken newToken = this.Buffer.CreateToken(
+                state.CursorToken, newText);
 
             // Add the text replacement command into the buffer.
             const int SingleTokenReplacement = 1;
 
             command.Add(
                 new ReplaceTokenOperation(
-                    cursor.LineIndex, 
-                    cursor.TokenIndex, 
+                    state.Cursor.LineIndex, 
+                    state.Cursor.TokenIndex, 
                     SingleTokenReplacement, 
                     newToken));
 
@@ -334,38 +364,5 @@ namespace MfGames.TextTokens.Controllers
         }
 
         #endregion
-
-        /// <summary>
-        /// Deletes a number of characters to the right of the cursor position.
-        /// </summary>
-        /// <param name="textCount">The text count.</param>
-        public void DeleteRight(int textCount)
-        {
-            // Establish our contracts.
-            Contract.Requires(textCount > 0);
-
-            // We'll be gathering up lines to perform the insert.
-            var command = new BufferCommand();
-
-            // Allow the selection to add any operations to remove the selection.
-            TextLocation cursor = this.Selection.Cursor;
-            IToken selectionToken = this.Selection.AddOperations(command);
-            IToken oldToken = selectionToken
-                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
-
-            // Figure out how much text needs to be deleted from the token.
-            string newText = oldToken.Text.Substring(
-                0, cursor.TextIndex.Index)
-                + oldToken.Text.Substring(
-                    cursor.TextIndex.Index + textCount);
-            IToken newToken = this.Buffer.CreateToken(newText);
-
-            command.Add(
-                new ReplaceTokenOperation(
-                    cursor.LineIndex, cursor.TokenIndex, 1, newToken));
-
-            // Submit the command to the buffer.
-            this.Buffer.Do(command);
-        }
     }
 }

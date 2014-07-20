@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buffers\ExtensionsIBuffer.cs" />
     <Compile Include="Buffers\IBuffer.cs" />
     <Compile Include="Buffers\MemoryBuffer.cs" />
     <Compile Include="Commands\BufferCommand.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Commands\ReplaceSelectionOperation.cs" />
     <Compile Include="Commands\ReplaceTokenOperation.cs" />
     <Compile Include="Controllers\BufferSelection.cs" />
+    <Compile Include="Controllers\PostSelectionDeleteState.cs" />
     <Compile Include="Controllers\UserBufferController.cs" />
     <Compile Include="Events\LineIndexEventArgs.cs" />
     <Compile Include="Events\LineIndexLinesDeletedEventArgs.cs" />
