@@ -1,4 +1,4 @@
-﻿// <copyright file="DeleteTwoRightFromSingleLineMiddleToken.cs" company="Moonfire Games">
+﻿// <copyright file="DeleteThreeRightFromSingleLineMiddleToken.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -11,7 +11,7 @@ namespace MfGames.TextTokens.Tests
     /// <summary>
     /// </summary>
     [TestFixture]
-    public class DeleteTwoRightFromSingleLineMiddleToken : MemoryBufferTests
+    public class DeleteThreeRightFromSingleLineMiddleToken : MemoryBufferTests
     {
         #region Public Methods and Operators
 
@@ -43,7 +43,7 @@ namespace MfGames.TextTokens.Tests
         public void FirstLineHasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(4, this.State.Lines[0].Tokens.Count);
+            Assert.AreEqual(3, this.State.Lines[0].Tokens.Count);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace MfGames.TextTokens.Tests
         {
             this.Setup();
             Assert.AreEqual(
-                "zero ontwo", this.State.Lines[0].Tokens.GetVisibleText());
+                "zero onwo", this.State.Lines[0].Tokens.GetVisibleText());
         }
 
         /// <summary>
@@ -78,6 +78,7 @@ namespace MfGames.TextTokens.Tests
             this.Buffer.PopulateRowColumn(1, 3);
             var textLocation = new TextLocation(0, 2, 2);
             this.Controller.SetCursor(textLocation);
+            this.Controller.DeleteRight(1);
             this.Controller.DeleteRight(1);
             this.Controller.DeleteRight(1);
         }

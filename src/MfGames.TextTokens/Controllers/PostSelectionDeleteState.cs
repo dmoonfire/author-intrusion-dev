@@ -4,6 +4,8 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Controllers
 {
+    using System.Collections.Immutable;
+
     using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
@@ -23,12 +25,19 @@ namespace MfGames.TextTokens.Controllers
         /// The cursor.
         /// </param>
         /// <param name="cursorToken">
-        /// The token at the cursor.
+        /// The cursor token.
         /// </param>
-        public PostSelectionDeleteState(TextLocation cursor, IToken cursorToken)
+        /// <param name="remainingTokens">
+        /// The remaining tokens.
+        /// </param>
+        public PostSelectionDeleteState(
+            TextLocation cursor, 
+            IToken cursorToken, 
+            ImmutableList<IToken> remainingTokens)
         {
             this.Cursor = cursor;
             this.CursorToken = cursorToken;
+            this.RemainingTokens = remainingTokens;
         }
 
         #endregion
@@ -50,6 +59,14 @@ namespace MfGames.TextTokens.Controllers
         /// The cursor token.
         /// </value>
         public IToken CursorToken { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the remaining tokens on the line.
+        /// </summary>
+        /// <value>
+        /// The remaining tokens.
+        /// </value>
+        public ImmutableList<IToken> RemainingTokens { get; private set; }
 
         #endregion
     }

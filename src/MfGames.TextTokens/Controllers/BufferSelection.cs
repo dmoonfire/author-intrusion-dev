@@ -5,11 +5,13 @@
 namespace MfGames.TextTokens.Controllers
 {
     using System;
+    using System.Collections.Immutable;
     using System.Diagnostics.Contracts;
 
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Commands;
     using MfGames.TextTokens.Events;
+    using MfGames.TextTokens.Lines;
     using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
@@ -123,10 +125,18 @@ namespace MfGames.TextTokens.Controllers
             BufferCommand command)
         {
             // If we don't have a selection, then don't do anything.
+            ILine firstLine = this.Buffer.Lines[this.First.LineIndex.Index];
+
             if (!this.HasSelection)
             {
+                int tokenOffset = this.Cursor.TokenIndex.Index + 1;
+                ImmutableList<IToken> remainingTokens =
+                    firstLine.Tokens.GetRange(
+                        tokenOffset, firstLine.Tokens.Count - tokenOffset);
                 var noopState = new PostSelectionDeleteState(
-                    this.Cursor, this.Buffer.GetToken(this.Cursor));
+                    this.Cursor, 
+                    this.Buffer.GetToken(this.Cursor), 
+                    remainingTokens);
                 return noopState;
             }
 
@@ -165,8 +175,13 @@ namespace MfGames.TextTokens.Controllers
                         newToken));
 
                 // Replace the modified token which is the new "first".
+                int tokenOffset = this.First.TokenIndex.Index + count;
+                ImmutableList<IToken> remainingTokens =
+                    firstLine.Tokens.GetRange(
+                        tokenOffset, firstLine.Tokens.Count - tokenOffset);
+
                 var singleLineState = new PostSelectionDeleteState(
-                    this.First, newToken);
+                    this.First, newToken, remainingTokens);
                 return singleLineState;
             }
 

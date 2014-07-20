@@ -5,8 +5,10 @@
 namespace MfGames.TextTokens.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Diagnostics.Contracts;
+    using System.Linq;
 
     using MfGames.TextTokens.Buffers;
     using MfGames.TextTokens.Commands;
@@ -91,10 +93,10 @@ namespace MfGames.TextTokens.Controllers
         #region Public Methods and Operators
 
         /// <summary>
-        /// Deletes a number of characters to the right of the cursor position.
+        /// Deletes one character right of the current position.
         /// </summary>
         /// <param name="textCount">
-        /// The text count.
+        /// The character count.
         /// </param>
         public void DeleteRight(int textCount)
         {
@@ -108,18 +110,75 @@ namespace MfGames.TextTokens.Controllers
             PostSelectionDeleteState state =
                 this.Selection.AddDeleteOperations(command);
 
-            // Figure out how much text needs to be deleted from the token.
-            string beforeCursorText = state.CursorToken.Text.Substring(
-                0, state.Cursor.TextIndex.Index);
-            string afterCursorText =
-                state.CursorToken.Text.Substring(
-                    state.Cursor.TextIndex.Index + textCount);
-            string newText = beforeCursorText + afterCursorText;
+            // The number of characters we are deleting may jump to the next token
+            // or even the next line. We keep track of how many characters we are
+            // deleting and loop through the next tokens until we've deleted everything.
+            int remainingCount = textCount;
+
+            // Figure out how much we can delete from the current token. This will use
+            // the text index to figure out where to start.
+            string newText = state.CursorToken.Text;
+            int textOffset = state.Cursor.TextIndex.Index;
+            int maxDeletable = newText.Length - textOffset;
+
+            if (maxDeletable > 0)
+            {
+                // Delete the characters from the first token.
+                int deleteCount = Math.Min(maxDeletable, remainingCount);
+                string beforeText = newText.Substring(0, textOffset);
+                string afterText = newText.Substring(textOffset + deleteCount);
+                newText = beforeText + afterText;
+
+                // Decrement the number of characters we have to remove.
+                remainingCount -= deleteCount;
+            }
+
+            // Gather up a list with the token remaining on this line.
+            List<IToken> remainingTokens = state.RemainingTokens.ToList();
+
+            // Loop until we run out of characters to delete. For as long as we have
+            // characters to delete, we will remove the tokens until we are only removing
+            // part of one. Then, the final one will have its remaining text appended
+            // to the end of the newText. We start at 1 for this count because of the original
+            // token we've already processed.
+            int removeTokenCount = 1;
+
+            while (remainingCount > 0)
+            {
+                // If we get to the end of the list, then blow up.
+                if (remainingTokens.Count == 0)
+                {
+                    throw new InvalidOperationException(
+                        "Cannot delete characters past the end of the line.");
+                }
+
+                // Get the next token from the list and add it to the list of tokens to remove.
+                IToken nextToken = remainingTokens[0];
+                remainingTokens.RemoveAt(0);
+                removeTokenCount++;
+
+                // If the remaining deleted characters exceed the length of the token,
+                // we'll be removing it entirely.
+                if (nextToken.Text.Length <= remainingCount)
+                {
+                    // We are removing this one entirely.
+                    remainingCount -= nextToken.Text.Length;
+                    continue;
+                }
+
+                // If we got this far, then we are removing a portion of this token
+                // and appending it.
+                string afterText = nextToken.Text.Substring(remainingCount);
+
+                newText += afterText;
+                break;
+            }
+
+            // Create the command to replace the tokens with a new one.
             IToken newToken = this.Buffer.CreateToken(newText);
 
-            // Create the command and add it.
             var replaceOperation = new ReplaceTokenOperation(
-                state.Cursor, 1, newToken);
+                state.Cursor, removeTokenCount, newToken);
             command.Add(replaceOperation);
 
             // Submit the command to the buffer.
