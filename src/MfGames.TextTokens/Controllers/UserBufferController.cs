@@ -334,5 +334,38 @@ namespace MfGames.TextTokens.Controllers
         }
 
         #endregion
+
+        /// <summary>
+        /// Deletes a number of characters to the right of the cursor position.
+        /// </summary>
+        /// <param name="textCount">The text count.</param>
+        public void DeleteRight(int textCount)
+        {
+            // Establish our contracts.
+            Contract.Requires(textCount > 0);
+
+            // We'll be gathering up lines to perform the insert.
+            var command = new BufferCommand();
+
+            // Allow the selection to add any operations to remove the selection.
+            TextLocation cursor = this.Selection.Cursor;
+            IToken selectionToken = this.Selection.AddOperations(command);
+            IToken oldToken = selectionToken
+                ?? this.Buffer.GetToken(cursor.LineIndex, cursor.TokenIndex);
+
+            // Figure out how much text needs to be deleted from the token.
+            string newText = oldToken.Text.Substring(
+                0, cursor.TextIndex.Index)
+                + oldToken.Text.Substring(
+                    cursor.TextIndex.Index + textCount);
+            IToken newToken = this.Buffer.CreateToken(newText);
+
+            command.Add(
+                new ReplaceTokenOperation(
+                    cursor.LineIndex, cursor.TokenIndex, 1, newToken));
+
+            // Submit the command to the buffer.
+            this.Buffer.Do(command);
+        }
     }
 }

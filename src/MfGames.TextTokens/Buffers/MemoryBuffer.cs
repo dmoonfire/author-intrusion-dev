@@ -228,10 +228,6 @@ namespace MfGames.TextTokens.Buffers
         public IEnumerable<ILine> InsertLines(
             LineIndex afterLineIndex, int count)
         {
-            // Establish our contracts.
-            Contract.Requires(afterLineIndex.Index >= 0);
-            Contract.Requires(count > 0);
-
             // First populate a list of line keys for the new lines.
             var insertedLines = new Line[count];
 
