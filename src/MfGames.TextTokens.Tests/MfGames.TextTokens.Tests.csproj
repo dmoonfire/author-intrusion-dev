@@ -89,6 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteRight1x1FromEndOfSingleLine.cs" />
     <Compile Include="DeleteRight1x4FromSingleLineMiddleToken.cs" />
     <Compile Include="DeleteRight1x3FromSingleLineMiddleToken.cs" />
     <Compile Include="DeleteRight1x2FromSingleLineMiddleToken.cs" />
