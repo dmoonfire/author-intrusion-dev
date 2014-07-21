@@ -134,6 +134,8 @@ namespace MfGames.TextTokens.Controllers
             }
 
             // Gather up a list with the token remaining on this line.
+            ILine cursorLine = this.Buffer.Lines[state.Cursor.LineIndex.Index];
+            int lineTokenCount = cursorLine.Tokens.Count;
             List<IToken> remainingTokens = state.RemainingTokens.ToList();
 
             // Loop until we run out of characters to delete. For as long as we have
@@ -142,14 +144,47 @@ namespace MfGames.TextTokens.Controllers
             // to the end of the newText. We start at 1 for this count because of the original
             // token we've already processed.
             int removeTokenCount = 1;
+            int lineOffset = 0;
 
             while (remainingCount > 0)
             {
-                // If we get to the end of the list, then blow up.
+                // If we get to the end of the list, then we need to pull in the next line.
                 if (remainingTokens.Count == 0)
                 {
-                    throw new InvalidOperationException(
-                        "Cannot delete characters past the end of the line.");
+                    // Increment the line offset which we'll be pulling the lines. And then
+                    // figure out the tokens on that line.
+                    lineOffset++;
+
+                    ILine nextLine = this.Buffer.Lines[lineOffset];
+                    ImmutableList<IToken> nextLineTokens = nextLine.Tokens;
+
+                    if (nextLineTokens.Count == 0)
+                    {
+                        throw new InvalidOperationException(
+                            "Cannot find additional line tokens.");
+                    }
+
+                    // Merge the tokens from the next line into this line using a replace
+                    // operation.
+                    command.Add(
+                        new ReplaceTokenOperation(
+                            state.Cursor.LineIndex, 
+                            new TokenIndex(lineTokenCount), 
+                            0, 
+                            nextLineTokens));
+                    lineTokenCount += nextLineTokens.Count;
+
+                    // Delete the next line.
+                    command.Add(
+                        new DeleteLinesOperation(
+                            state.Cursor.LineIndex.Add(1), 1));
+
+                    // Add these tokens to the remaining.
+                    remainingTokens.AddRange(nextLineTokens);
+
+                    // The newline is considered one "character".
+                    remainingCount--;
+                    continue;
                 }
 
                 // Get the next token from the list and add it to the list of tokens to remove.

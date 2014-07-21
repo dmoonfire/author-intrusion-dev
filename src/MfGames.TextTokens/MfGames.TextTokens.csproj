@@ -92,6 +92,7 @@
     <Compile Include="Commands\ReplaceSelectionOperation.cs" />
     <Compile Include="Commands\ReplaceTokenOperation.cs" />
     <Compile Include="Controllers\BufferSelection.cs" />
+    <Compile Include="Commands\DeleteLinesOperation.cs" />
     <Compile Include="Controllers\PostSelectionDeleteState.cs" />
     <Compile Include="Controllers\UserBufferController.cs" />
     <Compile Include="Events\LineIndexEventArgs.cs" />
