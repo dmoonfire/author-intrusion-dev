@@ -89,10 +89,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeleteFourRightFromSingleLineMiddleToken.cs" />
-    <Compile Include="DeleteThreeRightFromSingleLineMiddleToken.cs" />
-    <Compile Include="DeleteTwoRightFromSingleLineMiddleToken.cs" />
-    <Compile Include="DeleteOneRightFromSingleLineMiddleToken.cs" />
+    <Compile Include="DeleteRight1x4FromSingleLineMiddleToken.cs" />
+    <Compile Include="DeleteRight1x3FromSingleLineMiddleToken.cs" />
+    <Compile Include="DeleteRight1x2FromSingleLineMiddleToken.cs" />
+    <Compile Include="DeleteRight1x1FromSingleLineMiddleToken.cs" />
     <Compile Include="InitialState.cs" />
     <Compile Include="InsertFiveLines.cs" />
     <Compile Include="InsertThreeLinesIntoSingleLineMiddleToken.cs" />

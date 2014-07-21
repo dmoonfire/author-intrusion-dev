@@ -1,4 +1,4 @@
-﻿// <copyright file="DeleteFourRightFromSingleLineMiddleToken.cs" company="Moonfire Games">
+﻿// <copyright file="DeleteRight1x3FromSingleLineMiddleToken.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -11,7 +11,7 @@ namespace MfGames.TextTokens.Tests
     /// <summary>
     /// </summary>
     [TestFixture]
-    public class DeleteFourRightFromSingleLineMiddleToken : MemoryBufferTests
+    public class DeleteRight1x3FromSingleLineMiddleToken : MemoryBufferTests
     {
         #region Public Methods and Operators
 
@@ -40,7 +40,7 @@ namespace MfGames.TextTokens.Tests
         /// <summary>
         /// </summary>
         [Test]
-        public void FirstLineHasCorrectTokenCount()
+        public virtual void FirstLineHasCorrectTokenCount()
         {
             this.Setup();
             Assert.AreEqual(3, this.State.Lines[0].Tokens.Count);
@@ -53,7 +53,7 @@ namespace MfGames.TextTokens.Tests
         {
             this.Setup();
             Assert.AreEqual(
-                "zero ono", this.State.Lines[0].Tokens.GetVisibleText());
+                "zero onwo", this.State.Lines[0].Tokens.GetVisibleText());
         }
 
         /// <summary>
@@ -81,7 +81,6 @@ namespace MfGames.TextTokens.Tests
             this.Controller.DeleteRight(1);
             this.Controller.DeleteRight(1);
             this.Controller.DeleteRight(1);
-            this.Controller.DeleteRight(1);
         }
 
         #endregion
@@ -89,7 +88,7 @@ namespace MfGames.TextTokens.Tests
         /// <summary>
         /// </summary>
         [TestFixture]
-        public class Undo : InsertTextIntoSingleLineMiddleToken
+        public class Undo : DeleteRight1x3FromSingleLineMiddleToken
         {
             #region Public Methods and Operators
 
@@ -118,6 +117,15 @@ namespace MfGames.TextTokens.Tests
             /// <summary>
             /// </summary>
             [Test]
+            public override void FirstLineHasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// </summary>
+            [Test]
             public override void FirstLineTextIsCorrect()
             {
                 this.Setup();
@@ -135,6 +143,8 @@ namespace MfGames.TextTokens.Tests
             {
                 base.Setup();
                 this.Controller.Undo();
+                this.Controller.Undo();
+                this.Controller.Undo();
             }
 
             #endregion
@@ -143,7 +153,7 @@ namespace MfGames.TextTokens.Tests
         /// <summary>
         /// </summary>
         [TestFixture]
-        public class UndoRedo : InsertTextIntoSingleLineMiddleToken
+        public class UndoRedo : DeleteRight1x3FromSingleLineMiddleToken
         {
             #region Methods
 
@@ -153,6 +163,10 @@ namespace MfGames.TextTokens.Tests
             {
                 base.Setup();
                 this.Controller.Undo();
+                this.Controller.Undo();
+                this.Controller.Undo();
+                this.Controller.Redo();
+                this.Controller.Redo();
                 this.Controller.Redo();
             }
 
@@ -172,6 +186,10 @@ namespace MfGames.TextTokens.Tests
             {
                 base.Setup();
                 this.Controller.Redo();
+                this.Controller.Redo();
+                this.Controller.Redo();
+                this.Controller.Undo();
+                this.Controller.Undo();
                 this.Controller.Undo();
             }
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="DeleteOneRightFromSingleLineMiddleToken.cs" company="Moonfire Games">
+﻿// <copyright file="DeleteRight1x1FromSingleLineMiddleToken.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -11,7 +11,7 @@ namespace MfGames.TextTokens.Tests
     /// <summary>
     /// </summary>
     [TestFixture]
-    public class DeleteOneRightFromSingleLineMiddleToken : MemoryBufferTests
+    public class DeleteRight1x1FromSingleLineMiddleToken : MemoryBufferTests
     {
         #region Public Methods and Operators
 
@@ -86,7 +86,7 @@ namespace MfGames.TextTokens.Tests
         /// <summary>
         /// </summary>
         [TestFixture]
-        public class Undo : InsertTextIntoSingleLineMiddleToken
+        public class Undo : DeleteRight1x1FromSingleLineMiddleToken
         {
             #region Public Methods and Operators
 
@@ -140,7 +140,7 @@ namespace MfGames.TextTokens.Tests
         /// <summary>
         /// </summary>
         [TestFixture]
-        public class UndoRedo : InsertTextIntoSingleLineMiddleToken
+        public class UndoRedo : DeleteRight1x1FromSingleLineMiddleToken
         {
             #region Methods
 
