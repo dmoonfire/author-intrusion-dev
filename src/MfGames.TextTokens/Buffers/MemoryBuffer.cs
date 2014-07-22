@@ -287,10 +287,6 @@ namespace MfGames.TextTokens.Buffers
         public void InsertLines(
             LineIndex afterLineIndex, IEnumerable<ILine> insertedLines)
         {
-            // Establish our contracts.
-            Contract.Requires(afterLineIndex.Index >= 0);
-            Contract.Requires(insertedLines != null);
-
             // Subscribe to the events of these lines.
             List<Line> lineArray =
                 insertedLines.Select(l => (l as Line) ?? new Line(l)).ToList();

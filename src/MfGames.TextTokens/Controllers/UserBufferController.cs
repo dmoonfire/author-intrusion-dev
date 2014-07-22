@@ -129,7 +129,7 @@ namespace MfGames.TextTokens.Controllers
                 string afterText = newText.Substring(textOffset + deleteCount);
                 newText = beforeText + afterText;
 
-                // Decrement the number of characters we have to remove.
+                // Decrement the number of characters we have removed.
                 remainingCount -= deleteCount;
             }
 
@@ -242,7 +242,7 @@ namespace MfGames.TextTokens.Controllers
 
         /// <summary>
         /// Inserts text at the cursor position, choosing the appropriate token to modify
-        /// and passing it into the buffer as an undoble command.
+        /// and passing it into the buffer as a command with a set of operations.
         /// </summary>
         /// <param name="text">
         /// The text to insert.
