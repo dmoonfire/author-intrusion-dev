@@ -155,12 +155,23 @@ namespace MfGames.TextTokens.Buffers
         /// <param name="count">
         /// The number of lines to delete.
         /// </param>
-        /// <exception cref="System.NotImplementedException">
-        /// </exception>
-        public void DeleteLines(LineIndex lineIndex, int count)
+        /// <returns>
+        /// The lines deleted from the buffer.
+        /// </returns>
+        public IEnumerable<ILine> DeleteLines(LineIndex lineIndex, int count)
         {
+            // Retrieve the list of lines deleted.
+            List<Line> deletedLines = this.lines.GetRange(
+                lineIndex.Index, count);
+
+            // Remove the lines from the buffer.
             this.lines.RemoveRange(lineIndex.Index, count);
+
+            // Raise the event to indicate we deleted the lines.
             this.RaiseLinesDeleted(lineIndex, count);
+
+            // Return the resulting lines.
+            return deletedLines;
         }
 
         /// <summary>
@@ -274,15 +285,15 @@ namespace MfGames.TextTokens.Buffers
         /// The inserted lines.
         /// </param>
         public void InsertLines(
-            LineIndex afterLineIndex, IEnumerable<Line> insertedLines)
+            LineIndex afterLineIndex, IEnumerable<ILine> insertedLines)
         {
             // Establish our contracts.
             Contract.Requires(afterLineIndex.Index >= 0);
             Contract.Requires(insertedLines != null);
 
             // Subscribe to the events of these lines.
-            List<Line> lineArray = insertedLines as List<Line>
-                ?? insertedLines.ToList();
+            List<Line> lineArray =
+                insertedLines.Select(l => (l as Line) ?? new Line(l)).ToList();
 
             lineArray.ForEach(
                 l => l.TokensReplaced += this.OnLineTokensReplaced);

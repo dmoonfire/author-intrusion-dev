@@ -100,7 +100,10 @@ namespace MfGames.TextTokens.Buffers
         /// <param name="count">
         /// The number of lines to delete.
         /// </param>
-        void DeleteLines(LineIndex lineIndex, int count);
+        /// <returns>
+        /// The lines deleted from the buffer.
+        /// </returns>
+        IEnumerable<ILine> DeleteLines(LineIndex lineIndex, int count);
 
         /// <summary>
         /// Executes a command on the buffer, running through each operation in turn.
@@ -137,6 +140,17 @@ namespace MfGames.TextTokens.Buffers
         /// An enumerable of the created lines.
         /// </returns>
         IEnumerable<ILine> InsertLines(LineIndex afterLineIndex, int count);
+
+        /// <summary>
+        /// Inserts lines into the buffer.
+        /// </summary>
+        /// <param name="afterLineIndex">
+        /// Index of the after line.
+        /// </param>
+        /// <param name="lines">
+        /// The lines.
+        /// </param>
+        void InsertLines(LineIndex afterLineIndex, IEnumerable<ILine> lines);
 
         /// <summary>
         /// Raises the ReplaceSelection event with the given arguments.
