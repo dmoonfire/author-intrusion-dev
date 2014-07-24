@@ -4,11 +4,11 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Tokens
 {
-    using System;
     using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
-    /// Implements a simplistic tokenizer that splits on whitespace and puncutuation
+    /// Implements a simplistic token parser that splits on whitespace and punctuation
     /// characters.
     /// </summary>
     public class DefaultTokenizer : ITokenizer
@@ -18,7 +18,7 @@ namespace MfGames.TextTokens.Tokens
         /// <summary>
         /// Contains the list of separators that identify a token break.
         /// </summary>
-        private readonly char[] TokenBreaks = new[]
+        private readonly char[] tokenBreaks = new[]
             {
                ' ', '\t', '.', ';', ':', '\'', '"' 
             };
@@ -44,9 +44,54 @@ namespace MfGames.TextTokens.Tokens
                 return new string[0] { };
             }
 
-            // Split on whitespace and puncuation.
-            string[] tokens = input.Split(
-                this.TokenBreaks, StringSplitOptions.None);
+            // Build up a list of tokens as we look through the string.
+            var tokens = new List<string>();
+            var token = new StringBuilder();
+
+            for (int index = 0; index < input.Length; index++)
+            {
+                // Pull out the character we're processing.
+                char test = input[index];
+
+                // Figure out if we are going to add this character to the current token
+                // or the next one. If the token is currently zero, we always add. Otherwise,
+                // we append to the current token if it is the same category (character to
+                // character or whitespace to whitespace), or it is is punctuation which is
+                // never bound to the same token.
+                if (token.Length == 0)
+                {
+                    // Always add this.
+                    token.Append(test);
+                    continue;
+                }
+
+                // If we are a whitespace character and we already have one, then combine them.
+                if (char.IsWhiteSpace(token[0]) && char.IsWhiteSpace(test))
+                {
+                    token.Append(test);
+                    continue;
+                }
+
+                // If this is not punctuation, then we add it.
+                if (!char.IsPunctuation(test))
+                {
+                    token.Append(test);
+                    continue;
+                }
+
+                // In all other cases, we are creating a new token.
+                tokens.Add(token.ToString());
+                token.Length = 0;
+                token.Append(test);
+            }
+
+            // If we have a non-zero length token, add it.
+            if (token.Length > 0)
+            {
+                tokens.Add(token.ToString());
+            }
+
+            // Return the resulting tokens.
             return tokens;
         }
 

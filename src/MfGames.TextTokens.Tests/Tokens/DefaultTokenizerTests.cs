@@ -41,6 +41,27 @@ namespace MfGames.TextTokens.Tests.Tokens
         /// <summary>
         /// </summary>
         [Test]
+        public void HandleContraction()
+        {
+            // Arrange
+            string input = "didn't";
+            var tokenizer = new DefaultTokenizer();
+
+            // Act
+            List<string> results = tokenizer.Tokenize(input).ToList();
+
+            // Assert
+            Assert.IsNotNull(results, "The results were null");
+            Assert.AreEqual(
+                3, results.Count, "The number of tokens is unexpected.");
+            Assert.AreEqual("didn", results[0], "1st result is unexpected.");
+            Assert.AreEqual("'", results[1], "2nd result is unexpected.");
+            Assert.AreEqual("t", results[2], "3rd result is unexpected.");
+        }
+
+        /// <summary>
+        /// </summary>
+        [Test]
         public void HandleNullString()
         {
             // Arrange
