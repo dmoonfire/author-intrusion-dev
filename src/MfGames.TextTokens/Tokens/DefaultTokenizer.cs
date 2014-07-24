@@ -65,18 +65,31 @@ namespace MfGames.TextTokens.Tokens
                     continue;
                 }
 
-                // If we are a whitespace character and we already have one, then combine them.
-                if (char.IsWhiteSpace(token[0]) && char.IsWhiteSpace(test))
-                {
-                    token.Append(test);
-                    continue;
-                }
+                // If we are a whitespace character and the token is a whitespace token,
+                // then we append it. Otherwise, it will be a new token.
+                char tokenCharacter = token[0];
 
-                // If this is not punctuation, then we add it.
-                if (!char.IsPunctuation(test))
+                if (char.IsWhiteSpace(test))
                 {
-                    token.Append(test);
-                    continue;
+                    if (char.IsWhiteSpace(tokenCharacter))
+                    {
+                        token.Append(test);
+                        continue;
+                    }
+                }
+                else if (char.IsPunctuation(test))
+                {
+                    // Punctuation is always a unique token.
+                }
+                else
+                {
+                    // If the current token is not punctuation or whitespace, append it.
+                    if (!char.IsWhiteSpace(tokenCharacter)
+                        && !char.IsPunctuation(tokenCharacter))
+                    {
+                        token.Append(test);
+                        continue;
+                    }
                 }
 
                 // In all other cases, we are creating a new token.

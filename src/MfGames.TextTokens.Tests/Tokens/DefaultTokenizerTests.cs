@@ -62,6 +62,29 @@ namespace MfGames.TextTokens.Tests.Tokens
         /// <summary>
         /// </summary>
         [Test]
+        public void HandleLeadingUnderscoreTwoWordsString()
+        {
+            // Arrange
+            string input = "_e two";
+            var tokenizer = new DefaultTokenizer();
+
+            // Act
+            List<string> results = tokenizer.Tokenize(input).ToList();
+
+            // Assert
+            Assert.IsNotNull(results, "The results were null");
+            Assert.AreEqual(
+                4, results.Count, "The number of tokens is unexpected.");
+
+            Assert.AreEqual("_", results[0], "1st token is unexpected.");
+            Assert.AreEqual("e", results[1], "2nd token is unexpected.");
+            Assert.AreEqual(" ", results[2], "3rd token is unexpected.");
+            Assert.AreEqual("two", results[3], "4th token is unexpected.");
+        }
+
+        /// <summary>
+        /// </summary>
+        [Test]
         public void HandleNullString()
         {
             // Arrange
@@ -111,6 +134,30 @@ namespace MfGames.TextTokens.Tests.Tokens
             Assert.IsNotNull(results, "The results were null");
             Assert.AreEqual(
                 1, results.Count, "The number of tokens is unexpected.");
+        }
+
+        /// <summary>
+        /// </summary>
+        [Test]
+        public void HandleThreeWordsString()
+        {
+            // Arrange
+            string input = "one two three";
+            var tokenizer = new DefaultTokenizer();
+
+            // Act
+            List<string> results = tokenizer.Tokenize(input).ToList();
+
+            // Assert
+            Assert.IsNotNull(results, "The results were null");
+            Assert.AreEqual(
+                5, results.Count, "The number of tokens is unexpected.");
+
+            Assert.AreEqual("one", results[0], "1st token is unexpected.");
+            Assert.AreEqual(" ", results[1], "2nd token is unexpected.");
+            Assert.AreEqual("two", results[2], "3rd token is unexpected.");
+            Assert.AreEqual(" ", results[3], "4th token is unexpected.");
+            Assert.AreEqual("three", results[4], "5th token is unexpected.");
         }
 
         /// <summary>

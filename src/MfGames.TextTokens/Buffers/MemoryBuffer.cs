@@ -216,7 +216,7 @@ namespace MfGames.TextTokens.Buffers
         public void Do(BufferCommand command)
         {
             // Performs the operations of the command.
-            this.DoPostUpdateAction(command.Do);
+            command.Do(this);
 
             // Add this command to our undo stack.
             this.UndoCommands.Push(command);
@@ -255,6 +255,75 @@ namespace MfGames.TextTokens.Buffers
             ILine line = this.Lines[lineIndex.Index];
             IToken token = line.Tokens[tokenIndex.Index];
             return token;
+        }
+
+        /// <summary>
+        /// Updates the tokens within the buffer for changed lines, including retokenizing
+        /// the lines to reflect the changes.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public IEnumerable<IBufferOperation> GetUpdateOperations()
+        {
+            // Go through each line and process them in turn.
+            var operations = new List<IBufferOperation>();
+
+            foreach (Line line in this.changedLines)
+            {
+                // See if we can find the line.
+                int lineIndex = this.lines.IndexOf(line);
+
+                if (lineIndex < 0)
+                {
+                    // The line doesn't exist, so skip it.
+                    continue;
+                }
+
+                // Grab the visible text and figure out if we need to retokenize it.
+                TokenList<Token> originalTokens = line.Tokens;
+                string originalText = originalTokens.GetVisibleText();
+
+                string[] newTokenTexts =
+                    this.tokenizer.Tokenize(originalText).ToArray();
+
+                // If the tokens don't match the visible ones exactly, we simply replace the
+                // entire line.
+                bool rebuildLine = originalTokens.Count != newTokenTexts.Count();
+
+                if (!rebuildLine)
+                {
+                    for (int index = 0; index < originalTokens.Count; index++)
+                    {
+                        if (originalTokens[index].Text != newTokenTexts[index])
+                        {
+                            rebuildLine = true;
+                            break;
+                        }
+                    }
+                }
+
+                // If we aren't rebuilding the line, then move to the next line.
+                if (!rebuildLine)
+                {
+                    continue;
+                }
+
+                // If we are rebuilding the line, then add in a replace tokens operation, which
+                // will remove all non-visible tokens. But, we'll be rebuilding the lines
+                // anyways, so it should be acceptable.
+                IEnumerable<IToken> newTokens =
+                    newTokenTexts.Select(t => this.CreateToken(t));
+
+                operations.Add(
+                    new ReplaceTokenOperation(
+                        new LineIndex(lineIndex), 
+                        TokenIndex.First, 
+                        originalTokens.Count, 
+                        newTokens));
+            }
+
+            // Return the resulting operations.
+            return operations;
         }
 
         /// <summary>
@@ -306,6 +375,9 @@ namespace MfGames.TextTokens.Buffers
 
             // Insert the lines into the buffer.
             this.InsertLines(afterLineIndex, (IEnumerable<Line>)insertedLines);
+
+            // Mark that all of these lines changed.
+            Array.ForEach(insertedLines, l => this.changedLines.Add(l));
         }
 
         /// <summary>
@@ -409,7 +481,7 @@ namespace MfGames.TextTokens.Buffers
             this.UndoCommands.Push(command);
 
             // Perform the action.
-            this.DoPostUpdateAction(command.Do);
+            command.Do(this);
         }
 
         /// <summary>
@@ -478,6 +550,7 @@ namespace MfGames.TextTokens.Buffers
             // Raise an event about the change.
             this.RaiseTokensReplaced(
                 lineIndex, tokenIndex, count, tokenArray, replacementType);
+            this.changedLines.Add(line);
 
             // Return the replaced tokens.
             return oldTokens;
@@ -501,7 +574,7 @@ namespace MfGames.TextTokens.Buffers
             this.RedoCommands.Push(command);
 
             // Perform the undo action and update the internal state.
-            this.DoPostUpdateAction(command.Undo);
+            command.Undo(this);
         }
 
         #endregion
@@ -582,22 +655,6 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
-        /// Performs an action. Once completed, performs the required update actions
-        /// to normalize the state of the buffer.
-        /// </summary>
-        /// <param name="action">
-        /// The action.
-        /// </param>
-        private void DoPostUpdateAction(Action<IBuffer> action)
-        {
-            // Perform the action.
-            action(this);
-
-            // We need to retokenize the lines after we change them.
-            this.UpdateChangedLines();
-        }
-
-        /// <summary>
         /// Called when tokens are inserted into line.
         /// </summary>
         /// <param name="sender">
@@ -653,31 +710,6 @@ namespace MfGames.TextTokens.Buffers
             var args = new LineIndexLinesDeletedEventArgs(lineIndex, count);
 
             listeners(this, args);
-        }
-
-        /// <summary>
-        /// Updates the tokens within the buffer for changed lines, including retokenizing
-        /// the lines to reflect the changes.
-        /// </summary>
-        private void UpdateChangedLines()
-        {
-            // Go through each line and process them in turn.
-            foreach (Line line in this.changedLines)
-            {
-                // See if we can find the line.
-                int lineIndex = this.lines.IndexOf(line);
-
-                if (lineIndex < 0)
-                {
-                    // The line doesn't exist, so skip it.
-                    continue;
-                }
-
-                // Retokenize the line.
-                string lineText = line.Tokens.GetVisibleText();
-                IEnumerable<string> newTokens = this.tokenizer.Tokenize(
-                    lineText);
-            }
         }
 
         #endregion

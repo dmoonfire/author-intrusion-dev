@@ -157,6 +157,20 @@ namespace MfGames.TextTokens.Commands
         }
 
         /// <summary>
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(
+                "ReplaceTokenOperation(({0}, {1}x{2}), {3})", 
+                this.LineIndex.Index, 
+                this.TokenIndex, 
+                this.Count, 
+                this.ReplacementTokens.Length);
+        }
+
+        /// <summary>
         /// Reverses the operation on the given buffer.
         /// </summary>
         /// <param name="buffer">

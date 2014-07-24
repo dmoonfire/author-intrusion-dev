@@ -50,5 +50,18 @@ namespace MfGames.TextTokens.Tests
         public TokenKey TokenKey { get; private set; }
 
         #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format("({1}, \"{0}\")", this.Text, this.TokenKey.Id);
+        }
+
+        #endregion
     }
 }

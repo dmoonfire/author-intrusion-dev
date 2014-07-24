@@ -64,7 +64,7 @@ namespace MfGames.TextTokens.Tests
         public virtual void Line1HasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(10, this.State.Lines[0].Tokens.Count);
+            Assert.AreEqual(9, this.State.Lines[0].Tokens.Count);
         }
 
         /// <summary>

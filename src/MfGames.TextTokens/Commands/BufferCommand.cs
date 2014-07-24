@@ -14,6 +14,14 @@ namespace MfGames.TextTokens.Commands
     /// </summary>
     public class BufferCommand : List<IBufferOperation>
     {
+        #region Fields
+
+        /// <summary>
+        /// </summary>
+        private List<IBufferOperation> updateOperations;
+
+        #endregion
+
         #region Public Methods and Operators
 
         /// <summary>
@@ -24,7 +32,16 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public void Do(IBuffer buffer)
         {
+            // Perform the operations for this command.
             foreach (IBufferOperation operation in this)
+            {
+                operation.Do(buffer);
+            }
+
+            // Include any operations for tokenization.
+            this.updateOperations = buffer.GetUpdateOperations().ToList();
+
+            foreach (IBufferOperation operation in this.updateOperations)
             {
                 operation.Do(buffer);
             }
@@ -38,6 +55,19 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public void Undo(IBuffer buffer)
         {
+            // Reverse the update operations. Once we are done, we remove the update
+            // operations because "Do" will replace them with a new set if the user
+            // redoes the command.
+            this.updateOperations.Reverse();
+
+            foreach (IBufferOperation operation in this.updateOperations)
+            {
+                operation.Undo(buffer);
+            }
+
+            this.updateOperations = null;
+
+            // Reverse the operations of this command.
             List<IBufferOperation> reversed = this.ToList();
             reversed.Reverse();
 
