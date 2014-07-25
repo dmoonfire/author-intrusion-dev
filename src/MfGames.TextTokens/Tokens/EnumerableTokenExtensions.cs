@@ -9,6 +9,7 @@ namespace MfGames.TextTokens.Tokens
     using System.Text;
 
     /// <summary>
+    /// Includes various extensions to enumerable classes of IToken.
     /// </summary>
     public static class EnumerableTokenExtensions
     {

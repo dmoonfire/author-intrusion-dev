@@ -9,6 +9,7 @@ namespace MfGames.TextTokens.Tests
     using NUnit.Framework;
 
     /// <summary>
+    /// Inserts text into a selection within a token.
     /// </summary>
     [TestFixture]
     public class InsertTextIntoSingleTokenSelection : MemoryBufferTests
@@ -16,18 +17,20 @@ namespace MfGames.TextTokens.Tests
         #region Public Methods and Operators
 
         /// <summary>
+        /// Verifies that there is only a single line in the buffer.
         /// </summary>
         [Test]
-        public virtual void FirstLineHasCorrectTokenCount()
+        public void HasCorrectLineCount()
         {
             this.Setup();
-            Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+            Assert.AreEqual(1, this.State.Lines.Count);
         }
 
         /// <summary>
+        /// Verifies that line 1 has the correct text.
         /// </summary>
         [Test]
-        public virtual void FirstLineTextIsCorrect()
+        public virtual void Line1HasCorrectText()
         {
             this.Setup();
             Assert.AreEqual(
@@ -35,13 +38,13 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
-        /// Verifies that there is only a single line in the buffer.
+        /// Verifies that line 1 has the correct number of tokens.
         /// </summary>
         [Test]
-        public void HasOneLine()
+        public virtual void Line1HasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(1, this.State.Lines.Count);
+            Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
         }
 
         #endregion
@@ -49,6 +52,7 @@ namespace MfGames.TextTokens.Tests
         #region Methods
 
         /// <summary>
+        /// Sets up the unit test.
         /// </summary>
         protected override void Setup()
         {

@@ -53,6 +53,7 @@ namespace MfGames.TextTokens.Tokens
         /// The index.
         /// </param>
         /// <returns>
+        /// A token at the given index.
         /// </returns>
         public TToken this[TokenIndex index]
         {
@@ -67,9 +68,9 @@ namespace MfGames.TextTokens.Tokens
         #region Public Methods and Operators
 
         /// <summary>
+        /// Gets the visible text, built up from the tokens.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns>A non-null string containing the visible token's text.</returns>
         public string GetVisibleText()
         {
             var buffer = new StringBuilder();

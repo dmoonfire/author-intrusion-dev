@@ -7,6 +7,7 @@ namespace MfGames.TextTokens.Tests
     using NUnit.Framework;
 
     /// <summary>
+    /// Verifies the state of an empty MemoryBuffer.
     /// </summary>
     [TestFixture]
     public class InitialState : MemoryBufferTests
@@ -14,9 +15,10 @@ namespace MfGames.TextTokens.Tests
         #region Public Methods and Operators
 
         /// <summary>
+        /// Verifies the number of lines in the buffer.
         /// </summary>
         [Test]
-        public void VerifyInitialState()
+        public void HasCorrectLineCount()
         {
             this.Setup();
             Assert.AreEqual(

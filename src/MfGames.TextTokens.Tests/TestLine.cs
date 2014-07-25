@@ -11,14 +11,17 @@ namespace MfGames.TextTokens.Tests
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
+    /// Contains state information about a line in the buffer.
     /// </summary>
     public class TestLine
     {
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TestLine"/> class.
         /// </summary>
         /// <param name="lineKey">
+        /// The line key.
         /// </param>
         public TestLine(LineKey lineKey)
         {
@@ -27,8 +30,10 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TestLine"/> class.
         /// </summary>
         /// <param name="line">
+        /// The line.
         /// </param>
         public TestLine(ILine line)
             : this(line.LineKey)
@@ -49,11 +54,19 @@ namespace MfGames.TextTokens.Tests
         #region Public Properties
 
         /// <summary>
+        /// Gets the line key.
         /// </summary>
+        /// <value>
+        /// The line key.
+        /// </value>
         public LineKey LineKey { get; private set; }
 
         /// <summary>
+        /// Gets the tokens.
         /// </summary>
+        /// <value>
+        /// The tokens.
+        /// </value>
         public TokenList<TestToken> Tokens { get; private set; }
 
         #endregion
@@ -61,10 +74,13 @@ namespace MfGames.TextTokens.Tests
         #region Public Methods and Operators
 
         /// <summary>
+        /// Inserts the tokens.
         /// </summary>
         /// <param name="tokenIndex">
+        /// Index of the token.
         /// </param>
         /// <param name="tokensInserted">
+        /// The tokens inserted.
         /// </param>
         public void InsertTokens(
             TokenIndex tokenIndex, IEnumerable<IToken> tokensInserted)

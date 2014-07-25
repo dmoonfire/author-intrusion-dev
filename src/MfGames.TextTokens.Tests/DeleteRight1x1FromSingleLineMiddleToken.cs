@@ -9,6 +9,7 @@ namespace MfGames.TextTokens.Tests
     using NUnit.Framework;
 
     /// <summary>
+    /// Tests various aspects of deleting a single character in the middle of a token.
     /// </summary>
     [TestFixture]
     public class DeleteRight1x1FromSingleLineMiddleToken : MemoryBufferTests
@@ -38,18 +39,20 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Verifies that there is only a single line in the buffer.
         /// </summary>
         [Test]
-        public void FirstLineHasCorrectTokenCount()
+        public void HasCorrectLineCount()
         {
             this.Setup();
-            Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+            Assert.AreEqual(1, this.State.Lines.Count);
         }
 
         /// <summary>
+        /// Verifies that line 1 has the correct text.
         /// </summary>
         [Test]
-        public virtual void FirstLineTextIsCorrect()
+        public virtual void Line1HasCorrectText()
         {
             this.Setup();
             Assert.AreEqual(
@@ -57,13 +60,13 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
-        /// Verifies that there is only a single line in the buffer.
+        /// Verifies that line 1 has correct token count.
         /// </summary>
         [Test]
-        public void HasOneLine()
+        public void Line1HasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(1, this.State.Lines.Count);
+            Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
         }
 
         #endregion
@@ -71,6 +74,7 @@ namespace MfGames.TextTokens.Tests
         #region Methods
 
         /// <summary>
+        /// Setup for the unit test.
         /// </summary>
         protected override void Setup()
         {
@@ -84,6 +88,7 @@ namespace MfGames.TextTokens.Tests
         #endregion
 
         /// <summary>
+        /// Performs the parent task and then an undo.
         /// </summary>
         [TestFixture]
         public class Undo : DeleteRight1x1FromSingleLineMiddleToken
@@ -113,9 +118,10 @@ namespace MfGames.TextTokens.Tests
             }
 
             /// <summary>
+            /// Verifies that line 1 has the correct text.
             /// </summary>
             [Test]
-            public override void FirstLineTextIsCorrect()
+            public override void Line1HasCorrectText()
             {
                 this.Setup();
                 Assert.AreEqual(
@@ -127,6 +133,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Setup for the unit test.
             /// </summary>
             protected override void Setup()
             {
@@ -138,6 +145,7 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Performs the parent class task, an undo, and a redo.
         /// </summary>
         [TestFixture]
         public class UndoRedo : DeleteRight1x1FromSingleLineMiddleToken
@@ -145,6 +153,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Setup for the unit test.
             /// </summary>
             protected override void Setup()
             {
@@ -157,6 +166,7 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Performs the parent task, an undo, a redo, and then an undo.
         /// </summary>
         [TestFixture]
         public class UndoRedoUndo : Undo
@@ -164,6 +174,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Setup for the unit test.
             /// </summary>
             protected override void Setup()
             {

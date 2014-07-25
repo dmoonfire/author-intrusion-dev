@@ -1,4 +1,4 @@
-﻿// <copyright file="DefaultTokenizer.cs" company="Moonfire Games">
+﻿// <copyright file="DefaultTokenSplitter.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -11,7 +11,7 @@ namespace MfGames.TextTokens.Tokens
     /// Implements a simplistic token parser that splits on whitespace and punctuation
     /// characters.
     /// </summary>
-    public class DefaultTokenizer : ITokenizer
+    public class DefaultTokenSplitter : ITokenSplitter
     {
         #region Fields
 

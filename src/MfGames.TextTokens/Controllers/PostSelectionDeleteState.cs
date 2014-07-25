@@ -61,7 +61,7 @@ namespace MfGames.TextTokens.Controllers
         public IToken CursorToken { get; private set; }
 
         /// <summary>
-        /// Gets or sets the remaining tokens on the line.
+        /// Gets the remaining tokens on the line.
         /// </summary>
         /// <value>
         /// The remaining tokens.

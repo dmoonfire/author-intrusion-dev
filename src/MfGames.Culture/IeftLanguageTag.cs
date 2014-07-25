@@ -6,7 +6,7 @@ namespace MfGames.Culture
 {
     /// <summary>
     /// An immutable identifier for an IEFT language tag including the ISO 639 language
-    /// code and optional components for country, dialect, and subtags.
+    /// code and optional components for country, dialect, and sub-tags.
     /// </summary>
     public class IeftLanguageTag
     {

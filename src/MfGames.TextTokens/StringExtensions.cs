@@ -15,7 +15,7 @@ namespace MfGames.TextTokens
         /// Converts line ending characters of all types into Unix endings.
         /// </summary>
         /// <param name="input">
-        /// The input string to sanatize.
+        /// The input string to normalize.
         /// </param>
         /// <returns>
         /// A string with all newlines normalized to "\n". If the input

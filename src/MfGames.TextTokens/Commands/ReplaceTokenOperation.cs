@@ -5,6 +5,7 @@
 namespace MfGames.TextTokens.Commands
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using MfGames.TextTokens.Buffers;
@@ -68,6 +69,10 @@ namespace MfGames.TextTokens.Commands
             int count, 
             IEnumerable<IToken> replacementTokens)
         {
+            // Establish our contracts.
+            Contract.Requires(replacementTokens != null);
+
+            // Save our member variables.
             this.LineIndex = lineIndex;
             this.TokenIndex = tokenIndex;
             this.Count = count;
@@ -119,7 +124,7 @@ namespace MfGames.TextTokens.Commands
         public IToken[] ReplacedTokens { get; private set; }
 
         /// <summary>
-        /// Gets or sets the new tokens.
+        /// Gets the new tokens.
         /// </summary>
         /// <value>
         /// The new tokens.
@@ -157,8 +162,10 @@ namespace MfGames.TextTokens.Commands
         }
 
         /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -174,6 +181,7 @@ namespace MfGames.TextTokens.Commands
         /// Reverses the operation on the given buffer.
         /// </summary>
         /// <param name="buffer">
+        /// The buffer to operate on.
         /// </param>
         public void Undo(IBuffer buffer)
         {

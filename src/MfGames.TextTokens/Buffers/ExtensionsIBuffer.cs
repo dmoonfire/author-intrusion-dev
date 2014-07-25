@@ -4,6 +4,8 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace MfGames.TextTokens.Buffers
 {
+    using System.Diagnostics.Contracts;
+
     using MfGames.TextTokens.Texts;
     using MfGames.TextTokens.Tokens;
 
@@ -24,10 +26,15 @@ namespace MfGames.TextTokens.Buffers
         /// The location.
         /// </param>
         /// <returns>
+        /// Returns the resulting token.
         /// </returns>
         public static IToken GetToken(
             this IBuffer buffer, TextLocation location)
         {
+            // Establish our contracts.
+            Contract.Requires(buffer != null);
+
+            // Get our token.
             IToken results = buffer.GetToken(
                 location.LineIndex, location.TokenIndex);
             return results;

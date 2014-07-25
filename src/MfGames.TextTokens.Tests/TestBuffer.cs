@@ -31,7 +31,7 @@ namespace MfGames.TextTokens.Tests
         /// The column count.
         /// </param>
         /// <exception cref="System.InvalidOperationException">
-        /// Could not get a line after inserting into bufer.
+        /// Could not get a line after inserting into buffer.
         /// </exception>
         public void PopulateRowColumn(int lineCount, int columnCount)
         {

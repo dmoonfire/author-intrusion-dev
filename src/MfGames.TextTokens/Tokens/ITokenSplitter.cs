@@ -1,4 +1,4 @@
-﻿// <copyright file="ITokenizer.cs" company="Moonfire Games">
+﻿// <copyright file="ITokenSplitter.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -7,8 +7,9 @@ namespace MfGames.TextTokens.Tokens
     using System.Collections.Generic;
 
     /// <summary>
+    /// Defines the interface of a token splitter, which is used to break apart lines.
     /// </summary>
-    public interface ITokenizer
+    public interface ITokenSplitter
     {
         #region Public Methods and Operators
 

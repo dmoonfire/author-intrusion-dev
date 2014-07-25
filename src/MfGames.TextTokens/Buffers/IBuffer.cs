@@ -128,10 +128,11 @@ namespace MfGames.TextTokens.Buffers
         IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex);
 
         /// <summary>
-        /// Updates the tokens within the buffer for changed lines, including retokenizing
-        /// the lines to reflect the changes.
+        /// Retrieves operations to normalize the changed lines including rebuilding
+        /// tokens.
         /// </summary>
         /// <returns>
+        /// An enumeration of buffer operations to normalize the changed lines.
         /// </returns>
         IEnumerable<IBufferOperation> GetUpdateOperations();
 

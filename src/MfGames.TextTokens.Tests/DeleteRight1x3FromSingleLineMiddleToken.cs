@@ -9,6 +9,8 @@ namespace MfGames.TextTokens.Tests
     using NUnit.Framework;
 
     /// <summary>
+    /// Performs a task that deletes one character three times from the middle of
+    /// the buffer. This will merge tokens together and remote the whitespace.
     /// </summary>
     [TestFixture]
     public class DeleteRight1x3FromSingleLineMiddleToken : MemoryBufferTests
@@ -38,18 +40,20 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Verifies that there is only a single line in the buffer.
         /// </summary>
         [Test]
-        public virtual void FirstLineHasCorrectTokenCount()
+        public void HasCorrectLineCount()
         {
             this.Setup();
-            Assert.AreEqual(3, this.State.Lines[0].Tokens.Count);
+            Assert.AreEqual(1, this.State.Lines.Count);
         }
 
         /// <summary>
+        /// Verifies that line 1 has the correct text.
         /// </summary>
         [Test]
-        public virtual void FirstLineTextIsCorrect()
+        public virtual void Line1HasCorrectText()
         {
             this.Setup();
             Assert.AreEqual(
@@ -57,13 +61,13 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
-        /// Verifies that there is only a single line in the buffer.
+        /// Verifies that line 1 has the correct token count.
         /// </summary>
         [Test]
-        public void HasOneLine()
+        public virtual void Line1HasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(1, this.State.Lines.Count);
+            Assert.AreEqual(3, this.State.Lines[0].Tokens.Count);
         }
 
         #endregion
@@ -71,6 +75,7 @@ namespace MfGames.TextTokens.Tests
         #region Methods
 
         /// <summary>
+        /// Sets up the unit test.
         /// </summary>
         protected override void Setup()
         {
@@ -86,6 +91,7 @@ namespace MfGames.TextTokens.Tests
         #endregion
 
         /// <summary>
+        /// Performs the task and then an undo.
         /// </summary>
         [TestFixture]
         public class Undo : DeleteRight1x3FromSingleLineMiddleToken
@@ -115,22 +121,24 @@ namespace MfGames.TextTokens.Tests
             }
 
             /// <summary>
+            /// Verifies that line 1 has the correct text.
             /// </summary>
             [Test]
-            public override void FirstLineHasCorrectTokenCount()
-            {
-                this.Setup();
-                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
-            }
-
-            /// <summary>
-            /// </summary>
-            [Test]
-            public override void FirstLineTextIsCorrect()
+            public override void Line1HasCorrectText()
             {
                 this.Setup();
                 Assert.AreEqual(
                     "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
+            }
+
+            /// <summary>
+            /// Verifies that line 1 has the correct token count.
+            /// </summary>
+            [Test]
+            public override void Line1HasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
             }
 
             #endregion
@@ -138,6 +146,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Sets up the unit test.
             /// </summary>
             protected override void Setup()
             {
@@ -151,6 +160,7 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Performs the task, undo, and then a redo.
         /// </summary>
         [TestFixture]
         public class UndoRedo : DeleteRight1x3FromSingleLineMiddleToken
@@ -158,6 +168,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Sets up the unit test.
             /// </summary>
             protected override void Setup()
             {
@@ -174,6 +185,7 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Performs the task, an undo, a redo, and then an undo.
         /// </summary>
         [TestFixture]
         public class UndoRedoUndo : Undo
@@ -181,6 +193,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Sets up the unit test.
             /// </summary>
             protected override void Setup()
             {

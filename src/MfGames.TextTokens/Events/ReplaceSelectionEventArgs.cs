@@ -10,6 +10,7 @@ namespace MfGames.TextTokens.Events
     using MfGames.TextTokens.Texts;
 
     /// <summary>
+    /// Defines an event where the selection has changed.
     /// </summary>
     public class ReplaceSelectionEventArgs : EventArgs
     {

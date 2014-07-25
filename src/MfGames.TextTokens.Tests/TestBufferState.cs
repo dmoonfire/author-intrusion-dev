@@ -88,10 +88,13 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Called when lines are inserted into the buffer.
         /// </summary>
         /// <param name="sender">
+        /// The sender.
         /// </param>
         /// <param name="e">
+        /// The <see cref="LineIndexLinesInsertedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnLinesInserted(
             object sender, LineIndexLinesInsertedEventArgs e)
@@ -103,12 +106,10 @@ namespace MfGames.TextTokens.Tests
                 e.LinesInserted.Select(line => new TestLine(line)));
 
             // Report which lines we've inserted.
-            Console.WriteLine(
-                "Inserted lines: "
-                    + string.Join(
-                        ", ", 
-                        insertedLines.Select(l => l.LineKey.ToString())
-                            .ToArray()));
+            string[] lineKeys =
+                insertedLines.Select(l => l.LineKey.ToString()).ToArray();
+            string text = string.Join(", ", lineKeys);
+            Console.WriteLine("Inserted lines: {0}", text);
 
             // Insert our copy of the line into the buffer.
             this.Lines.InsertRange(e.LineIndex.Index, insertedLines);

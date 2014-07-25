@@ -120,7 +120,11 @@ namespace MfGames.TextTokens.Controllers
         /// The command to add operations to.
         /// </param>
         /// <returns>
+        /// A state object that represents the state after the operations.
         /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// Cannot handle multi-line selections.
+        /// </exception>
         public PostSelectionDeleteState AddDeleteOperations(
             BufferCommand command)
         {
@@ -217,6 +221,7 @@ namespace MfGames.TextTokens.Controllers
         /// Converts the buffer selection into a text range.
         /// </summary>
         /// <returns>
+        /// A text range representing the selection.
         /// </returns>
         public TextRange ToTextRange()
         {

@@ -1,4 +1,4 @@
-﻿// <copyright file="InsertThreeLinesIntoSingleLineMiddleToken.cs" company="Moonfire Games">
+﻿// <copyright file="InsertThreeLinesTextIntoSingleLineMiddleToken.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -9,6 +9,7 @@ namespace MfGames.TextTokens.Tests
     using NUnit.Framework;
 
     /// <summary>
+    /// Verifies the result of pasting three lines into a token.
     /// </summary>
     [TestFixture]
     public class InsertThreeLinesTextIntoSingleLineMiddleToken :
@@ -39,25 +40,6 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
-        /// </summary>
-        [Test]
-        public virtual void FirstLineHasCorrectTokenCount()
-        {
-            this.Setup();
-            Assert.AreEqual(4, this.State.Lines[0].Tokens.Count);
-        }
-
-        /// <summary>
-        /// </summary>
-        [Test]
-        public virtual void FirstLineTextIsCorrect()
-        {
-            this.Setup();
-            Assert.AreEqual(
-                "zero on_", this.State.Lines[0].Tokens.GetVisibleText());
-        }
-
-        /// <summary>
         /// Verifies that there is only a single line in the buffer.
         /// </summary>
         [Test]
@@ -68,40 +50,65 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Verifies that line 1 has the correct text.
         /// </summary>
         [Test]
-        public virtual void SecondLineHasCorrectTokenCount()
+        public virtual void Line1HasCorrectText()
         {
             this.Setup();
-            Assert.AreEqual(1, this.State.Lines[1].Tokens.Count);
+            Assert.AreEqual(
+                "zero on_", this.State.Lines[0].Tokens.GetVisibleText());
         }
 
         /// <summary>
+        /// Verifies that line 1 has the correct number of tokens.
         /// </summary>
         [Test]
-        public virtual void SecondLineTextIsCorrect()
+        public virtual void Line1HasCorrectTokenCount()
+        {
+            this.Setup();
+            Assert.AreEqual(4, this.State.Lines[0].Tokens.Count);
+        }
+
+        /// <summary>
+        /// Verifies that line 2 has the correct text.
+        /// </summary>
+        [Test]
+        public virtual void Line2HasCorrectText()
         {
             this.Setup();
             Assert.AreEqual("|", this.State.Lines[1].Tokens.GetVisibleText());
         }
 
         /// <summary>
+        /// Verifies that line 2 has the correct number of tokens.
         /// </summary>
         [Test]
-        public virtual void ThirdLineHasCorrectTokenCount()
+        public virtual void Line2HasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(4, this.State.Lines[2].Tokens.Count);
+            Assert.AreEqual(1, this.State.Lines[1].Tokens.Count);
         }
 
         /// <summary>
+        /// Verifies that line 3 has the correct text.
         /// </summary>
         [Test]
-        public virtual void ThirdLineTextIsCorrect()
+        public virtual void Line3HasCorrectText()
         {
             this.Setup();
             Assert.AreEqual(
                 "_e two", this.State.Lines[2].Tokens.GetVisibleText());
+        }
+
+        /// <summary>
+        /// Verifies line 3 has the correct number of tokens.
+        /// </summary>
+        [Test]
+        public virtual void Line3HasCorrectTokenCount()
+        {
+            this.Setup();
+            Assert.AreEqual(4, this.State.Lines[2].Tokens.Count);
         }
 
         #endregion
@@ -109,6 +116,7 @@ namespace MfGames.TextTokens.Tests
         #region Methods
 
         /// <summary>
+        /// Sets up the unit test.
         /// </summary>
         protected override void Setup()
         {
@@ -121,12 +129,14 @@ namespace MfGames.TextTokens.Tests
         #endregion
 
         /// <summary>
+        /// Performs the task and then an undo.
         /// </summary>
         public class Undo : InsertThreeLinesTextIntoSingleLineMiddleToken
         {
             #region Public Methods and Operators
 
             /// <summary>
+            /// Verifies the cursor is in the correct location.
             /// </summary>
             [Test]
             public override void AnchorPositionIsRight()
@@ -137,6 +147,7 @@ namespace MfGames.TextTokens.Tests
             }
 
             /// <summary>
+            /// Verifies the cursor is in the correct location.
             /// </summary>
             [Test]
             public override void CursorPositionIsRight()
@@ -147,26 +158,7 @@ namespace MfGames.TextTokens.Tests
             }
 
             /// <summary>
-            /// </summary>
-            [Test]
-            public override void FirstLineHasCorrectTokenCount()
-            {
-                this.Setup();
-                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
-            }
-
-            /// <summary>
-            /// </summary>
-            [Test]
-            public override void FirstLineTextIsCorrect()
-            {
-                base.Setup();
-                this.Setup();
-                Assert.AreEqual(
-                    "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
-            }
-
-            /// <summary>
+            /// Verifies that there is only a single line in the buffer.
             /// </summary>
             [Test]
             public override void HasProperNumberOfLines()
@@ -176,31 +168,57 @@ namespace MfGames.TextTokens.Tests
             }
 
             /// <summary>
+            /// Verifies that line 1 has the correct text.
             /// </summary>
             [Test]
-            public override void SecondLineHasCorrectTokenCount()
+            public override void Line1HasCorrectText()
             {
-                Assert.Pass();
+                base.Setup();
+                this.Setup();
+                Assert.AreEqual(
+                    "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
             }
 
             /// <summary>
+            /// Verifies that line 1 has the correct number of tokens.
             /// </summary>
             [Test]
-            public override void SecondLineTextIsCorrect()
+            public override void Line1HasCorrectTokenCount()
+            {
+                this.Setup();
+                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+            }
+
+            /// <summary>
+            /// Verifies that line 2 has the correct text.
+            /// </summary>
+            [Test]
+            public override void Line2HasCorrectText()
             {
                 Assert.Pass();
             }
 
             /// <summary>
+            /// Verifies that line 2 has the correct number of tokens.
             /// </summary>
-            public override void ThirdLineHasCorrectTokenCount()
+            [Test]
+            public override void Line2HasCorrectTokenCount()
             {
                 Assert.Pass();
             }
 
             /// <summary>
+            /// Verifies that line 3 has the correct text.
             /// </summary>
-            public override void ThirdLineTextIsCorrect()
+            public override void Line3HasCorrectText()
+            {
+                Assert.Pass();
+            }
+
+            /// <summary>
+            /// Verifies line 3 has the correct number of tokens.
+            /// </summary>
+            public override void Line3HasCorrectTokenCount()
             {
                 Assert.Pass();
             }
@@ -210,6 +228,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Sets up the unit test.
             /// </summary>
             protected override void Setup()
             {
@@ -221,12 +240,14 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Performs the task, an undo, and then a redo.
         /// </summary>
         public class UndoRedo : InsertThreeLinesTextIntoSingleLineMiddleToken
         {
             #region Methods
 
             /// <summary>
+            /// Sets up the unit test.
             /// </summary>
             protected override void Setup()
             {
@@ -239,12 +260,14 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Performs the task, an undo, a redo, and then an undo.
         /// </summary>
         public class UndoRedoUndo : Undo
         {
             #region Methods
 
             /// <summary>
+            /// Sets up the unit test.
             /// </summary>
             protected override void Setup()
             {
@@ -257,6 +280,7 @@ namespace MfGames.TextTokens.Tests
         }
 
         /// <summary>
+        /// Performs the task, an undo, a redo, an undo, and then a redo.
         /// </summary>
         public class UndoRedoUndoRedo :
             InsertThreeLinesTextIntoSingleLineMiddleToken
@@ -264,6 +288,7 @@ namespace MfGames.TextTokens.Tests
             #region Methods
 
             /// <summary>
+            /// Sets up the unit test.
             /// </summary>
             protected override void Setup()
             {

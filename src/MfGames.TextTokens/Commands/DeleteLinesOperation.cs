@@ -12,16 +12,20 @@ namespace MfGames.TextTokens.Commands
     using MfGames.TextTokens.Tokens;
 
     /// <summary>
+    /// Defines an operation that deletes one or more lines.
     /// </summary>
     public class DeleteLinesOperation : IBufferOperation
     {
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteLinesOperation"/> class.
         /// </summary>
         /// <param name="lineIndex">
+        /// Index of the line.
         /// </param>
         /// <param name="count">
+        /// The count.
         /// </param>
         public DeleteLinesOperation(LineIndex lineIndex, int count)
         {
@@ -62,7 +66,7 @@ namespace MfGames.TextTokens.Commands
         protected List<List<IToken>> DeletedTokens { get; private set; }
 
         /// <summary>
-        /// Gets the delete lines.
+        /// Gets or sets the delete lines.
         /// </summary>
         /// <value>
         /// The deleted lines.

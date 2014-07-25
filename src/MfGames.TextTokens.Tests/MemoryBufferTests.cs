@@ -12,23 +12,24 @@ namespace MfGames.TextTokens.Tests
     using NUnit.Framework;
 
     /// <summary>
+    /// Base class for tests that run against a memory buffer.
     /// </summary>
     public class MemoryBufferTests
     {
         #region Properties
 
         /// <summary>
-        /// Contains an in-memory buffer model.
+        /// Gets the in-memory buffer model.
         /// </summary>
         protected TestBuffer Buffer { get; private set; }
 
         /// <summary>
-        /// Contains a UI controller for the buffer.
+        /// Gets the UI controller for the buffer.
         /// </summary>
         protected UserBufferController Controller { get; private set; }
 
         /// <summary>
-        /// Contains a listener which reflects the user-visible state of
+        /// Gets the listener which reflects the user-visible state of
         /// the buffer.
         /// </summary>
         protected TestBufferState State { get; private set; }
@@ -38,6 +39,7 @@ namespace MfGames.TextTokens.Tests
         #region Public Methods and Operators
 
         /// <summary>
+        /// Tears down the test and show the final state of the buffer.
         /// </summary>
         [TearDown]
         public void TearDown()

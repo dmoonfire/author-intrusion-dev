@@ -26,6 +26,7 @@ namespace MfGames.TextTokens.Commands
         /// Reverses the operation on the given buffer.
         /// </summary>
         /// <param name="buffer">
+        /// The buffer to execute the operations on.
         /// </param>
         void Undo(IBuffer buffer);
 

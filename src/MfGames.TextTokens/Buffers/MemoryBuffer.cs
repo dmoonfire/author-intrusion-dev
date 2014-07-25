@@ -25,6 +25,7 @@ namespace MfGames.TextTokens.Buffers
         #region Fields
 
         /// <summary>
+        /// The changed lines since the last operation.
         /// </summary>
         private readonly HashSet<ILine> changedLines;
 
@@ -34,8 +35,9 @@ namespace MfGames.TextTokens.Buffers
         private readonly List<Line> lines;
 
         /// <summary>
+        /// Contains the token splitter associated with the buffer.
         /// </summary>
-        private DefaultTokenizer tokenizer;
+        private ITokenSplitter tokenSplitter;
 
         #endregion
 
@@ -48,7 +50,7 @@ namespace MfGames.TextTokens.Buffers
         {
             this.lines = new List<Line>();
             this.changedLines = new HashSet<ILine>();
-            this.Tokenizer = new DefaultTokenizer();
+            this.TokenSplitter = new DefaultTokenSplitter();
             this.UndoCommands = new Stack<BufferCommand>();
             this.RedoCommands = new Stack<BufferCommand>();
         }
@@ -106,14 +108,17 @@ namespace MfGames.TextTokens.Buffers
         #region Properties
 
         /// <summary>
+        /// Gets or sets the token parser for this buffer.
         /// </summary>
-        /// <exception cref="ArgumentNullException">
-        /// </exception>
-        protected DefaultTokenizer Tokenizer
+        /// <value>
+        /// The token parser.
+        /// </value>
+        /// <exception cref="System.ArgumentNullException">value;Cannot assign a null TokenSplitter to the buffer.</exception>
+        protected ITokenSplitter TokenSplitter
         {
             get
             {
-                return this.tokenizer;
+                return this.tokenSplitter;
             }
 
             set
@@ -121,10 +126,11 @@ namespace MfGames.TextTokens.Buffers
                 if (value == null)
                 {
                     throw new ArgumentNullException(
-                        "value", "Cannot assign a null tokenizer to the buffer.");
+                        "value", 
+                        "Cannot assign a null TokenSplitter to the buffer.");
                 }
 
-                this.tokenizer = value;
+                this.tokenSplitter = value;
             }
         }
 
@@ -165,12 +171,17 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
+        /// Constructs a new token that is copied from the old one except
+        /// for the given text.
         /// </summary>
         /// <param name="oldToken">
+        /// The old token.
         /// </param>
         /// <param name="newText">
+        /// The new text.
         /// </param>
         /// <returns>
+        /// A new token.
         /// </returns>
         public IToken CreateToken(IToken oldToken, string newText)
         {
@@ -243,12 +254,16 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
+        /// Retrieves the token at the given indexes.
         /// </summary>
         /// <param name="lineIndex">
+        /// Index of the line.
         /// </param>
         /// <param name="tokenIndex">
+        /// Index of the token.
         /// </param>
         /// <returns>
+        /// The token at the given indexes.
         /// </returns>
         public IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex)
         {
@@ -258,10 +273,11 @@ namespace MfGames.TextTokens.Buffers
         }
 
         /// <summary>
-        /// Updates the tokens within the buffer for changed lines, including retokenizing
-        /// the lines to reflect the changes.
+        /// Retrieves operations to normalize the changed lines including rebuilding
+        /// tokens.
         /// </summary>
         /// <returns>
+        /// An enumeration of buffer operations to normalize the changed lines.
         /// </returns>
         public IEnumerable<IBufferOperation> GetUpdateOperations()
         {
@@ -284,7 +300,7 @@ namespace MfGames.TextTokens.Buffers
                 string originalText = originalTokens.GetVisibleText();
 
                 string[] newTokenTexts =
-                    this.tokenizer.Tokenize(originalText).ToArray();
+                    this.tokenSplitter.Tokenize(originalText).ToArray();
 
                 // If the tokens don't match the visible ones exactly, we simply replace the
                 // entire line.
@@ -415,8 +431,6 @@ namespace MfGames.TextTokens.Buffers
         /// <returns>
         /// A dictionary of the old selection items.
         /// </returns>
-        /// <exception cref="System.NotImplementedException">
-        /// </exception>
         public Dictionary<object, TextRange> RaiseReplaceSelection(
             TextRange newTextRange)
         {
@@ -443,8 +457,6 @@ namespace MfGames.TextTokens.Buffers
         /// <param name="oldTextRanges">
         /// The old text ranges.
         /// </param>
-        /// <exception cref="System.NotImplementedException">
-        /// </exception>
         public void RaiseRestoreSelection(
             Dictionary<object, TextRange> oldTextRanges)
         {
@@ -465,9 +477,8 @@ namespace MfGames.TextTokens.Buffers
 
         /// <summary>
         /// Re-executes the last undone command (reverses the undo) or do nothing if
-        /// there are no redoable commands.
+        /// there are no re-doable commands.
         /// </summary>
-        /// <exception cref="System.NotImplementedException"></exception>
         public void Redo()
         {
             // If there are no undo commands, then do nothing.
@@ -560,7 +571,6 @@ namespace MfGames.TextTokens.Buffers
         /// Executes the reverse operation of the last command or do nothing if there
         /// are no undoable commands.
         /// </summary>
-        /// <exception cref="System.NotImplementedException"></exception>
         public void Undo()
         {
             // If there are no undo commands, then do nothing.

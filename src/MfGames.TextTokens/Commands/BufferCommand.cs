@@ -17,6 +17,8 @@ namespace MfGames.TextTokens.Commands
         #region Fields
 
         /// <summary>
+        /// Contains the list of operations the buffer provided to handle
+        /// changes such a re-token-splitting.
         /// </summary>
         private List<IBufferOperation> updateOperations;
 

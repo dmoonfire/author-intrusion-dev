@@ -12,7 +12,7 @@ namespace MfGames.TextTokens.Tests.Tokens
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests the functionality of the default tokenizer to ensure it produces the
+    /// Tests the functionality of the default token parser to ensure it produces the
     /// correct tokens.
     /// </summary>
     [TestFixture]
@@ -21,13 +21,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         #region Public Methods and Operators
 
         /// <summary>
+        /// Verifies how the splitter handles a blank (empty) string.
         /// </summary>
         [Test]
         public void HandleBlankString()
         {
             // Arrange
             string input = string.Empty;
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
@@ -39,13 +40,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         }
 
         /// <summary>
+        /// Verifies how the splitter works with a contraction.
         /// </summary>
         [Test]
         public void HandleContraction()
         {
             // Arrange
             string input = "didn't";
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
@@ -60,13 +62,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         }
 
         /// <summary>
+        /// Verifies how the token handles a leading underscore.
         /// </summary>
         [Test]
         public void HandleLeadingUnderscoreTwoWordsString()
         {
             // Arrange
             string input = "_e two";
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
@@ -83,13 +86,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         }
 
         /// <summary>
+        /// Verifies how the splitter handles a null.
         /// </summary>
         [Test]
         public void HandleNullString()
         {
             // Arrange
             string input = null;
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
@@ -101,13 +105,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         }
 
         /// <summary>
+        /// Verifies how the splitter handles a single word string.
         /// </summary>
         [Test]
         public void HandleSingleWordString()
         {
             // Arrange
             string input = "one";
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
@@ -119,13 +124,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         }
 
         /// <summary>
+        /// Verifies how the splitter handles a single space.
         /// </summary>
         [Test]
         public void HandleSpaceString()
         {
             // Arrange
             string input = " ";
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
@@ -137,13 +143,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         }
 
         /// <summary>
+        /// Verifies how the splitter handles three, space-separated words.
         /// </summary>
         [Test]
         public void HandleThreeWordsString()
         {
             // Arrange
             string input = "one two three";
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
@@ -161,13 +168,14 @@ namespace MfGames.TextTokens.Tests.Tokens
         }
 
         /// <summary>
+        /// Verifies how the splitter handles two sequential spaces.
         /// </summary>
         [Test]
         public void HandleTwoSpacesString()
         {
             // Arrange
             string input = "  ";
-            var tokenizer = new DefaultTokenizer();
+            var tokenizer = new DefaultTokenSplitter();
 
             // Act
             List<string> results = tokenizer.Tokenize(input).ToList();
