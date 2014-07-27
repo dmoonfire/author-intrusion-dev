@@ -1,22 +1,22 @@
-﻿// <copyright file="CssClassKey.cs" company="Moonfire Games">
+﻿// <copyright file="MetadataKey.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace AuthorIntrusion
+namespace AuthorIntrusion.Metadata
 {
     using System;
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// Defines a CSS class name which is used for identifying classes of lines
-    /// and tokens.
+    /// Identifies the key for a metadata entry associated with a buffer, line,
+    /// or token.
     /// </summary>
-    public struct CssClassKey : IEquatable<CssClassKey>
+    public struct MetadataKey : IEquatable<MetadataKey>
     {
         #region Fields
 
         /// <summary>
-        /// The name of the CSS class.
+        /// Contains the name of the metadata key.
         /// </summary>
         public readonly string Name;
 
@@ -25,12 +25,12 @@ namespace AuthorIntrusion
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CssClassKey"/> struct.
+        /// Initializes a new instance of the <see cref="MetadataKey"/> struct.
         /// </summary>
         /// <param name="name">
         /// The name.
         /// </param>
-        public CssClassKey(string name)
+        public MetadataKey(string name)
         {
             // Establish our contracts.
             Contract.Requires(name != null);
@@ -52,7 +52,7 @@ namespace AuthorIntrusion
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(CssClassKey left, CssClassKey right)
+        public static bool operator ==(MetadataKey left, MetadataKey right)
         {
             return left.Equals(right);
         }
@@ -65,7 +65,7 @@ namespace AuthorIntrusion
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(CssClassKey left, CssClassKey right)
+        public static bool operator !=(MetadataKey left, MetadataKey right)
         {
             return !left.Equals(right);
         }
@@ -79,7 +79,7 @@ namespace AuthorIntrusion
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(CssClassKey other)
+        public bool Equals(MetadataKey other)
         {
             return string.Equals(this.Name, other.Name);
         }
@@ -100,7 +100,7 @@ namespace AuthorIntrusion
                 return false;
             }
 
-            return obj is CssClassKey && this.Equals((CssClassKey)obj);
+            return obj is MetadataKey && this.Equals((MetadataKey)obj);
         }
 
         /// <summary>

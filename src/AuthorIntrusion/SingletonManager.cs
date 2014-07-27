@@ -7,6 +7,9 @@ namespace AuthorIntrusion
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using AuthorIntrusion.Css;
+    using AuthorIntrusion.Metadata;
+
     /// <summary>
     /// A basic implementation of a singleton manager which 
     /// </summary>

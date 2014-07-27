@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CssClassKey.cs" />
-    <Compile Include="MetadataKey.cs" />
+    <Compile Include="Css\CssClassKey.cs" />
+    <Compile Include="Metadata\MetadataKey.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingletonManager.cs" />
