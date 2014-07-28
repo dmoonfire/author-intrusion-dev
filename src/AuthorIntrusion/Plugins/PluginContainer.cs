@@ -5,6 +5,7 @@
 namespace AuthorIntrusion.Plugins
 {
     using StructureMap;
+    using StructureMap.Configuration.DSL;
 
     /// <summary>
     /// Implements the primary container for the IoC implementation.
@@ -16,8 +17,11 @@ namespace AuthorIntrusion.Plugins
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginContainer"/> class.
         /// </summary>
-        public PluginContainer()
-            : base(new PluginRegistry())
+        /// <param name="additionalRegistries">
+        /// The additional registries.
+        /// </param>
+        public PluginContainer(params Registry[] additionalRegistries)
+            : base(new PluginRegistry(additionalRegistries))
         {
         }
 

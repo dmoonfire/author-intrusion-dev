@@ -53,8 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CliProgram.cs" />
+    <Compile Include="CliRegistry.cs" />
     <Compile Include="Options\ProgramOptions.cs" />
-    <Compile Include="Options\TransformSubOptions.cs" />
+    <Compile Include="Transform\TransformCommand.cs" />
+    <Compile Include="Transform\TransformOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,13 +18,21 @@ namespace AuthorIntrusion.Plugins
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginRegistry"/> class.
         /// </summary>
-        public PluginRegistry()
+        /// <param name="additionalRegistries">
+        /// </param>
+        public PluginRegistry(params Registry[] additionalRegistries)
         {
             // Set up the persistence from this assembly.
             this.For<PersistenceFactoryManager>().Singleton();
             this.For<IPersistenceFactory>()
                 .Add<FilePersistenceFactory>()
                 .Singleton();
+
+            // Add in the additional registries.
+            foreach (Registry registry in additionalRegistries)
+            {
+                this.IncludeRegistry(registry);
+            }
         }
 
         #endregion

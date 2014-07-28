@@ -1,4 +1,4 @@
-﻿// <copyright file="TransformSubOptions.cs" company="Moonfire Games">
+﻿// <copyright file="TransformOptions.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -7,9 +7,9 @@ namespace AuthorIntrusion.Cli.Options
     using CommandLine;
 
     /// <summary>
-    /// Defines the options for the "transform" sub-command.
+    /// Defines the "transform" sub-command options.
     /// </summary>
-    public class TransformSubOptions
+    public class TransformOptions
     {
         #region Constants
 
@@ -23,9 +23,9 @@ namespace AuthorIntrusion.Cli.Options
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransformSubOptions"/> class.
+        /// Initializes a new instance of the <see cref="TransformOptions"/> class.
         /// </summary>
-        public TransformSubOptions()
+        public TransformOptions()
         {
             this.InputProtocol = "file";
         }

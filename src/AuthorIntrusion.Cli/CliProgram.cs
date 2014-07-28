@@ -49,15 +49,17 @@ namespace AuthorIntrusion.Cli
             }
 
             // Set up the plugins.
-            var container = new PluginContainer();
+            var container = new PluginContainer(new CliRegistry());
             container.AssertConfigurationIsValid();
             Trace.WriteLine(container.WhatDoIHave());
 
             // Determine which command to run.
-            if (invokedVerb == TransformSubOptions.LongName)
+            if (invokedVerb == TransformOptions.LongName)
             {
-                var transformOptions = (TransformSubOptions)invokedOptions;
-                Console.WriteLine("Transform");
+                var transformOptions = (TransformOptions)invokedOptions;
+                var transformCommand = container.GetInstance<TransformCommand>();
+
+                transformCommand.Run(transformOptions);
             }
         }
 

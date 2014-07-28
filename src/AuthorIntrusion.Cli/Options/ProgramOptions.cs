@@ -17,10 +17,10 @@ namespace AuthorIntrusion.Cli.Options
         /// Gets or sets the options for the sub-command form transforming
         /// files from one format to another.
         /// </summary>
-        [VerbOption(TransformSubOptions.LongName, 
+        [VerbOption(TransformOptions.LongName, 
             HelpText =
                 "Transform an input file or project into a different format.")]
-        public TransformSubOptions TransformSubOptions { get; set; }
+        public TransformOptions TransformOptions { get; set; }
 
         #endregion
     }
