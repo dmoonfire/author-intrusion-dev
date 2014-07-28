@@ -44,7 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buffers\ProjectBuffer.cs" />
     <Compile Include="Css\CssClassKey.cs" />
+    <Compile Include="IO\IPersistence.cs" />
+    <Compile Include="IO\IProjectBufferReader.cs" />
+    <Compile Include="IO\ProjectBufferReaderSettings.cs" />
+    <Compile Include="Metadata\MetadataDictionary.cs" />
     <Compile Include="Metadata\MetadataKey.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,6 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\mfgames-cil\src\MfGames\MfGames.csproj">
+      <Project>{3babbe73-cd1d-494e-a81f-e4ea40107fa9}</Project>
+      <Name>MfGames</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
