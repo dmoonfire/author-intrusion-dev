@@ -51,7 +51,13 @@ namespace AuthorIntrusion.Cli.Transform
         /// </param>
         public void Run(TransformOptions options)
         {
-            Console.WriteLine("Transform from the inside: " + options);
+            Console.WriteLine("Transform from the inside 2: " + options);
+            Uri uri = options.InputUri;
+            Console.WriteLine(uri);
+
+            // Load the project into memory.
+            // IPersistenceFactory factory =
+            // this.PersistenceFactoryManager.GetFactory(options.InputUri);
         }
 
         #endregion

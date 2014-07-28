@@ -4,6 +4,8 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.Cli.Transform
 {
+    using System;
+
     using CommandLine;
 
     /// <summary>
@@ -20,26 +22,24 @@ namespace AuthorIntrusion.Cli.Transform
 
         #endregion
 
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransformOptions"/> class.
-        /// </summary>
-        public TransformOptions()
-        {
-            this.InputProtocol = "file";
-        }
-
-        #endregion
-
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the protocol for the input. This defaults to 'file' for file
-        /// system operations.
+        /// Gets or sets the input project, which is the file that will be loaded.
         /// </summary>
-        [Option("input-protocol")]
-        public string InputProtocol { get; set; }
+        [ValueOption(0)]
+        public string Input { get; set; }
+
+        /// <summary>
+        /// Gets a normalized URI-based version of Input.
+        /// </summary>
+        public Uri InputUri
+        {
+            get
+            {
+                return new Uri(this.Input);
+            }
+        }
 
         #endregion
     }
