@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames", "..\..\mfgames-ci
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.Tests", "..\..\mfgames-cil\src\MfGames.Tests\MfGames.Tests.csproj", "{08F24085-6341-4BC6-92CF-1DFD8F3B1AF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorIntrusion.Cli", "AuthorIntrusion.Cli\AuthorIntrusion.Cli.csproj", "{9EABB82B-81E0-4F81-B493-9DEB8CFA4682}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{08F24085-6341-4BC6-92CF-1DFD8F3B1AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08F24085-6341-4BC6-92CF-1DFD8F3B1AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08F24085-6341-4BC6-92CF-1DFD8F3B1AF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EABB82B-81E0-4F81-B493-9DEB8CFA4682}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EABB82B-81E0-4F81-B493-9DEB8CFA4682}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EABB82B-81E0-4F81-B493-9DEB8CFA4682}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EABB82B-81E0-4F81-B493-9DEB8CFA4682}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
