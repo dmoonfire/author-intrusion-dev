@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Buffers\ProjectBuffer.cs" />
     <Compile Include="Css\CssClassKey.cs" />
+    <Compile Include="IO\FilePersistenceFactory.cs" />
     <Compile Include="IO\IPersistence.cs" />
     <Compile Include="IO\IPersistenceFactory.cs" />
     <Compile Include="IO\IProjectBufferReader.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="IO\ProjectBufferReaderSettings.cs" />
     <Compile Include="Metadata\MetadataDictionary.cs" />
     <Compile Include="Metadata\MetadataKey.cs" />
+    <Compile Include="Plugins\PluginContainer.cs" />
+    <Compile Include="Plugins\PluginRegistry.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingletonManager.cs" />

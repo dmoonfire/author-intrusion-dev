@@ -5,8 +5,10 @@
 namespace AuthorIntrusion.Cli
 {
     using System;
+    using System.Diagnostics;
 
     using AuthorIntrusion.Cli.Options;
+    using AuthorIntrusion.Plugins;
 
     using CommandLine;
 
@@ -46,6 +48,12 @@ namespace AuthorIntrusion.Cli
                 Environment.Exit(Parser.DefaultExitCodeFail);
             }
 
+            // Set up the plugins.
+            var container = new PluginContainer();
+            container.AssertConfigurationIsValid();
+            Trace.WriteLine(container.WhatDoIHave());
+
+            // Determine which command to run.
             if (invokedVerb == TransformSubOptions.LongName)
             {
                 var transformOptions = (TransformSubOptions)invokedOptions;
