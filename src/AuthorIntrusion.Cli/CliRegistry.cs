@@ -4,7 +4,7 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.Cli
 {
-    using AuthorIntrusion.Cli.Options;
+    using AuthorIntrusion.Cli.Transform;
 
     using StructureMap.Configuration.DSL;
 

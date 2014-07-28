@@ -7,7 +7,7 @@ namespace AuthorIntrusion.Cli
     using System;
     using System.Diagnostics;
 
-    using AuthorIntrusion.Cli.Options;
+    using AuthorIntrusion.Cli.Transform;
     using AuthorIntrusion.Plugins;
 
     using CommandLine;
@@ -31,7 +31,7 @@ namespace AuthorIntrusion.Cli
             string invokedVerb = null;
             object invokedOptions = null;
 
-            var options = new ProgramOptions();
+            var options = new CliOptions();
             bool successful = Parser.Default.ParseArguments(
                 args, 
                 options, 

@@ -1,15 +1,17 @@
-﻿// <copyright file="ProgramOptions.cs" company="Moonfire Games">
+﻿// <copyright file="CliOptions.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace AuthorIntrusion.Cli.Options
+namespace AuthorIntrusion.Cli
 {
+    using AuthorIntrusion.Cli.Transform;
+
     using CommandLine;
 
     /// <summary>
     /// Encapsulates the argument options for the CLI tool.
     /// </summary>
-    public class ProgramOptions
+    public class CliOptions
     {
         #region Public Properties
 
