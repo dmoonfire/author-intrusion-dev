@@ -27,6 +27,7 @@ namespace AuthorIntrusion.Plugins
             this.For<IPersistenceFactory>()
                 .Add<FilePersistenceFactory>()
                 .Singleton();
+            this.For<IFileBufferFormat>().Add<MarkdownBufferFormat>();
 
             // Add in the additional registries.
             foreach (Registry registry in additionalRegistries)

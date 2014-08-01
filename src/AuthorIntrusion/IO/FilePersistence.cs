@@ -15,6 +15,15 @@ namespace AuthorIntrusion.IO
     /// </summary>
     public class FilePersistence : IPersistence
     {
+        #region Fields
+
+        /// <summary>
+        /// Contains the format of the project file.
+        /// </summary>
+        private readonly IFileBufferFormat projectFormat;
+
+        #endregion
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -23,8 +32,12 @@ namespace AuthorIntrusion.IO
         /// <param name="projectFile">
         /// The project file.
         /// </param>
-        public FilePersistence(FileInfo projectFile)
+        /// <param name="projectFormat">
+        /// </param>
+        public FilePersistence(
+            FileInfo projectFile, IFileBufferFormat projectFormat)
         {
+            this.projectFormat = projectFormat;
             this.ProjectFile = projectFile;
         }
 

@@ -57,9 +57,14 @@
     <Compile Include="Css\CssClassKey.cs" />
     <Compile Include="IO\FilePersistence.cs" />
     <Compile Include="IO\FilePersistenceFactory.cs" />
+    <Compile Include="IO\IBufferFormat.cs" />
+    <Compile Include="IO\IFileBufferFormat.cs" />
+    <Compile Include="INamed.cs" />
+    <Compile Include="INamedSlugged.cs" />
     <Compile Include="IO\IPersistence.cs" />
     <Compile Include="IO\IPersistenceFactory.cs" />
-    <Compile Include="IO\IProjectBufferReader.cs" />
+    <Compile Include="IO\MarkdownBufferFormat.cs" />
+    <Compile Include="ISlugged.cs" />
     <Compile Include="IO\PersistenceFactoryManager.cs" />
     <Compile Include="IO\ProjectBufferReaderSettings.cs" />
     <Compile Include="Metadata\MetadataDictionary.cs" />

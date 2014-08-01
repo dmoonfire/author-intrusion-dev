@@ -13,6 +13,30 @@ namespace AuthorIntrusion.IO
     /// </summary>
     public class FilePersistenceFactory : IPersistenceFactory
     {
+        #region Fields
+
+        /// <summary>
+        /// Contains a list of formats that the filesystem factory is aware of.
+        /// </summary>
+        private readonly IFileBufferFormat[] formats;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilePersistenceFactory"/> class.
+        /// </summary>
+        /// <param name="formats">
+        /// The formats.
+        /// </param>
+        public FilePersistenceFactory(IFileBufferFormat[] formats)
+        {
+            this.formats = formats;
+        }
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -65,8 +89,26 @@ namespace AuthorIntrusion.IO
                     "Cannot file project file: " + path + ".");
             }
 
+            // Figure out which format can handle the project file.
+            IFileBufferFormat projectFormat = null;
+
+            foreach (IFileBufferFormat format in this.formats)
+            {
+                if (format.CanHandle(projectFile))
+                {
+                    projectFormat = format;
+                }
+            }
+
+            if (projectFormat == null)
+            {
+                throw new InvalidOperationException(
+                    "Cannot identify the format for the project file: "
+                        + projectFile.Name + ".");
+            }
+
             // The file exists, so create the file persistence for it.
-            var persistence = new FilePersistence(projectFile);
+            var persistence = new FilePersistence(projectFile, projectFormat);
             return persistence;
         }
 

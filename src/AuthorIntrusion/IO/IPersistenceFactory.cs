@@ -27,7 +27,9 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Constructs an IPersistence object based on the given URI.
         /// </summary>
-        /// <param name="uri">The URI to load.</param>
+        /// <param name="uri">
+        /// The URI to load.
+        /// </param>
         /// <returns>
         /// An IPersistence object representing the path.
         /// </returns>

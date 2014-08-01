@@ -4,8 +4,6 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.Cli.Transform
 {
-    using System;
-
     using AuthorIntrusion.IO;
 
     /// <summary>
@@ -53,7 +51,9 @@ namespace AuthorIntrusion.Cli.Transform
         {
             // Load the project into memory.
             var project = new Project();
-            var persistence = this.PersistenceFactoryManager.CreatePersistence(options.InputUri);
+            IPersistence persistence =
+                this.PersistenceFactoryManager.CreatePersistence(
+                    options.InputUri);
         }
 
         #endregion
