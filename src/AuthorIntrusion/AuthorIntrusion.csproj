@@ -58,12 +58,15 @@
     <Compile Include="IO\FilePersistence.cs" />
     <Compile Include="IO\FilePersistenceFactory.cs" />
     <Compile Include="IO\IBufferFormat.cs" />
+    <Compile Include="IO\IBufferFormatFactory.cs" />
     <Compile Include="IO\IFileBufferFormat.cs" />
+    <Compile Include="IO\IFileBufferFormatFormat.cs" />
     <Compile Include="INamed.cs" />
     <Compile Include="INamedSlugged.cs" />
     <Compile Include="IO\IPersistence.cs" />
     <Compile Include="IO\IPersistenceFactory.cs" />
     <Compile Include="IO\MarkdownBufferFormat.cs" />
+    <Compile Include="IO\MarkdownBufferFormatFactory.cs" />
     <Compile Include="ISlugged.cs" />
     <Compile Include="IO\PersistenceFactoryManager.cs" />
     <Compile Include="IO\ProjectBufferReaderSettings.cs" />

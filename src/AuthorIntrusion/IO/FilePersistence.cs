@@ -33,6 +33,7 @@ namespace AuthorIntrusion.IO
         /// The project file.
         /// </param>
         /// <param name="projectFormat">
+        /// The project format.
         /// </param>
         public FilePersistence(
             FileInfo projectFile, IFileBufferFormat projectFormat)

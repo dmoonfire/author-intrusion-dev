@@ -8,7 +8,7 @@ namespace AuthorIntrusion.IO
     /// Describes the common interface for working with a buffer format, which may be specific
     /// to a persistence or be general.
     /// </summary>
-    public interface IBufferFormat : INamedSlugged
+    public interface IBufferFormat
     {
     }
 }
