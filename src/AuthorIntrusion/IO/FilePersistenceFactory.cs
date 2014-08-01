@@ -5,6 +5,7 @@
 namespace AuthorIntrusion.IO
 {
     using System;
+    using System.IO;
 
     /// <summary>
     /// Defines the persistence factory for the "file" protocol which interacts
@@ -18,7 +19,7 @@ namespace AuthorIntrusion.IO
         /// Gets the name of the URI protocol that this factory handles, without the
         /// trailing "://". For example, "file" or "ai" instead of "file://" or "ai://".
         /// </summary>
-        public string Protocol
+        public string Scheme
         {
             get
             {
@@ -35,17 +36,38 @@ namespace AuthorIntrusion.IO
         /// component of the path after the "://". For example, this method will get "a/b.xml"
         /// from "file://a/b.xml".
         /// </summary>
-        /// <param name="path">
-        /// The URI path component after the "://".
+        /// <param name="uri">
         /// </param>
         /// <returns>
         /// An IPersistence object representing the path.
         /// </returns>
         /// <exception cref="System.NotImplementedException">
         /// </exception>
-        public IPersistence CreatePersistence(string path)
+        public IPersistence CreatePersistence(Uri uri)
         {
-            throw new NotImplementedException();
+            // For the filesystem, we need to keep track of the "project" or root file
+            // so we can write it out again. If the URI represents a directory, we have
+            // to identify the project file.
+            string path = uri.LocalPath;
+
+            if (Directory.Exists(path))
+            {
+                throw new ArgumentException(
+                    "The URI must point to a filename, not a directory.", "uri");
+            }
+
+            // Save the project file.
+            var projectFile = new FileInfo(path);
+
+            if (!projectFile.Exists)
+            {
+                throw new FileNotFoundException(
+                    "Cannot file project file: " + path + ".");
+            }
+
+            // The file exists, so create the file persistence for it.
+            var persistence = new FilePersistence(projectFile);
+            return persistence;
         }
 
         #endregion

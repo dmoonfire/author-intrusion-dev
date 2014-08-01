@@ -4,6 +4,8 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.IO
 {
+    using System;
+
     /// <summary>
     /// A persistence factory is a factory class that hooks up a protocol, such as "file://"
     /// or "ai://" to a specific instance of an IPersistence class.
@@ -16,24 +18,20 @@ namespace AuthorIntrusion.IO
         /// Gets the name of the URI protocol that this factory handles, without the
         /// trailing "://". For example, "file" or "ai" instead of "file://" or "ai://".
         /// </summary>
-        string Protocol { get; }
+        string Scheme { get; }
 
         #endregion
 
         #region Public Methods and Operators
 
         /// <summary>
-        /// Constructs an IPersistence object based on the given path. This will be the
-        /// component of the path after the "://". For example, this method will get "a/b.xml"
-        /// from "file://a/b.xml".
+        /// Constructs an IPersistence object based on the given URI.
         /// </summary>
-        /// <param name="path">
-        /// The URI path component after the "://".
-        /// </param>
+        /// <param name="uri">The URI to load.</param>
         /// <returns>
         /// An IPersistence object representing the path.
         /// </returns>
-        IPersistence CreatePersistence(string path);
+        IPersistence CreatePersistence(Uri uri);
 
         #endregion
     }

@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Buffers\ProjectBuffer.cs" />
     <Compile Include="Css\CssClassKey.cs" />
+    <Compile Include="IO\FilePersistence.cs" />
     <Compile Include="IO\FilePersistenceFactory.cs" />
     <Compile Include="IO\IPersistence.cs" />
     <Compile Include="IO\IPersistenceFactory.cs" />
