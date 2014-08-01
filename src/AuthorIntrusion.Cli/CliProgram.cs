@@ -5,7 +5,6 @@
 namespace AuthorIntrusion.Cli
 {
     using System;
-    using System.Diagnostics;
 
     using AuthorIntrusion.Cli.Transform;
     using AuthorIntrusion.Plugins;
@@ -51,7 +50,6 @@ namespace AuthorIntrusion.Cli
             // Set up the plugins.
             var container = new PluginContainer(new CliRegistry());
             container.AssertConfigurationIsValid();
-            Trace.WriteLine(container.WhatDoIHave());
 
             // Determine which command to run.
             if (invokedVerb == TransformOptions.LongName)
