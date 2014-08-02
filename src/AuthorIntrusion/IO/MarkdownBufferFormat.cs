@@ -59,6 +59,7 @@ namespace AuthorIntrusion.IO
         /// The metadata.
         /// </param>
         /// <param name="content">
+        /// The content.
         /// </param>
         private void LoadReader(
             StreamReader reader, 
@@ -126,9 +127,17 @@ namespace AuthorIntrusion.IO
         /// Loads metadata from a YAML format.
         /// </summary>
         /// <param name="reader">
+        /// The reader.
         /// </param>
         /// <param name="metadata">
+        /// The metadata.
         /// </param>
+        /// <exception cref="FileLoadException">
+        /// Cannot load file without a proper YAML header.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Cannot parse YAML metadata with non-scalar values.
+        /// </exception>
         private void ReadYamlMetadata(
             StreamReader reader, Dictionary<string, string> metadata)
         {
