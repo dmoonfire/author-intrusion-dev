@@ -97,7 +97,7 @@ namespace AuthorIntrusion.IO
             foreach (
                 IFileBufferFormatFactory formatFactory in this.formatFactories)
             {
-                if (formatFactory.CanHandle(projectFile))
+                if (formatFactory.CanRead(projectFile))
                 {
                     projectFormatFactory = formatFactory;
                 }

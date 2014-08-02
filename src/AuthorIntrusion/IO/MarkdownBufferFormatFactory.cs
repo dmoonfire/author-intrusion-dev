@@ -47,15 +47,14 @@ namespace AuthorIntrusion.IO
         #region Public Methods and Operators
 
         /// <summary>
-        /// Determines whether this instance can handle the specified file.
+        /// Determines whether this instance can read the specified file. This may
+        /// open the file to perform a simple scan if needed (typically for XML files).
         /// </summary>
-        /// <param name="file">
-        /// The file.
-        /// </param>
+        /// <param name="file">The file.</param>
         /// <returns>
-        /// True if this is a Markdown file, otherwise false.
+        /// True if the format can handle it, otherwise false.
         /// </returns>
-        public bool CanHandle(FileInfo file)
+        public bool CanRead(FileInfo file)
         {
             // Use the extension to figure out the filename.
             switch (file.Extension.ToLower())
