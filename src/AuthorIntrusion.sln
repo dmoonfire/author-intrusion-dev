@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorIntrusion.Cli", "Auth
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorIntrusion.Cli.Tests", "AuthorIntrusion.Cli.Tests\AuthorIntrusion.Cli.Tests.csproj", "{A45C8A4A-AB51-411B-AF5F-258293D53199}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorIntrusion.Tests", "AuthorIntrusion.Tests\AuthorIntrusion.Tests.csproj", "{10004E79-4E53-45F1-9F64-ACA3CAD268C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{A45C8A4A-AB51-411B-AF5F-258293D53199}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A45C8A4A-AB51-411B-AF5F-258293D53199}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A45C8A4A-AB51-411B-AF5F-258293D53199}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10004E79-4E53-45F1-9F64-ACA3CAD268C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10004E79-4E53-45F1-9F64-ACA3CAD268C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10004E79-4E53-45F1-9F64-ACA3CAD268C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10004E79-4E53-45F1-9F64-ACA3CAD268C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

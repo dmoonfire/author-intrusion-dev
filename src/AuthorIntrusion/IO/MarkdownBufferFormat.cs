@@ -20,6 +20,29 @@ namespace AuthorIntrusion.IO
         #region Public Methods and Operators
 
         /// <summary>
+        /// Loads the data from a string.
+        /// </summary>
+        /// <param name="input">
+        /// The input.
+        /// </param>
+        /// <param name="metadata">
+        /// The metadata.
+        /// </param>
+        /// <param name="lines">
+        /// The lines.
+        /// </param>
+        public void Load(
+            string input, 
+            out Dictionary<string, string> metadata, 
+            out IEnumerable<string> lines)
+        {
+            using (var reader = new StringReader(input))
+            {
+                this.Load(reader, out metadata, out lines);
+            }
+        }
+
+        /// <summary>
         /// Loads project data from the persistence layer and populates the project.
         /// </summary>
         /// <param name="project">
@@ -41,7 +64,7 @@ namespace AuthorIntrusion.IO
 
             using (Stream stream = persistence.GetProjectReadStream())
             {
-                this.LoadStream(stream, out metadata, out lines);
+                this.Load(stream, out metadata, out lines);
             }
         }
 
@@ -61,8 +84,8 @@ namespace AuthorIntrusion.IO
         /// <param name="content">
         /// The content.
         /// </param>
-        private void LoadReader(
-            StreamReader reader, 
+        private void Load(
+            TextReader reader, 
             out Dictionary<string, string> metadata, 
             out IEnumerable<string> content)
         {
@@ -112,14 +135,14 @@ namespace AuthorIntrusion.IO
         /// <param name="lines">
         /// The lines.
         /// </param>
-        private void LoadStream(
+        private void Load(
             Stream stream, 
             out Dictionary<string, string> metadata, 
             out IEnumerable<string> lines)
         {
             using (var reader = new StreamReader(stream))
             {
-                this.LoadReader(reader, out metadata, out lines);
+                this.Load(reader, out metadata, out lines);
             }
         }
 
@@ -139,7 +162,7 @@ namespace AuthorIntrusion.IO
         /// Cannot parse YAML metadata with non-scalar values.
         /// </exception>
         private void ReadYamlMetadata(
-            StreamReader reader, Dictionary<string, string> metadata)
+            TextReader reader, Dictionary<string, string> metadata)
         {
             // Build up the rest of the line.
             var buffer = new StringBuilder();
