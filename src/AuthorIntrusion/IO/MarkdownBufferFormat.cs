@@ -117,6 +117,13 @@ namespace AuthorIntrusion.IO
                     }
                 }
 
+                // Because AI-flavored Markdown is based on Github, we pretty much ignore
+                // blank lines.
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
                 // For the rest of the lines, we add them to the buffer while normalizing
                 // the wrapping and line combinations.
                 lines.Add(line);

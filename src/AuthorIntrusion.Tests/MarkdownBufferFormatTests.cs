@@ -22,6 +22,115 @@ namespace AuthorIntrusion.Tests
         #region Public Methods and Operators
 
         /// <summary>
+        /// Tests reading a blank-line separated content.
+        /// </summary>
+        [Test]
+        public void BlankSeparatedParagraphs()
+        {
+            // Create the test input.
+            var lines = new List<string>
+                {
+                    "One Two Three.", 
+                    string.Empty, 
+                    "Four Five Six.", 
+                };
+            string input = lines.Join();
+
+            // Create the format.
+            var format = new MarkdownBufferFormat();
+
+            // Parse the buffer lines.
+            Dictionary<string, string> metadata;
+            IEnumerable<string> contents;
+            format.Load(input, out metadata, out contents);
+
+            // Verify the contents.
+            List<string> output = contents.ToList();
+
+            Assert.AreEqual(
+                2, output.Count, "Number of output lines was unexpected.");
+            Assert.AreEqual(
+                "One Two Three.", output[0], "1st output line was unexpected.");
+            Assert.AreEqual(
+                "Four Five Six.", output[1], "2nd output line was unexpected.");
+        }
+
+        /// <summary>
+        /// Tests reading contents that have a leading blank line before the text.
+        /// </summary>
+        [Test]
+        public void LeadingBlankLineYamlMetadata()
+        {
+            // Create the test input.
+            var lines = new List<string>
+                {
+                    "---", 
+                    "Title: Unit Test", 
+                    "---", 
+                    string.Empty, 
+                    "One Two Three.", 
+                };
+            string input = lines.Join();
+
+            // Create the format.
+            var format = new MarkdownBufferFormat();
+
+            // Parse the buffer lines.
+            Dictionary<string, string> metadata;
+            IEnumerable<string> contents;
+            format.Load(input, out metadata, out contents);
+
+            // Verify the metadata.
+            Assert.AreEqual(
+                1, metadata.Count, "Number of metadata keys is unexpected.");
+            Assert.IsTrue(
+                metadata.ContainsKey("Title"), 
+                "Could not find Title key in metadata.");
+            Assert.AreEqual(
+                "Unit Test", metadata["Title"], "Value of Title was unexpected.");
+
+            // Verify the contents.
+            List<string> output = contents.ToList();
+
+            Assert.AreEqual(
+                1, output.Count, "Number of output lines was unexpected.");
+            Assert.AreEqual(
+                "One Two Three.", output[0], "1st output line was unexpected.");
+        }
+
+        /// <summary>
+        /// Tests reading input that has no metadata.
+        /// </summary>
+        [Test]
+        public void NoYamlMetadata()
+        {
+            // Create the test input.
+            var lines = new List<string> { "One Two Three.", };
+            string input = lines.Join();
+
+            // Create the format.
+            var format = new MarkdownBufferFormat();
+
+            // Parse the buffer lines.
+            Dictionary<string, string> metadata;
+            IEnumerable<string> contents;
+            format.Load(input, out metadata, out contents);
+
+            // Verify the metadata.
+            Assert.AreEqual(
+                0, metadata.Count, "Number of metadata keys is unexpected.");
+
+            // Verify the contents.
+            List<string> output = contents.ToList();
+
+            Assert.AreEqual(
+                1, output.Count, "Number of output lines was unexpected.");
+            Assert.AreEqual(
+                "One Two Three.", output[0], "1st output line was unexpected.");
+        }
+
+        /// <summary>
+        /// Tests reading in a single line Markdown with a single metadata.
         /// </summary>
         [Test]
         public void SimpleYamlMetadata()
@@ -60,6 +169,40 @@ namespace AuthorIntrusion.Tests
                 1, output.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
                 "One Two Three.", output[0], "1st output line was unexpected.");
+        }
+
+        /// <summary>
+        /// Tests reading input with only metadata.
+        /// </summary>
+        [Test]
+        public void YamlMetadataOnly()
+        {
+            // Create the test input.
+            var lines = new List<string> { "---", "Title: Unit Test", "---", };
+            string input = lines.Join();
+
+            // Create the format.
+            var format = new MarkdownBufferFormat();
+
+            // Parse the buffer lines.
+            Dictionary<string, string> metadata;
+            IEnumerable<string> contents;
+            format.Load(input, out metadata, out contents);
+
+            // Verify the metadata.
+            Assert.AreEqual(
+                1, metadata.Count, "Number of metadata keys is unexpected.");
+            Assert.IsTrue(
+                metadata.ContainsKey("Title"), 
+                "Could not find Title key in metadata.");
+            Assert.AreEqual(
+                "Unit Test", metadata["Title"], "Value of Title was unexpected.");
+
+            // Verify the contents.
+            List<string> output = contents.ToList();
+
+            Assert.AreEqual(
+                0, output.Count, "Number of output lines was unexpected.");
         }
 
         #endregion
