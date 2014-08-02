@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.3.0.5.130\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -51,10 +48,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlDotNet">
+      <HintPath>..\packages\YamlDotNet.3.2.1\lib\net35\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffers\ProjectBuffer.cs" />
     <Compile Include="Css\CssClassKey.cs" />
+    <Compile Include="IO\BufferFormatLoadOptions.cs" />
     <Compile Include="IO\FilePersistence.cs" />
     <Compile Include="IO\FilePersistenceFactory.cs" />
     <Compile Include="IO\IBufferFormat.cs" />

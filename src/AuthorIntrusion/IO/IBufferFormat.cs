@@ -10,5 +10,25 @@ namespace AuthorIntrusion.IO
     /// </summary>
     public interface IBufferFormat
     {
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Loads project data from the persistence layer and populates the project.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="persistence">
+        /// The persistence.
+        /// </param>
+        /// <param name="options">
+        /// The options.
+        /// </param>
+        void LoadProject(
+            Project project, 
+            IPersistence persistence, 
+            BufferFormatLoadOptions options);
+
+        #endregion
     }
 }

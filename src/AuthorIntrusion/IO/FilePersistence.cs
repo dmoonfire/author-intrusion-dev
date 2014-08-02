@@ -15,15 +15,6 @@ namespace AuthorIntrusion.IO
     /// </summary>
     public class FilePersistence : IPersistence
     {
-        #region Fields
-
-        /// <summary>
-        /// Contains the format of the project file.
-        /// </summary>
-        private readonly IFileBufferFormat projectFormat;
-
-        #endregion
-
         #region Constructors and Destructors
 
         /// <summary>
@@ -38,7 +29,7 @@ namespace AuthorIntrusion.IO
         public FilePersistence(
             FileInfo projectFile, IFileBufferFormat projectFormat)
         {
-            this.projectFormat = projectFormat;
+            this.ProjectFormat = projectFormat;
             this.ProjectFile = projectFile;
         }
 
@@ -51,9 +42,28 @@ namespace AuthorIntrusion.IO
         /// </summary>
         public FileInfo ProjectFile { get; private set; }
 
+        /// <summary>
+        /// Gets the format of the project file.
+        /// </summary>
+        public IFileBufferFormat ProjectFormat { get; private set; }
+
         #endregion
 
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Gets a read stream for the project file.
+        /// </summary>
+        /// <returns>
+        /// A stream to the project file.
+        /// </returns>
+        /// <remarks>
+        /// It is the responsibility of the calling class to close the stream.
+        /// </remarks>
+        public Stream GetProjectReadStream()
+        {
+            return this.ProjectFile.OpenRead();
+        }
 
         /// <summary>
         /// Retrieves a read stream for a given path. The calling method is responsible for
@@ -65,7 +75,12 @@ namespace AuthorIntrusion.IO
         /// <returns>
         /// A read stream to the path.
         /// </returns>
-        public Stream OpenRead(HierarchicalPath path)
+        /// <exception cref="System.NotImplementedException">
+        /// </exception>
+        /// <remarks>
+        /// It is the responsibility of the calling class to close the stream.
+        /// </remarks>
+        public Stream GetReadStream(HierarchicalPath path)
         {
             throw new NotImplementedException();
         }

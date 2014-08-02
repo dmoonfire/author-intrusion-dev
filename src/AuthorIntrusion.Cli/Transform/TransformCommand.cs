@@ -54,6 +54,10 @@ namespace AuthorIntrusion.Cli.Transform
             IPersistence persistence =
                 this.PersistenceFactoryManager.CreatePersistence(
                     options.InputUri);
+            IFileBufferFormat format = persistence.ProjectFormat;
+
+            format.LoadProject(
+                project, persistence, BufferFormatLoadOptions.Full);
         }
 
         #endregion

@@ -15,19 +15,40 @@ namespace AuthorIntrusion.IO
     /// </summary>
     public interface IPersistence
     {
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the format of the project file.
+        /// </summary>
+        IFileBufferFormat ProjectFormat { get; }
+
+        #endregion
+
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Gets a read stream for the project file.
+        /// </summary>
+        /// <remarks>
+        /// It is the responsibility of the calling class to close the stream.
+        /// </remarks>
+        /// <returns>A stream to the project file.</returns>
+        Stream GetProjectReadStream();
 
         /// <summary>
         /// Retrieves a read stream for a given path. The calling method is responsible for
         /// disposing of the stream.
         /// </summary>
+        /// <remarks>
+        /// It is the responsibility of the calling class to close the stream.
+        /// </remarks>
         /// <param name="path">
         /// The absolute path into the project root.
         /// </param>
         /// <returns>
         /// A read stream to the path.
         /// </returns>
-        Stream OpenRead(HierarchicalPath path);
+        Stream GetReadStream(HierarchicalPath path);
 
         #endregion
     }
