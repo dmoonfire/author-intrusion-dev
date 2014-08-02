@@ -4,6 +4,8 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion
 {
+    using AuthorIntrusion.Metadata;
+
     /// <summary>
     /// Primary organizational unit for a writing project. This manages all of
     /// the internals of the project including access to the buffer for editing.
@@ -18,11 +20,20 @@ namespace AuthorIntrusion
         public Project()
         {
             this.Singletons = new SingletonManager();
+            this.Metadata = new MetadataManager();
         }
 
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets the metadata manager for the project.
+        /// </summary>
+        /// <value>
+        /// The metadata manager.
+        /// </value>
+        public MetadataManager Metadata { get; private set; }
 
         /// <summary>
         /// Gets the singleton manager used for managing keys such as

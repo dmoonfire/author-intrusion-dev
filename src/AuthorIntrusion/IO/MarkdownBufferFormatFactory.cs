@@ -50,7 +50,9 @@ namespace AuthorIntrusion.IO
         /// Determines whether this instance can read the specified file. This may
         /// open the file to perform a simple scan if needed (typically for XML files).
         /// </summary>
-        /// <param name="file">The file.</param>
+        /// <param name="file">
+        /// The file.
+        /// </param>
         /// <returns>
         /// True if the format can handle it, otherwise false.
         /// </returns>

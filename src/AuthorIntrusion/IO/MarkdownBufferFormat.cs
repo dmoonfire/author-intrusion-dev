@@ -9,6 +9,8 @@ namespace AuthorIntrusion.IO
     using System.IO;
     using System.Text;
 
+    using AuthorIntrusion.Metadata;
+
     using YamlDotNet.RepresentationModel;
 
     /// <summary>
@@ -22,6 +24,8 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads the data from a string.
         /// </summary>
+        /// <param name="project">
+        /// </param>
         /// <param name="input">
         /// The input.
         /// </param>
@@ -32,13 +36,14 @@ namespace AuthorIntrusion.IO
         /// The lines.
         /// </param>
         public void Load(
+            Project project, 
             string input, 
-            out Dictionary<string, string> metadata, 
+            out MetadataDictionary metadata, 
             out IEnumerable<string> lines)
         {
             using (var reader = new StringReader(input))
             {
-                this.Load(reader, out metadata, out lines);
+                this.Load(project, reader, out metadata, out lines);
             }
         }
 
@@ -59,12 +64,12 @@ namespace AuthorIntrusion.IO
             IPersistence persistence, 
             BufferFormatLoadOptions options)
         {
-            Dictionary<string, string> metadata;
+            MetadataDictionary metadata;
             IEnumerable<string> lines;
 
             using (Stream stream = persistence.GetProjectReadStream())
             {
-                this.Load(stream, out metadata, out lines);
+                this.Load(project, stream, out metadata, out lines);
             }
         }
 
@@ -75,6 +80,9 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads the Markdown file using the given reader.
         /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
         /// <param name="reader">
         /// The reader.
         /// </param>
@@ -85,14 +93,15 @@ namespace AuthorIntrusion.IO
         /// The content.
         /// </param>
         private void Load(
+            Project project, 
             TextReader reader, 
-            out Dictionary<string, string> metadata, 
+            out MetadataDictionary metadata, 
             out IEnumerable<string> content)
         {
             // Initialize our output variables.
             var lines = new List<string>();
 
-            metadata = new Dictionary<string, string>();
+            metadata = new MetadataDictionary();
             content = lines;
 
             // Loop through the lines, starting with looking for the metadata.
@@ -112,7 +121,7 @@ namespace AuthorIntrusion.IO
                     // advance the reader until after the next "---" in the stream.
                     if (line == "---")
                     {
-                        this.ReadYamlMetadata(reader, metadata);
+                        this.ReadYamlMetadata(project, reader, metadata);
                         continue;
                     }
                 }
@@ -133,6 +142,9 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads the metadata and content from the given stream.
         /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
         /// <param name="stream">
         /// The stream to read.
         /// </param>
@@ -143,25 +155,37 @@ namespace AuthorIntrusion.IO
         /// The lines.
         /// </param>
         private void Load(
+            Project project, 
             Stream stream, 
-            out Dictionary<string, string> metadata, 
+            out MetadataDictionary metadata, 
             out IEnumerable<string> lines)
         {
             using (var reader = new StreamReader(stream))
             {
-                this.Load(reader, out metadata, out lines);
+                this.Load(project, reader, out metadata, out lines);
             }
         }
 
         /// <summary>
         /// Loads metadata from a YAML format.
         /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
         /// <param name="reader">
         /// The reader.
         /// </param>
         /// <param name="metadata">
         /// The metadata.
         /// </param>
+        /// <exception cref="System.IO.FileLoadException">
+        /// Cannot load file without a proper YAML header.
+        /// </exception>
+        /// <exception cref="System.InvalidOperationException">
+        /// Cannot parse YAML metadata with sequences of anything but scalars.
+        /// or
+        /// Cannot parse YAML metadata with mapping/dictionary values.
+        /// </exception>
         /// <exception cref="FileLoadException">
         /// Cannot load file without a proper YAML header.
         /// </exception>
@@ -169,7 +193,7 @@ namespace AuthorIntrusion.IO
         /// Cannot parse YAML metadata with non-scalar values.
         /// </exception>
         private void ReadYamlMetadata(
-            TextReader reader, Dictionary<string, string> metadata)
+            Project project, TextReader reader, MetadataDictionary metadata)
         {
             // Build up the rest of the line.
             var buffer = new StringBuilder();
@@ -220,16 +244,39 @@ namespace AuthorIntrusion.IO
                 {
                     // Pull out the key value pairs.
                     var key = (YamlScalarNode)entry.Key;
-                    var value = entry.Value as YamlScalarNode;
+                    var scalar = entry.Value as YamlScalarNode;
+                    var sequence = entry.Value as YamlSequenceNode;
 
-                    if (value == null)
+                    MetadataKey metadataKey = project.Metadata[key.Value];
+                    MetadataValue metadataValue =
+                        metadata.GetOrCreate(metadataKey);
+
+                    if (scalar != null)
+                    {
+                        // Pull out the single value.
+                        metadataValue.Add(scalar.Value);
+                    }
+                    else if (sequence != null)
+                    {
+                        // Loop through the sequence and pull in the values.
+                        foreach (YamlNode seqValue in sequence.Children)
+                        {
+                            var seqScalar = seqValue as YamlScalarNode;
+
+                            if (seqScalar == null)
+                            {
+                                throw new InvalidOperationException(
+                                    "Cannot parse YAML metadata with sequences of anything but scalars.");
+                            }
+
+                            metadataValue.Add(seqScalar.Value);
+                        }
+                    }
+                    else
                     {
                         throw new InvalidOperationException(
-                            "Cannot parse YAML metadata with non-scalar values.");
+                            "Cannot parse YAML metadata with mapping/dictionary values.");
                     }
-
-                    // Put the values in the metadata dictionary.
-                    metadata[key.Value] = value.Value;
                 }
             }
         }

@@ -73,6 +73,8 @@
     <Compile Include="IO\ProjectBufferReaderSettings.cs" />
     <Compile Include="Metadata\MetadataDictionary.cs" />
     <Compile Include="Metadata\MetadataKey.cs" />
+    <Compile Include="Metadata\MetadataManager.cs" />
+    <Compile Include="Metadata\MetadataValue.cs" />
     <Compile Include="Plugins\PluginContainer.cs" />
     <Compile Include="Plugins\PluginRegistry.cs" />
     <Compile Include="Project.cs" />

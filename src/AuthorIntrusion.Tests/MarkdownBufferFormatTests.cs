@@ -8,6 +8,7 @@ namespace AuthorIntrusion.Tests
     using System.Linq;
 
     using AuthorIntrusion.IO;
+    using AuthorIntrusion.Metadata;
 
     using MfGames.Extensions.System.Collections.Generic;
 
@@ -40,9 +41,11 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            Dictionary<string, string> metadata;
+            var project = new Project();
+            MetadataDictionary metadata;
             IEnumerable<string> contents;
-            format.Load(input, out metadata, out contents);
+
+            format.Load(project, input, out metadata, out contents);
 
             // Verify the contents.
             List<string> output = contents.ToList();
@@ -76,18 +79,24 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            Dictionary<string, string> metadata;
+            var project = new Project();
+            MetadataDictionary metadata;
             IEnumerable<string> contents;
-            format.Load(input, out metadata, out contents);
+
+            format.Load(project, input, out metadata, out contents);
 
             // Verify the metadata.
+            MetadataKey titleKey = project.Metadata["Title"];
+
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");
             Assert.IsTrue(
-                metadata.ContainsKey("Title"), 
+                metadata.ContainsKey(titleKey), 
                 "Could not find Title key in metadata.");
             Assert.AreEqual(
-                "Unit Test", metadata["Title"], "Value of Title was unexpected.");
+                "Unit Test", 
+                metadata[titleKey].Value, 
+                "Value of Title was unexpected.");
 
             // Verify the contents.
             List<string> output = contents.ToList();
@@ -112,9 +121,11 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            Dictionary<string, string> metadata;
+            var project = new Project();
+            MetadataDictionary metadata;
             IEnumerable<string> contents;
-            format.Load(input, out metadata, out contents);
+
+            format.Load(project, input, out metadata, out contents);
 
             // Verify the metadata.
             Assert.AreEqual(
@@ -149,18 +160,24 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            Dictionary<string, string> metadata;
+            var project = new Project();
+            MetadataDictionary metadata;
             IEnumerable<string> contents;
-            format.Load(input, out metadata, out contents);
+
+            format.Load(project, input, out metadata, out contents);
 
             // Verify the metadata.
+            MetadataKey titleKey = project.Metadata["Title"];
+
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");
             Assert.IsTrue(
-                metadata.ContainsKey("Title"), 
+                metadata.ContainsKey(titleKey), 
                 "Could not find Title key in metadata.");
             Assert.AreEqual(
-                "Unit Test", metadata["Title"], "Value of Title was unexpected.");
+                "Unit Test", 
+                metadata[titleKey].Value, 
+                "Value of Title was unexpected.");
 
             // Verify the contents.
             List<string> output = contents.ToList();
@@ -185,18 +202,24 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            Dictionary<string, string> metadata;
+            var project = new Project();
+            MetadataDictionary metadata;
             IEnumerable<string> contents;
-            format.Load(input, out metadata, out contents);
+
+            format.Load(project, input, out metadata, out contents);
 
             // Verify the metadata.
+            MetadataKey titleKey = project.Metadata["Title"];
+
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");
             Assert.IsTrue(
-                metadata.ContainsKey("Title"), 
+                metadata.ContainsKey(titleKey), 
                 "Could not find Title key in metadata.");
             Assert.AreEqual(
-                "Unit Test", metadata["Title"], "Value of Title was unexpected.");
+                "Unit Test", 
+                metadata[titleKey].Value, 
+                "Value of Title was unexpected.");
 
             // Verify the contents.
             List<string> output = contents.ToList();

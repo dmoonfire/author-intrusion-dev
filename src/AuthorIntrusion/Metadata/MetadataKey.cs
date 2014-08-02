@@ -11,7 +11,7 @@ namespace AuthorIntrusion.Metadata
     /// Identifies the key for a metadata entry associated with a buffer, line,
     /// or token.
     /// </summary>
-    public struct MetadataKey : IEquatable<MetadataKey>
+    public class MetadataKey : IEquatable<MetadataKey>
     {
         #region Fields
 
@@ -25,7 +25,7 @@ namespace AuthorIntrusion.Metadata
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MetadataKey"/> struct.
+        /// Initializes a new instance of the <see cref="MetadataKey"/> class.
         /// </summary>
         /// <param name="name">
         /// The name.
@@ -54,7 +54,7 @@ namespace AuthorIntrusion.Metadata
         /// </returns>
         public static bool operator ==(MetadataKey left, MetadataKey right)
         {
-            return left.Equals(right);
+            return Equals(left, right);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace AuthorIntrusion.Metadata
         /// </returns>
         public static bool operator !=(MetadataKey left, MetadataKey right)
         {
-            return !left.Equals(right);
+            return !Equals(left, right);
         }
 
         /// <summary>
@@ -81,6 +81,16 @@ namespace AuthorIntrusion.Metadata
         /// </returns>
         public bool Equals(MetadataKey other)
         {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return string.Equals(this.Name, other.Name);
         }
 
@@ -100,7 +110,17 @@ namespace AuthorIntrusion.Metadata
                 return false;
             }
 
-            return obj is MetadataKey && this.Equals((MetadataKey)obj);
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return this.Equals((MetadataKey)obj);
         }
 
         /// <summary>
