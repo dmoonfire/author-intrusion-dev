@@ -35,6 +35,25 @@ namespace AuthorIntrusion.Metadata
             return value;
         }
 
+        /// <summary>
+        /// Sets the current instance values with the values from the given
+        /// metadata.
+        /// </summary>
+        /// <param name="metadata">
+        /// The metadata.
+        /// </param>
+        public void Set(MetadataDictionary metadata)
+        {
+            // First clear out the entry.
+            this.Clear();
+
+            // Go through the new metdata and copy it.
+            foreach (KeyValuePair<MetadataKey, MetadataValue> entry in metadata)
+            {
+                this[entry.Key] = entry.Value;
+            }
+        }
+
         #endregion
     }
 }

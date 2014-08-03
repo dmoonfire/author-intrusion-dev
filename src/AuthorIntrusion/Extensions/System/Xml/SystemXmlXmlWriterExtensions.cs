@@ -18,27 +18,49 @@ namespace AuthorIntrusion.Extensions.System.Xml
         /// <summary>
         /// Writes the metadata value string to the given writer.
         /// </summary>
-        /// <param name="writer">The writer.</param>
-        /// <param name="elementName">Name of the element.</param>
-        /// <param name="project">The project.</param>
-        /// <param name="metadataKey">The metadata key.</param>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="elementName">
+        /// Name of the element.
+        /// </param>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="metadataKey">
+        /// The metadata key.
+        /// </param>
         public static void WriteElementString(
-            this XmlWriter writer, string elementName, Project project, string metadataKey)
+            this XmlWriter writer, 
+            string elementName, 
+            Project project, 
+            string metadataKey)
         {
-            WriteElementString(writer, elementName, project, project.Metadata, metadataKey);
+            WriteElementString(
+                writer, elementName, project, project.Metadata, metadataKey);
         }
 
         /// <summary>
         /// Writes the metadata value string to the given writer.
         /// </summary>
-        /// <param name="writer">The writer.</param>
-        /// <param name="elementName">Name of the element.</param>
-        /// <param name="project">The project.</param>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="metadataKey">The metadata key.</param>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="elementName">
+        /// Name of the element.
+        /// </param>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="metadata">
+        /// The metadata.
+        /// </param>
+        /// <param name="metadataKey">
+        /// The metadata key.
+        /// </param>
         public static void WriteElementString(
             this XmlWriter writer, 
-            string elementName,
+            string elementName, 
             Project project, 
             MetadataDictionary metadata, 
             string metadataKey)
@@ -51,14 +73,24 @@ namespace AuthorIntrusion.Extensions.System.Xml
         /// <summary>
         /// Writes the metadata value string to the given writer.
         /// </summary>
-        /// <param name="writer">The writer.</param>
-        /// <param name="elementName">Name of the element.</param>
-        /// <param name="project">The project.</param>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="metadataKey">The metadata key.</param>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="elementName">
+        /// Name of the element.
+        /// </param>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="metadata">
+        /// The metadata.
+        /// </param>
+        /// <param name="metadataKey">
+        /// The metadata key.
+        /// </param>
         public static void WriteElementString(
-            this XmlWriter writer,
-            string elementName,
+            this XmlWriter writer, 
+            string elementName, 
             Project project, 
             MetadataDictionary metadata, 
             MetadataKey metadataKey)

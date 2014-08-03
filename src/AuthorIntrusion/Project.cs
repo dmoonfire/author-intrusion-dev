@@ -24,6 +24,7 @@ namespace AuthorIntrusion
             this.Singletons = new SingletonManager();
             this.MetadataManager = new MetadataManager();
             this.Metadata = new MetadataDictionary();
+            this.Blocks = new BlockCollection();
 
             // Hardcode the project layout to be a story.
             this.Layout = new RegionLayout
@@ -40,6 +41,14 @@ namespace AuthorIntrusion
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets the blocks associated directly with the project buffer.
+        /// </summary>
+        /// <value>
+        /// The blocks.
+        /// </value>
+        public BlockCollection Blocks { get; private set; }
 
         /// <summary>
         /// Gets or sets the layout for the project.

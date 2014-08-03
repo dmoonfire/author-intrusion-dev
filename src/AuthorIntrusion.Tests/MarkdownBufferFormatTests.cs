@@ -5,8 +5,8 @@
 namespace AuthorIntrusion.Tests
 {
     using System.Collections.Generic;
-    using System.Linq;
 
+    using AuthorIntrusion.Buffers;
     using AuthorIntrusion.IO;
     using AuthorIntrusion.Metadata;
 
@@ -43,19 +43,17 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata;
-            IEnumerable<string> contents;
+            BlockCollection contents;
 
             format.Load(project, input, out metadata, out contents);
 
             // Verify the contents.
-            List<string> output = contents.ToList();
-
             Assert.AreEqual(
-                2, output.Count, "Number of output lines was unexpected.");
+                2, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", output[0], "1st output line was unexpected.");
+                "One Two Three.", contents[0], "1st output line was unexpected.");
             Assert.AreEqual(
-                "Four Five Six.", output[1], "2nd output line was unexpected.");
+                "Four Five Six.", contents[1], "2nd output line was unexpected.");
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata;
-            IEnumerable<string> contents;
+            BlockCollection contents;
 
             format.Load(project, input, out metadata, out contents);
 
@@ -99,12 +97,10 @@ namespace AuthorIntrusion.Tests
                 "Value of Title was unexpected.");
 
             // Verify the contents.
-            List<string> output = contents.ToList();
-
             Assert.AreEqual(
-                1, output.Count, "Number of output lines was unexpected.");
+                1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", output[0], "1st output line was unexpected.");
+                "One Two Three.", contents[0], "1st output line was unexpected.");
         }
 
         /// <summary>
@@ -123,7 +119,7 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata;
-            IEnumerable<string> contents;
+            BlockCollection contents;
 
             format.Load(project, input, out metadata, out contents);
 
@@ -132,12 +128,10 @@ namespace AuthorIntrusion.Tests
                 0, metadata.Count, "Number of metadata keys is unexpected.");
 
             // Verify the contents.
-            List<string> output = contents.ToList();
-
             Assert.AreEqual(
-                1, output.Count, "Number of output lines was unexpected.");
+                1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", output[0], "1st output line was unexpected.");
+                "One Two Three.", contents[0], "1st output line was unexpected.");
         }
 
         /// <summary>
@@ -162,7 +156,7 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata;
-            IEnumerable<string> contents;
+            BlockCollection contents;
 
             format.Load(project, input, out metadata, out contents);
 
@@ -180,12 +174,10 @@ namespace AuthorIntrusion.Tests
                 "Value of Title was unexpected.");
 
             // Verify the contents.
-            List<string> output = contents.ToList();
-
             Assert.AreEqual(
-                1, output.Count, "Number of output lines was unexpected.");
+                1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", output[0], "1st output line was unexpected.");
+                "One Two Three.", contents[0], "1st output line was unexpected.");
         }
 
         /// <summary>
@@ -204,7 +196,7 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata;
-            IEnumerable<string> contents;
+            BlockCollection contents;
 
             format.Load(project, input, out metadata, out contents);
 
@@ -222,10 +214,8 @@ namespace AuthorIntrusion.Tests
                 "Value of Title was unexpected.");
 
             // Verify the contents.
-            List<string> output = contents.ToList();
-
             Assert.AreEqual(
-                0, output.Count, "Number of output lines was unexpected.");
+                0, contents.Count, "Number of output lines was unexpected.");
         }
 
         #endregion

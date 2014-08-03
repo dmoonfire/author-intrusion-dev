@@ -4,11 +4,13 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.IO
 {
-    using AuthorIntrusion.Extensions.System.Xml;
     using System;
     using System.IO;
     using System.Text;
     using System.Xml;
+
+    using AuthorIntrusion.Buffers;
+    using AuthorIntrusion.Extensions.System.Xml;
 
     /// <summary>
     /// Encapsulates the functionality for a buffer format that handles a DocBook 5
@@ -87,11 +89,22 @@ namespace AuthorIntrusion.IO
                     // Write out the info tag.
                     writer.WriteStartElement("info");
                     writer.WriteElementString("title", project, "Title");
+                    writer.WriteEndElement();
+
+                    // Loop through and add all the lines.
+                    foreach (Block block in project.Blocks)
+                    {
+                        writer.WriteElementString("para", block.Text);
+                    }
 
                     // Write out the end of the document.
                     writer.WriteEndElement();
                     writer.WriteEndDocument();
+                    writer.Close();
                 }
+
+                // Close the stream.
+                stream.Close();
             }
         }
 

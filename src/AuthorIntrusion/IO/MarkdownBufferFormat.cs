@@ -9,6 +9,7 @@ namespace AuthorIntrusion.IO
     using System.IO;
     using System.Text;
 
+    using AuthorIntrusion.Buffers;
     using AuthorIntrusion.Metadata;
 
     using YamlDotNet.RepresentationModel;
@@ -39,7 +40,7 @@ namespace AuthorIntrusion.IO
             Project project, 
             string input, 
             out MetadataDictionary metadata, 
-            out IEnumerable<string> lines)
+            out BlockCollection lines)
         {
             using (var reader = new StringReader(input))
             {
@@ -65,12 +66,19 @@ namespace AuthorIntrusion.IO
             BufferFormatLoadOptions options)
         {
             MetadataDictionary metadata;
-            IEnumerable<string> lines;
+            BlockCollection blocks;
 
             using (Stream stream = persistence.GetProjectReadStream())
             {
-                this.Load(project, stream, out metadata, out lines);
+                // Load information about the project into memory.
+                this.Load(project, stream, out metadata, out blocks);
             }
+
+            // Completely replace the metadata in the project.
+            project.Metadata.Set(metadata);
+
+            // Copy the lines into the project.
+            project.Blocks.AddRange(blocks);
         }
 
         /// <summary>
@@ -115,13 +123,11 @@ namespace AuthorIntrusion.IO
             Project project, 
             TextReader reader, 
             out MetadataDictionary metadata, 
-            out IEnumerable<string> content)
+            out BlockCollection content)
         {
             // Initialize our output variables.
-            var lines = new List<string>();
-
             metadata = new MetadataDictionary();
-            content = lines;
+            content = new BlockCollection();
 
             // Loop through the lines, starting with looking for the metadata.
             bool first = true;
@@ -154,7 +160,9 @@ namespace AuthorIntrusion.IO
 
                 // For the rest of the lines, we add them to the buffer while normalizing
                 // the wrapping and line combinations.
-                lines.Add(line);
+                var block = new Block(line);
+
+                content.Add(block);
             }
         }
 
@@ -177,7 +185,7 @@ namespace AuthorIntrusion.IO
             Project project, 
             Stream stream, 
             out MetadataDictionary metadata, 
-            out IEnumerable<string> lines)
+            out BlockCollection lines)
         {
             using (var reader = new StreamReader(stream))
             {

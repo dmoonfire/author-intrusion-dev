@@ -69,10 +69,11 @@ namespace AuthorIntrusion.IO
         /// Gets the write stream for the project file.
         /// </summary>
         /// <returns>
+        /// A stream to the project file.
         /// </returns>
         public Stream GetProjectWriteStream()
         {
-            return this.ProjectFile.OpenWrite();
+            return this.ProjectFile.Open(FileMode.Create, FileAccess.Write);
         }
 
         /// <summary>

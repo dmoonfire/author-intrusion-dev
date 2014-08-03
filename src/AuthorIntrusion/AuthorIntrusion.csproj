@@ -53,6 +53,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buffers\Block.cs" />
+    <Compile Include="Buffers\BlockCollection.cs" />
     <Compile Include="Buffers\ProjectBuffer.cs" />
     <Compile Include="Buffers\RegionLayout.cs" />
     <Compile Include="Css\CssClassKey.cs" />
