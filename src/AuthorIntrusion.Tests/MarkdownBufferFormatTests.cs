@@ -86,7 +86,7 @@ namespace AuthorIntrusion.Tests
             format.Load(project, input, out metadata, out contents);
 
             // Verify the metadata.
-            MetadataKey titleKey = project.Metadata["Title"];
+            MetadataKey titleKey = project.MetadataManager["Title"];
 
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");
@@ -167,7 +167,7 @@ namespace AuthorIntrusion.Tests
             format.Load(project, input, out metadata, out contents);
 
             // Verify the metadata.
-            MetadataKey titleKey = project.Metadata["Title"];
+            MetadataKey titleKey = project.MetadataManager["Title"];
 
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");
@@ -209,7 +209,7 @@ namespace AuthorIntrusion.Tests
             format.Load(project, input, out metadata, out contents);
 
             // Verify the metadata.
-            MetadataKey titleKey = project.Metadata["Title"];
+            MetadataKey titleKey = project.MetadataManager["Title"];
 
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");

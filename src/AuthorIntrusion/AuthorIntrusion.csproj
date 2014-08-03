@@ -56,6 +56,7 @@
     <Compile Include="Buffers\ProjectBuffer.cs" />
     <Compile Include="Buffers\RegionLayout.cs" />
     <Compile Include="Css\CssClassKey.cs" />
+    <Compile Include="Extensions\System\Xml\SystemXmlXmlWriterExtensions.cs" />
     <Compile Include="IO\BufferFormatLoadOptions.cs" />
     <Compile Include="IO\DocBookBufferFormat.cs" />
     <Compile Include="IO\DocBookBufferFormatFactory.cs" />

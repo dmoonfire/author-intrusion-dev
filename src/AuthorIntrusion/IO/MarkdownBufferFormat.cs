@@ -266,7 +266,7 @@ namespace AuthorIntrusion.IO
                     var scalar = entry.Value as YamlScalarNode;
                     var sequence = entry.Value as YamlSequenceNode;
 
-                    MetadataKey metadataKey = project.Metadata[key.Value];
+                    MetadataKey metadataKey = project.MetadataManager[key.Value];
                     MetadataValue metadataValue =
                         metadata.GetOrCreate(metadataKey);
 

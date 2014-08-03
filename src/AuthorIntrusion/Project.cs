@@ -22,7 +22,8 @@ namespace AuthorIntrusion
         {
             // Create the collections.
             this.Singletons = new SingletonManager();
-            this.Metadata = new MetadataManager();
+            this.MetadataManager = new MetadataManager();
+            this.Metadata = new MetadataDictionary();
 
             // Hardcode the project layout to be a story.
             this.Layout = new RegionLayout
@@ -49,12 +50,20 @@ namespace AuthorIntrusion
         public RegionLayout Layout { get; set; }
 
         /// <summary>
+        /// Gets the metadata associated with the project.
+        /// </summary>
+        /// <value>
+        /// The metadata.
+        /// </value>
+        public MetadataDictionary Metadata { get; private set; }
+
+        /// <summary>
         /// Gets the metadata manager for the project.
         /// </summary>
         /// <value>
         /// The metadata manager.
         /// </value>
-        public MetadataManager Metadata { get; private set; }
+        public MetadataManager MetadataManager { get; private set; }
 
         /// <summary>
         /// Gets the singleton manager used for managing keys such as

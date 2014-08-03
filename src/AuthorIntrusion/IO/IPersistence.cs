@@ -36,6 +36,14 @@ namespace AuthorIntrusion.IO
         Stream GetProjectReadStream();
 
         /// <summary>
+        /// Gets the write stream for the project file.
+        /// </summary>
+        /// <returns>
+        /// A stream to the project file.
+        /// </returns>
+        Stream GetProjectWriteStream();
+
+        /// <summary>
         /// Retrieves a read stream for a given path. The calling method is responsible for
         /// disposing of the stream.
         /// </summary>
@@ -49,6 +57,18 @@ namespace AuthorIntrusion.IO
         /// A read stream to the path.
         /// </returns>
         Stream GetReadStream(HierarchicalPath path);
+
+        /// <summary>
+        /// Gets the write stream for a given path relative to the project. The calling
+        /// method is responsible for disposing of the stream.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <returns>
+        /// A stream to the persistence object.
+        /// </returns>
+        Stream GetWriteStream(HierarchicalPath path);
 
         #endregion
     }

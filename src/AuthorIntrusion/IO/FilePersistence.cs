@@ -66,6 +66,16 @@ namespace AuthorIntrusion.IO
         }
 
         /// <summary>
+        /// Gets the write stream for the project file.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public Stream GetProjectWriteStream()
+        {
+            return this.ProjectFile.OpenWrite();
+        }
+
+        /// <summary>
         /// Retrieves a read stream for a given path. The calling method is responsible for
         /// disposing of the stream.
         /// </summary>
@@ -81,6 +91,23 @@ namespace AuthorIntrusion.IO
         /// It is the responsibility of the calling class to close the stream.
         /// </remarks>
         public Stream GetReadStream(HierarchicalPath path)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the write stream for a given path relative to the project. The calling
+        /// method is responsible for disposing of the stream.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <returns>
+        /// A stream to the persistence object.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException">
+        /// </exception>
+        public Stream GetWriteStream(HierarchicalPath path)
         {
             throw new NotImplementedException();
         }
