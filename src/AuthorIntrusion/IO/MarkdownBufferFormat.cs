@@ -73,6 +73,25 @@ namespace AuthorIntrusion.IO
             }
         }
 
+        /// <summary>
+        /// Writes out the project to the given persistence using the
+        /// format instance.
+        /// </summary>
+        /// <param name="project">
+        /// The project to write out.
+        /// </param>
+        /// <param name="persistence">
+        /// The persistence layer to use.
+        /// </param>
+        /// <exception cref="System.InvalidOperationException">
+        /// Cannot write out files with Markdown.
+        /// </exception>
+        public void StoreProject(Project project, IPersistence persistence)
+        {
+            throw new InvalidOperationException(
+                "Cannot write out files with Markdown.");
+        }
+
         #endregion
 
         #region Methods

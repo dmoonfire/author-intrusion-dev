@@ -85,19 +85,13 @@ namespace AuthorIntrusion.IO
             // Save the project file.
             var projectFile = new FileInfo(path);
 
-            if (!projectFile.Exists)
-            {
-                throw new FileNotFoundException(
-                    "Cannot file project file: " + path + ".");
-            }
-
             // Figure out which format can handle the project file.
             IFileBufferFormatFactory projectFormatFactory = null;
 
             foreach (
                 IFileBufferFormatFactory formatFactory in this.formatFactories)
             {
-                if (formatFactory.CanRead(projectFile))
+                if (formatFactory.CanHandle(projectFile))
                 {
                     projectFormatFactory = formatFactory;
                 }

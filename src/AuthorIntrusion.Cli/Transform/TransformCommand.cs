@@ -51,13 +51,21 @@ namespace AuthorIntrusion.Cli.Transform
         {
             // Load the project into memory.
             var project = new Project();
-            IPersistence persistence =
+            IPersistence inputPersistence =
                 this.PersistenceFactoryManager.CreatePersistence(
                     options.InputUri);
-            IFileBufferFormat format = persistence.ProjectFormat;
+            IFileBufferFormat inputFormat = inputPersistence.ProjectFormat;
 
-            format.LoadProject(
-                project, persistence, BufferFormatLoadOptions.Full);
+            inputFormat.LoadProject(
+                project, inputPersistence, BufferFormatLoadOptions.Full);
+
+            // Write out the project from memory.
+            IPersistence outputPersistence =
+                this.PersistenceFactoryManager.CreatePersistence(
+                    options.OutputUri);
+            IFileBufferFormat outputFormat = outputPersistence.ProjectFormat;
+
+            outputFormat.StoreProject(project, outputPersistence);
         }
 
         #endregion

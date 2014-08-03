@@ -57,6 +57,8 @@
     <Compile Include="Buffers\RegionLayout.cs" />
     <Compile Include="Css\CssClassKey.cs" />
     <Compile Include="IO\BufferFormatLoadOptions.cs" />
+    <Compile Include="IO\DocBookBufferFormat.cs" />
+    <Compile Include="IO\DocBookBufferFormatFactory.cs" />
     <Compile Include="IO\FilePersistence.cs" />
     <Compile Include="IO\FilePersistenceFactory.cs" />
     <Compile Include="IO\IBufferFormat.cs" />

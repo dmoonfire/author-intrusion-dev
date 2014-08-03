@@ -29,6 +29,8 @@ namespace AuthorIntrusion.Plugins
                 .Singleton();
             this.For<IFileBufferFormatFactory>()
                 .Add<MarkdownBufferFormatFactory>();
+            this.For<IFileBufferFormatFactory>()
+                .Add<DocBookBufferFormatFactory>();
 
             // Add in the additional registries.
             foreach (Registry registry in additionalRegistries)

@@ -23,7 +23,7 @@ namespace AuthorIntrusion.IO
         /// <returns>
         /// True if the format can handle it, otherwise false.
         /// </returns>
-        bool CanRead(FileInfo file);
+        bool CanHandle(FileInfo file);
 
         /// <summary>
         /// Creates an instance of a file buffer format and returns it.

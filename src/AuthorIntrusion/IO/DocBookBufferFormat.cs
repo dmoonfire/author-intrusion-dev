@@ -1,14 +1,16 @@
-﻿// <copyright file="IBufferFormat.cs" company="Moonfire Games">
+﻿// <copyright file="DocBookBufferFormat.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.IO
 {
+    using System;
+
     /// <summary>
-    /// Describes the common interface for working with a buffer format, which may be specific
-    /// to a persistence or be general.
+    /// Encapsulates the functionality for a buffer format that handles a DocBook 5
+    /// file.
     /// </summary>
-    public interface IBufferFormat
+    public class DocBookBufferFormat : IFileBufferFormat
     {
         #region Public Methods and Operators
 
@@ -24,13 +26,19 @@ namespace AuthorIntrusion.IO
         /// <param name="options">
         /// The options.
         /// </param>
-        void LoadProject(
+        /// <exception cref="System.InvalidOperationException">
+        /// Cannot read DocBook 5 files.
+        /// </exception>
+        public void LoadProject(
             Project project, 
             IPersistence persistence, 
-            BufferFormatLoadOptions options);
+            BufferFormatLoadOptions options)
+        {
+            throw new InvalidOperationException("Cannot read DocBook 5 files.");
+        }
 
         /// <summary>
-        /// Writes out the project to the given persistence using the 
+        /// Writes out the project to the given persistence using the
         /// format instance.
         /// </summary>
         /// <param name="project">
@@ -39,7 +47,9 @@ namespace AuthorIntrusion.IO
         /// <param name="persistence">
         /// The persistence layer to use.
         /// </param>
-        void StoreProject(Project project, IPersistence persistence);
+        public void StoreProject(Project project, IPersistence persistence)
+        {
+        }
 
         #endregion
     }

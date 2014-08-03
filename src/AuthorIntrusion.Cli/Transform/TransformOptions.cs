@@ -41,6 +41,29 @@ namespace AuthorIntrusion.Cli.Transform
             }
         }
 
+        /// <summary>
+        /// Gets or sets the output filename, which is a URI or file.
+        /// </summary>
+        /// <value>
+        /// The output.
+        /// </value>
+        [ValueOption(1)]
+        public string Output { get; set; }
+
+        /// <summary>
+        /// Gets the output URI.
+        /// </summary>
+        /// <value>
+        /// The output URI.
+        /// </value>
+        public Uri OutputUri
+        {
+            get
+            {
+                return new Uri(this.Output);
+            }
+        }
+
         #endregion
     }
 }

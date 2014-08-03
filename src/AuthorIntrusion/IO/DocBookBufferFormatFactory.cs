@@ -1,4 +1,4 @@
-﻿// <copyright file="MarkdownBufferFormatFactory.cs" company="Moonfire Games">
+﻿// <copyright file="DocBookBufferFormatFactory.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -7,10 +7,10 @@ namespace AuthorIntrusion.IO
     using System.IO;
 
     /// <summary>
-    /// Implements the factory used to scan Markdown files and create an
-    /// appropriate format.
+    /// Implements a factory used to identify DocBook files and creates
+    /// the appropriate DocBook formatter when applicable.
     /// </summary>
-    public class MarkdownBufferFormatFactory : IFileBufferFormatFactory
+    public class DocBookBufferFormatFactory : IFileBufferFormatFactory
     {
         #region Public Properties
 
@@ -24,7 +24,7 @@ namespace AuthorIntrusion.IO
         {
             get
             {
-                return "Markdown";
+                return "DocBook 5";
             }
         }
 
@@ -38,7 +38,7 @@ namespace AuthorIntrusion.IO
         {
             get
             {
-                return "markdown";
+                return "docbook";
             }
         }
 
@@ -61,8 +61,7 @@ namespace AuthorIntrusion.IO
             // Use the extension to figure out the filename.
             switch (file.Extension.ToLower())
             {
-                case ".markdown":
-                case ".md":
+                case ".xml":
                     return true;
 
                 default:
@@ -78,7 +77,7 @@ namespace AuthorIntrusion.IO
         /// </returns>
         public IFileBufferFormat Create()
         {
-            return new MarkdownBufferFormat();
+            return new DocBookBufferFormat();
         }
 
         #endregion
