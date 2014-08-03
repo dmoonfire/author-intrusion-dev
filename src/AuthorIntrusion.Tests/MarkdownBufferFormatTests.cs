@@ -51,9 +51,13 @@ namespace AuthorIntrusion.Tests
             Assert.AreEqual(
                 2, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", contents[0], "1st output line was unexpected.");
+                "One Two Three.", 
+                contents[0].Text, 
+                "1st output line was unexpected.");
             Assert.AreEqual(
-                "Four Five Six.", contents[1], "2nd output line was unexpected.");
+                "Four Five Six.", 
+                contents[1].Text, 
+                "2nd output line was unexpected.");
         }
 
         /// <summary>
@@ -100,7 +104,9 @@ namespace AuthorIntrusion.Tests
             Assert.AreEqual(
                 1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", contents[0], "1st output line was unexpected.");
+                "One Two Three.", 
+                contents[0].Text, 
+                "1st output line was unexpected.");
         }
 
         /// <summary>
@@ -131,7 +137,9 @@ namespace AuthorIntrusion.Tests
             Assert.AreEqual(
                 1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", contents[0], "1st output line was unexpected.");
+                "One Two Three.", 
+                contents[0].Text, 
+                "1st output line was unexpected.");
         }
 
         /// <summary>
@@ -177,7 +185,9 @@ namespace AuthorIntrusion.Tests
             Assert.AreEqual(
                 1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
-                "One Two Three.", contents[0], "1st output line was unexpected.");
+                "One Two Three.", 
+                contents[0].Text, 
+                "1st output line was unexpected.");
         }
 
         /// <summary>

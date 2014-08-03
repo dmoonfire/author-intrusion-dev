@@ -31,7 +31,9 @@ namespace AuthorIntrusion.Cli.Tests
                         Path.Combine(
                             this.SamplesDirectory.FullName, 
                             "Frankenstein Markdown", 
-                            "chapter-01.markdown")
+                            "chapter-01.markdown"), 
+                    Output =
+                        Path.Combine(this.WorkingDirectory.FullName, "output.xml"), 
                 };
 
             // Create the transform command and run the job.
