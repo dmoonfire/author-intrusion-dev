@@ -187,7 +187,7 @@ namespace AuthorIntrusion.IO
             out MetadataDictionary metadata, 
             out BlockCollection lines)
         {
-            using (var reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
                 this.Load(project, reader, out metadata, out lines);
             }
