@@ -4,6 +4,7 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion
 {
+    using AuthorIntrusion.Buffers;
     using AuthorIntrusion.Metadata;
 
     /// <summary>
@@ -19,13 +20,33 @@ namespace AuthorIntrusion
         /// </summary>
         public Project()
         {
+            // Create the collections.
             this.Singletons = new SingletonManager();
             this.Metadata = new MetadataManager();
+
+            // Hardcode the project layout to be a story.
+            this.Layout = new RegionLayout
+                {
+                    Name = "Project", 
+                    Slug = "project", 
+                    HasContent = true, 
+                    Minimum = 1, 
+                    Maximum = 1, 
+                    IsDynamicContainer = false, 
+                };
         }
 
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the layout for the project.
+        /// </summary>
+        /// <value>
+        /// The layout.
+        /// </value>
+        public RegionLayout Layout { get; set; }
 
         /// <summary>
         /// Gets the metadata manager for the project.

@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffers\ProjectBuffer.cs" />
+    <Compile Include="Buffers\RegionLayout.cs" />
     <Compile Include="Css\CssClassKey.cs" />
     <Compile Include="IO\BufferFormatLoadOptions.cs" />
     <Compile Include="IO\FilePersistence.cs" />
