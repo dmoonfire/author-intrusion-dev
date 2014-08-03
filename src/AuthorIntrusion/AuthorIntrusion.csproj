@@ -62,10 +62,12 @@
     <Compile Include="IO\BufferFormatLoadOptions.cs" />
     <Compile Include="IO\DocBookBufferFormat.cs" />
     <Compile Include="IO\DocBookBufferFormatFactory.cs" />
+    <Compile Include="IO\DocBookBufferFormatSettings.cs" />
     <Compile Include="IO\FilePersistence.cs" />
     <Compile Include="IO\FilePersistenceFactory.cs" />
     <Compile Include="IO\IBufferFormat.cs" />
     <Compile Include="IO\IBufferFormatFactory.cs" />
+    <Compile Include="IO\IBufferFormatSettings.cs" />
     <Compile Include="IO\IFileBufferFormat.cs" />
     <Compile Include="IO\IFileBufferFormatFormat.cs" />
     <Compile Include="INamed.cs" />

@@ -5,6 +5,7 @@
 namespace AuthorIntrusion.Cli.Transform
 {
     using System;
+    using System.Collections.Generic;
 
     using CommandLine;
 
@@ -49,6 +50,12 @@ namespace AuthorIntrusion.Cli.Transform
         /// </value>
         [ValueOption(1)]
         public string Output { get; set; }
+
+        /// <summary>
+        /// Gets or sets zero or more additional options to set.
+        /// </summary>
+        [OptionList('O', "output-option", Separator = ':')]
+        public IList<string> OutputOptions { get; set; }
 
         /// <summary>
         /// Gets the output URI.

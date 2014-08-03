@@ -10,6 +10,7 @@ namespace AuthorIntrusion.IO
     using System.Xml;
 
     using AuthorIntrusion.Buffers;
+    using AuthorIntrusion.Cli.Transform;
     using AuthorIntrusion.Extensions.System.Xml;
 
     /// <summary>
@@ -27,7 +28,55 @@ namespace AuthorIntrusion.IO
 
         #endregion
 
+        #region Fields
+
+        /// <summary>
+        /// The settings for the DocBook format.
+        /// </summary>
+        private readonly DocBookBufferFormatSettings settings;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocBookBufferFormat"/> class.
+        /// </summary>
+        public DocBookBufferFormat()
+        {
+            this.settings = new DocBookBufferFormatSettings();
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the current settings associated with the format.
+        /// </summary>
+        public IBufferFormatSettings Settings
+        {
+            get
+            {
+                return this.settings;
+            }
+        }
+
+        #endregion
+
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Loads a profile of a specific format into memory. Profiles are either
+        /// internally identified by the format and may be stored as part of
+        /// a project's settings.
+        /// </summary>
+        /// <param name="profileName">
+        /// The name of the profile to load.
+        /// </param>
+        public void LoadProfile(string profileName)
+        {
+        }
 
         /// <summary>
         /// Loads project data from the persistence layer and populates the project.
@@ -83,7 +132,8 @@ namespace AuthorIntrusion.IO
                 {
                     // Write out the document start.
                     writer.WriteStartDocument();
-                    writer.WriteStartElement("article", DocBookNamespace);
+                    writer.WriteStartElement(
+                        this.settings.RootElement, DocBookNamespace);
                     writer.WriteAttributeString("version", "5.0");
 
                     // Write out the info tag.

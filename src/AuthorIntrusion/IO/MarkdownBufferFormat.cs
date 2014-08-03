@@ -10,6 +10,7 @@ namespace AuthorIntrusion.IO
     using System.Text;
 
     using AuthorIntrusion.Buffers;
+    using AuthorIntrusion.Cli.Transform;
     using AuthorIntrusion.Metadata;
 
     using YamlDotNet.RepresentationModel;
@@ -20,6 +21,15 @@ namespace AuthorIntrusion.IO
     /// </summary>
     public class MarkdownBufferFormat : IFileBufferFormat
     {
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the current settings associated with the format.
+        /// </summary>
+        public IBufferFormatSettings Settings { get; private set; }
+
+        #endregion
+
         #region Public Methods and Operators
 
         /// <summary>
@@ -46,6 +56,18 @@ namespace AuthorIntrusion.IO
             {
                 this.Load(project, reader, out metadata, out lines);
             }
+        }
+
+        /// <summary>
+        /// Loads a profile of a specific format into memory. Profiles are either
+        /// internally identified by the format and may be stored as part of
+        /// a project's settings.
+        /// </summary>
+        /// <param name="profileName">
+        /// The name of the profile to load.
+        /// </param>
+        public void LoadProfile(string profileName)
+        {
         }
 
         /// <summary>

@@ -4,6 +4,10 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.Cli.Transform
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     using AuthorIntrusion.IO;
 
     /// <summary>
@@ -49,23 +53,85 @@ namespace AuthorIntrusion.Cli.Transform
         /// </param>
         public void Run(TransformOptions options)
         {
-            // Load the project into memory.
+            // Get the persistence objects for both input and output.
             var project = new Project();
             IPersistence inputPersistence =
                 this.PersistenceFactoryManager.CreatePersistence(
                     options.InputUri);
-            IFileBufferFormat inputFormat = inputPersistence.ProjectFormat;
+            IPersistence outputPersistence =
+                this.PersistenceFactoryManager.CreatePersistence(
+                    options.OutputUri);
 
+            // Figure out the formats for both input and output.
+            IFileBufferFormat inputFormat = inputPersistence.ProjectFormat;
+            IFileBufferFormat outputFormat = outputPersistence.ProjectFormat;
+
+            this.SetFormatSettings(inputFormat, null, null);
+            this.SetFormatSettings(outputFormat, null, options.OutputOptions);
+
+            // Load the project into memory.
             inputFormat.LoadProject(
                 project, inputPersistence, BufferFormatLoadOptions.Full);
 
             // Write out the project from memory.
-            IPersistence outputPersistence =
-                this.PersistenceFactoryManager.CreatePersistence(
-                    options.OutputUri);
-            IFileBufferFormat outputFormat = outputPersistence.ProjectFormat;
-
             outputFormat.StoreProject(project, outputPersistence);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Sets the format settings from options given on the command line.
+        /// </summary>
+        /// <param name="format">
+        /// The format to update.
+        /// </param>
+        /// <param name="profile">
+        /// The name of the profile to load.
+        /// </param>
+        /// <param name="options">
+        /// The list of additional options to set.
+        /// </param>
+        private void SetFormatSettings(
+            IFileBufferFormat format, 
+            string profile, 
+            IEnumerable<string> options)
+        {
+            // If we have a profile, then use that first.
+            if (!string.IsNullOrWhiteSpace(profile))
+            {
+                format.LoadProfile(profile);
+            }
+
+            // If we have additional settings, we need to pull out the settings object
+            // and set each one.
+            if (options != null)
+            {
+                // Pull out the settings object.
+                IBufferFormatSettings settings = format.Settings;
+
+                if (settings == null)
+                {
+                    return;
+                }
+
+                // Loop through the settings and set each one. The format of the
+                // options line is "key=value".
+                foreach (string option in options)
+                {
+                    // Split the options line.
+                    string[] parts = option.Split(new[] { '=' }, 2);
+                    string name = parts[0];
+                    string value = parts[1];
+
+                    // Get the public property on the setting.
+                    PropertyInfo property = settings.GetType().GetProperty(name);
+                    object propertyValue = Convert.ChangeType(
+                        value, property.PropertyType);
+                    property.SetValue(settings, propertyValue);
+                }
+            }
         }
 
         #endregion

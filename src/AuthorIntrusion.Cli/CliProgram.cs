@@ -27,11 +27,16 @@ namespace AuthorIntrusion.Cli
         private static void Main(string[] args)
         {
             // Parse the arguments into an options object.
+            var options = new CliOptions();
             string invokedVerb = null;
             object invokedOptions = null;
-
-            var options = new CliOptions();
-            bool successful = Parser.Default.ParseArguments(
+            var parser = new Parser(
+                delegate(ParserSettings settings)
+                    {
+                        settings.CaseSensitive = true;
+                        settings.IgnoreUnknownArguments = false;
+                    });
+            bool successful = parser.ParseArguments(
                 args, 
                 options, 
                 (verb, subOptions) =>
@@ -44,7 +49,8 @@ namespace AuthorIntrusion.Cli
 
             if (!successful)
             {
-                Environment.Exit(Parser.DefaultExitCodeFail);
+                Console.WriteLine("Cannot parse arguments.");
+                Environment.Exit(1);
             }
 
             // Set up the plugins.
