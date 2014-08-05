@@ -190,6 +190,36 @@ namespace AuthorIntrusion.Tests
         }
 
         /// <summary>
+        /// Tests reading input with only an author.
+        /// </summary>
+        [Test]
+        public void YamlAuthorOnly()
+        {
+            // Create the test input.
+            var lines = new List<string> { "---", "Author: Unit Test", "---", };
+            string input = lines.Join();
+
+            // Create the format.
+            var format = new MarkdownBufferFormat();
+
+            // Parse the buffer lines.
+            var project = new Project();
+            MetadataDictionary metadata = project.Metadata;
+
+            format.Load(project, input, project);
+
+            // Verify the metadata.
+            Assert.AreEqual(
+                0, metadata.Count, "Number of metadata keys is unexpected.");
+
+            // Verify the title.
+            Assert.AreEqual(
+                "Unit Test", 
+                project.Authors.PreferredName, 
+                "Primary name was unexpected.");
+        }
+
+        /// <summary>
         /// Tests reading input with only metadata.
         /// </summary>
         [Test]
@@ -243,13 +273,10 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            BlockCollection contents = project.Blocks;
 
             format.Load(project, input, project);
 
             // Verify the metadata.
-            MetadataKey titleKey = project.MetadataManager["Scalar"];
-
             Assert.AreEqual(
                 0, metadata.Count, "Number of metadata keys is unexpected.");
 
