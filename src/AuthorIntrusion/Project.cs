@@ -5,13 +5,14 @@
 namespace AuthorIntrusion
 {
     using AuthorIntrusion.Buffers;
+    using AuthorIntrusion.IO;
     using AuthorIntrusion.Metadata;
 
     /// <summary>
     /// Primary organizational unit for a writing project. This manages all of
     /// the internals of the project including access to the buffer for editing.
     /// </summary>
-    public class Project
+    public class Project : IProjectBuffer
     {
         #region Constructors and Destructors
 
@@ -25,6 +26,8 @@ namespace AuthorIntrusion
             this.MetadataManager = new MetadataManager();
             this.Metadata = new MetadataDictionary();
             this.Blocks = new BlockCollection();
+            this.Authors = new NameDictionary();
+            this.Titles = new TitleInfo();
 
             // Hardcode the project layout to be a story.
             this.Layout = new RegionLayout
@@ -41,6 +44,14 @@ namespace AuthorIntrusion
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets the authors of the project.
+        /// </summary>
+        /// <value>
+        /// The names.
+        /// </value>
+        public NameDictionary Authors { get; private set; }
 
         /// <summary>
         /// Gets the blocks associated directly with the project buffer.
@@ -79,6 +90,29 @@ namespace AuthorIntrusion
         /// class names and metadata.
         /// </summary>
         public SingletonManager Singletons { get; private set; }
+
+        /// <summary>
+        /// Gets the titles of the project.
+        /// </summary>
+        /// <value>
+        /// The titles.
+        /// </value>
+        public TitleInfo Titles { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.Titles.ToString();
+        }
 
         #endregion
     }

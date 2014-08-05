@@ -42,10 +42,9 @@ namespace AuthorIntrusion.Tests
 
             // Parse the buffer lines.
             var project = new Project();
-            MetadataDictionary metadata;
-            BlockCollection contents;
+            BlockCollection contents = project.Blocks;
 
-            format.Load(project, input, out metadata, out contents);
+            format.Load(project, input, project);
 
             // Verify the contents.
             Assert.AreEqual(
@@ -82,10 +81,10 @@ namespace AuthorIntrusion.Tests
 
             // Parse the buffer lines.
             var project = new Project();
-            MetadataDictionary metadata;
-            BlockCollection contents;
+            MetadataDictionary metadata = project.Metadata;
+            BlockCollection contents = project.Blocks;
 
-            format.Load(project, input, out metadata, out contents);
+            format.Load(project, input, project);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Title"];
@@ -124,10 +123,10 @@ namespace AuthorIntrusion.Tests
 
             // Parse the buffer lines.
             var project = new Project();
-            MetadataDictionary metadata;
-            BlockCollection contents;
+            MetadataDictionary metadata = project.Metadata;
+            BlockCollection contents = project.Blocks;
 
-            format.Load(project, input, out metadata, out contents);
+            format.Load(project, input, project);
 
             // Verify the metadata.
             Assert.AreEqual(
@@ -163,10 +162,10 @@ namespace AuthorIntrusion.Tests
 
             // Parse the buffer lines.
             var project = new Project();
-            MetadataDictionary metadata;
-            BlockCollection contents;
+            MetadataDictionary metadata = project.Metadata;
+            BlockCollection contents = project.Blocks;
 
-            format.Load(project, input, out metadata, out contents);
+            format.Load(project, input, project);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Title"];
@@ -205,10 +204,10 @@ namespace AuthorIntrusion.Tests
 
             // Parse the buffer lines.
             var project = new Project();
-            MetadataDictionary metadata;
-            BlockCollection contents;
+            MetadataDictionary metadata = project.Metadata;
+            BlockCollection contents = project.Blocks;
 
-            format.Load(project, input, out metadata, out contents);
+            format.Load(project, input, project);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Title"];

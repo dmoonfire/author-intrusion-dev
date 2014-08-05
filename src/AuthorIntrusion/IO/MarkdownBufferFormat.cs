@@ -36,25 +36,19 @@ namespace AuthorIntrusion.IO
         /// Loads the data from a string.
         /// </summary>
         /// <param name="project">
+        /// The project.
         /// </param>
         /// <param name="input">
         /// The input.
         /// </param>
-        /// <param name="metadata">
-        /// The metadata.
+        /// <param name="buffer">
+        /// The buffer.
         /// </param>
-        /// <param name="lines">
-        /// The lines.
-        /// </param>
-        public void Load(
-            Project project, 
-            string input, 
-            out MetadataDictionary metadata, 
-            out BlockCollection lines)
+        public void Load(Project project, string input, IProjectBuffer buffer)
         {
             using (var reader = new StringReader(input))
             {
-                this.Load(project, reader, out metadata, out lines);
+                this.Load(project, reader, buffer);
             }
         }
 
@@ -87,20 +81,11 @@ namespace AuthorIntrusion.IO
             IPersistence persistence, 
             BufferFormatLoadOptions options)
         {
-            MetadataDictionary metadata;
-            BlockCollection blocks;
-
             using (Stream stream = persistence.GetProjectReadStream())
             {
                 // Load information about the project into memory.
-                this.Load(project, stream, out metadata, out blocks);
+                this.Load(project, stream, project);
             }
-
-            // Completely replace the metadata in the project.
-            project.Metadata.Set(metadata);
-
-            // Copy the lines into the project.
-            project.Blocks.AddRange(blocks);
         }
 
         /// <summary>
@@ -135,21 +120,15 @@ namespace AuthorIntrusion.IO
         /// <param name="reader">
         /// The reader.
         /// </param>
-        /// <param name="metadata">
-        /// The metadata.
-        /// </param>
-        /// <param name="content">
-        /// The content.
+        /// <param name="buffer">
+        /// The buffer.
         /// </param>
         private void Load(
-            Project project, 
-            TextReader reader, 
-            out MetadataDictionary metadata, 
-            out BlockCollection content)
+            Project project, TextReader reader, IProjectBuffer buffer)
         {
-            // Initialize our output variables.
-            metadata = new MetadataDictionary();
-            content = new BlockCollection();
+            // This is a complete load.
+            buffer.Metadata.Clear();
+            buffer.Blocks.Clear();
 
             // Loop through the lines, starting with looking for the metadata.
             bool first = true;
@@ -168,7 +147,7 @@ namespace AuthorIntrusion.IO
                     // advance the reader until after the next "---" in the stream.
                     if (line == "---")
                     {
-                        this.ReadYamlMetadata(project, reader, metadata);
+                        this.ReadYamlMetadata(project, reader, buffer);
                         continue;
                     }
                 }
@@ -184,7 +163,7 @@ namespace AuthorIntrusion.IO
                 // the wrapping and line combinations.
                 var block = new Block(line);
 
-                content.Add(block);
+                buffer.Blocks.Add(block);
             }
         }
 
@@ -197,21 +176,14 @@ namespace AuthorIntrusion.IO
         /// <param name="stream">
         /// The stream to read.
         /// </param>
-        /// <param name="metadata">
-        /// The metadata.
+        /// <param name="buffer">
+        /// The buffer.
         /// </param>
-        /// <param name="lines">
-        /// The lines.
-        /// </param>
-        private void Load(
-            Project project, 
-            Stream stream, 
-            out MetadataDictionary metadata, 
-            out BlockCollection lines)
+        private void Load(Project project, Stream stream, IProjectBuffer buffer)
         {
             using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
-                this.Load(project, reader, out metadata, out lines);
+                this.Load(project, reader, buffer);
             }
         }
 
@@ -224,8 +196,8 @@ namespace AuthorIntrusion.IO
         /// <param name="reader">
         /// The reader.
         /// </param>
-        /// <param name="metadata">
-        /// The metadata.
+        /// <param name="buffer">
+        /// The buffer.
         /// </param>
         /// <exception cref="System.IO.FileLoadException">
         /// Cannot load file without a proper YAML header.
@@ -242,12 +214,12 @@ namespace AuthorIntrusion.IO
         /// Cannot parse YAML metadata with non-scalar values.
         /// </exception>
         private void ReadYamlMetadata(
-            Project project, TextReader reader, MetadataDictionary metadata)
+            Project project, TextReader reader, IProjectBuffer buffer)
         {
             // Build up the rest of the line.
-            var buffer = new StringBuilder();
+            var builder = new StringBuilder();
 
-            buffer.AppendLine("---");
+            builder.AppendLine("---");
 
             // Load the rest of the lines. If we don't get the final "---", then we just skip
             // the metadata loading entirely.
@@ -256,7 +228,7 @@ namespace AuthorIntrusion.IO
             while ((line = reader.ReadLine()) != null)
             {
                 // Add the line to the buffer.
-                buffer.AppendLine(line);
+                builder.AppendLine(line);
 
                 // If we get to the next "---", then we stop loading.
                 if (line == "---")
@@ -273,9 +245,9 @@ namespace AuthorIntrusion.IO
             }
 
             // Get the string of the buffer so we can parse it.
-            string bufferText = buffer.ToString();
+            string bufferText = builder.ToString();
 
-            buffer.Length = 0;
+            builder.Length = 0;
 
             // Load the YAML buffer into memory.
             using (var yamlReader = new StringReader(bufferText))
@@ -298,7 +270,7 @@ namespace AuthorIntrusion.IO
 
                     MetadataKey metadataKey = project.MetadataManager[key.Value];
                     MetadataValue metadataValue =
-                        metadata.GetOrCreate(metadataKey);
+                        buffer.Metadata.GetOrCreate(metadataKey);
 
                     if (scalar != null)
                     {

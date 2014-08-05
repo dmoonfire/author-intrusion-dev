@@ -63,6 +63,8 @@
     <Compile Include="IO\DocBookBufferFormat.cs" />
     <Compile Include="IO\DocBookBufferFormatFactory.cs" />
     <Compile Include="IO\DocBookBufferFormatSettings.cs" />
+    <Compile Include="IO\EntityCollection.cs" />
+    <Compile Include="IO\EntityInfo.cs" />
     <Compile Include="IO\FilePersistence.cs" />
     <Compile Include="IO\FilePersistenceFactory.cs" />
     <Compile Include="IO\IBufferFormat.cs" />
@@ -76,6 +78,9 @@
     <Compile Include="IO\IPersistenceFactory.cs" />
     <Compile Include="IO\MarkdownBufferFormat.cs" />
     <Compile Include="IO\MarkdownBufferFormatFactory.cs" />
+    <Compile Include="IO\NameDictionary.cs" />
+    <Compile Include="IO\TitleInfo.cs" />
+    <Compile Include="IProjectBuffer.cs" />
     <Compile Include="ISlugged.cs" />
     <Compile Include="IO\PersistenceFactoryManager.cs" />
     <Compile Include="IO\ProjectBufferReaderSettings.cs" />
