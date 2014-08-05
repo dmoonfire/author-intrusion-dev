@@ -11,7 +11,6 @@ namespace AuthorIntrusion.IO
 
     using AuthorIntrusion.Buffers;
     using AuthorIntrusion.Cli.Transform;
-    using AuthorIntrusion.Extensions.System.Xml;
 
     /// <summary>
     /// Encapsulates the functionality for a buffer format that handles a DocBook 5
@@ -138,7 +137,7 @@ namespace AuthorIntrusion.IO
 
                     // Write out the info tag.
                     writer.WriteStartElement("info");
-                    writer.WriteElementString("title", project, "Title");
+                    writer.WriteElementString("title", project.Titles.Title);
                     writer.WriteEndElement();
 
                     // Loop through and add all the lines.

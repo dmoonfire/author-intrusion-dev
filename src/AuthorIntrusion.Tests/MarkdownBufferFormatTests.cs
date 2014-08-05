@@ -69,7 +69,7 @@ namespace AuthorIntrusion.Tests
             var lines = new List<string>
                 {
                     "---", 
-                    "Title: Unit Test", 
+                    "Scalar: Unit Test", 
                     "---", 
                     string.Empty, 
                     "One Two Three.", 
@@ -87,17 +87,17 @@ namespace AuthorIntrusion.Tests
             format.Load(project, input, project);
 
             // Verify the metadata.
-            MetadataKey titleKey = project.MetadataManager["Title"];
+            MetadataKey titleKey = project.MetadataManager["Scalar"];
 
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");
             Assert.IsTrue(
                 metadata.ContainsKey(titleKey), 
-                "Could not find Title key in metadata.");
+                "Could not find Scalar key in metadata.");
             Assert.AreEqual(
                 "Unit Test", 
                 metadata[titleKey].Value, 
-                "Value of Title was unexpected.");
+                "Value of Scalar was unexpected.");
 
             // Verify the contents.
             Assert.AreEqual(
@@ -151,7 +151,7 @@ namespace AuthorIntrusion.Tests
             var lines = new List<string>
                 {
                     "---", 
-                    "Title: Unit Test", 
+                    "Scalar: Unit Test", 
                     "---", 
                     "One Two Three.", 
                 };
@@ -168,17 +168,17 @@ namespace AuthorIntrusion.Tests
             format.Load(project, input, project);
 
             // Verify the metadata.
-            MetadataKey titleKey = project.MetadataManager["Title"];
+            MetadataKey titleKey = project.MetadataManager["Scalar"];
 
             Assert.AreEqual(
                 1, metadata.Count, "Number of metadata keys is unexpected.");
             Assert.IsTrue(
                 metadata.ContainsKey(titleKey), 
-                "Could not find Title key in metadata.");
+                "Could not find Scalar key in metadata.");
             Assert.AreEqual(
                 "Unit Test", 
                 metadata[titleKey].Value, 
-                "Value of Title was unexpected.");
+                "Value of Scalar was unexpected.");
 
             // Verify the contents.
             Assert.AreEqual(
@@ -196,6 +196,44 @@ namespace AuthorIntrusion.Tests
         public void YamlMetadataOnly()
         {
             // Create the test input.
+            var lines = new List<string> { "---", "Scalar: Unit Test", "---", };
+            string input = lines.Join();
+
+            // Create the format.
+            var format = new MarkdownBufferFormat();
+
+            // Parse the buffer lines.
+            var project = new Project();
+            MetadataDictionary metadata = project.Metadata;
+            BlockCollection contents = project.Blocks;
+
+            format.Load(project, input, project);
+
+            // Verify the metadata.
+            MetadataKey titleKey = project.MetadataManager["Scalar"];
+
+            Assert.AreEqual(
+                1, metadata.Count, "Number of metadata keys is unexpected.");
+            Assert.IsTrue(
+                metadata.ContainsKey(titleKey), 
+                "Could not find Scalar key in metadata.");
+            Assert.AreEqual(
+                "Unit Test", 
+                metadata[titleKey].Value, 
+                "Value of Scalar was unexpected.");
+
+            // Verify the contents.
+            Assert.AreEqual(
+                0, contents.Count, "Number of output lines was unexpected.");
+        }
+
+        /// <summary>
+        /// Tests reading input with only title.
+        /// </summary>
+        [Test]
+        public void YamlTitleOnly()
+        {
+            // Create the test input.
             var lines = new List<string> { "---", "Title: Unit Test", "---", };
             string input = lines.Join();
 
@@ -210,21 +248,14 @@ namespace AuthorIntrusion.Tests
             format.Load(project, input, project);
 
             // Verify the metadata.
-            MetadataKey titleKey = project.MetadataManager["Title"];
+            MetadataKey titleKey = project.MetadataManager["Scalar"];
 
             Assert.AreEqual(
-                1, metadata.Count, "Number of metadata keys is unexpected.");
-            Assert.IsTrue(
-                metadata.ContainsKey(titleKey), 
-                "Could not find Title key in metadata.");
-            Assert.AreEqual(
-                "Unit Test", 
-                metadata[titleKey].Value, 
-                "Value of Title was unexpected.");
+                0, metadata.Count, "Number of metadata keys is unexpected.");
 
-            // Verify the contents.
+            // Verify the title.
             Assert.AreEqual(
-                0, contents.Count, "Number of output lines was unexpected.");
+                "Unit Test", project.Titles.Title, "Title was unexpected.");
         }
 
         #endregion

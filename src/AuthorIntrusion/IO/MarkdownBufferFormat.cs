@@ -112,6 +112,66 @@ namespace AuthorIntrusion.IO
         #region Methods
 
         /// <summary>
+        /// Parses the YAML metadata.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="node">
+        /// The node.
+        /// </param>
+        /// <exception cref="System.InvalidOperationException">
+        /// Cannot parse YAML metadata with sequences of anything but scalars.
+        /// or
+        /// Cannot parse YAML metadata with mapping/dictionary values.
+        /// </exception>
+        private static void ParseYamlMetadata(
+            Project project, IProjectBuffer buffer, string key, YamlNode node)
+        {
+            // For everything else, we keep it as a metadata entry.
+            MetadataKey metadataKey = project.MetadataManager[key];
+            MetadataValue metadataValue =
+                buffer.Metadata.GetOrCreate(metadataKey);
+
+            // Based on the type determines how we parse it.
+            var scalar = node as YamlScalarNode;
+            var sequence = node as YamlSequenceNode;
+
+            if (scalar != null)
+            {
+                // Pull out the single value.
+                metadataValue.Add(scalar.Value);
+            }
+            else if (sequence != null)
+            {
+                // Loop through the sequence and pull in the values.
+                foreach (YamlNode seqValue in sequence.Children)
+                {
+                    var seqScalar = seqValue as YamlScalarNode;
+
+                    if (seqScalar == null)
+                    {
+                        throw new InvalidOperationException(
+                            "Cannot parse YAML metadata with sequences of anything but scalars.");
+                    }
+
+                    metadataValue.Add(seqScalar.Value);
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    "Cannot parse YAML metadata with mapping/dictionary values.");
+            }
+        }
+
+        /// <summary>
         /// Loads the Markdown file using the given reader.
         /// </summary>
         /// <param name="project">
@@ -184,6 +244,66 @@ namespace AuthorIntrusion.IO
             using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
                 this.Load(project, reader, buffer);
+            }
+        }
+
+        /// <summary>
+        /// Parses the YAML author.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="node">
+        /// The node.
+        /// </param>
+        private void ParseYamlAuthor(
+            Project project, IProjectBuffer buffer, string key, YamlNode node)
+        {
+            string scalar = ((YamlScalarNode)node).Value;
+
+            switch (key)
+            {
+                case "author":
+                    buffer.Authors.PreferredName = scalar;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Parses the YAML title.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="node">
+        /// The node.
+        /// </param>
+        private void ParseYamlTitle(
+            Project project, IProjectBuffer buffer, string key, YamlNode node)
+        {
+            string scalar = ((YamlScalarNode)node).Value;
+
+            switch (key)
+            {
+                case "title":
+                    buffer.Titles.Title = scalar;
+                    break;
+
+                case "subtitle":
+                    buffer.Titles.Subtitle = scalar;
+                    break;
             }
         }
 
@@ -264,39 +384,29 @@ namespace AuthorIntrusion.IO
                     KeyValuePair<YamlNode, YamlNode> entry in mapping.Children)
                 {
                     // Pull out the key value pairs.
-                    var key = (YamlScalarNode)entry.Key;
-                    var scalar = entry.Value as YamlScalarNode;
-                    var sequence = entry.Value as YamlSequenceNode;
+                    string key = ((YamlScalarNode)entry.Key).Value;
 
-                    MetadataKey metadataKey = project.MetadataManager[key.Value];
-                    MetadataValue metadataValue =
-                        buffer.Metadata.GetOrCreate(metadataKey);
+                    // Based on the key, we will put the value somewhere.
+                    string lowerKey = key.ToLower();
 
-                    if (scalar != null)
+                    switch (lowerKey)
                     {
-                        // Pull out the single value.
-                        metadataValue.Add(scalar.Value);
-                    }
-                    else if (sequence != null)
-                    {
-                        // Loop through the sequence and pull in the values.
-                        foreach (YamlNode seqValue in sequence.Children)
-                        {
-                            var seqScalar = seqValue as YamlScalarNode;
+                        case "author":
+                            this.ParseYamlAuthor(
+                                project, buffer, lowerKey, entry.Value);
+                            break;
 
-                            if (seqScalar == null)
-                            {
-                                throw new InvalidOperationException(
-                                    "Cannot parse YAML metadata with sequences of anything but scalars.");
-                            }
+                        case "title":
+                        case "subtitle":
+                            this.ParseYamlTitle(
+                                project, buffer, lowerKey, entry.Value);
+                            break;
 
-                            metadataValue.Add(seqScalar.Value);
-                        }
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException(
-                            "Cannot parse YAML metadata with mapping/dictionary values.");
+                        default:
+
+                            // For everything else, treat it as metadata.
+                            ParseYamlMetadata(project, buffer, key, entry.Value);
+                            return;
                     }
                 }
             }
