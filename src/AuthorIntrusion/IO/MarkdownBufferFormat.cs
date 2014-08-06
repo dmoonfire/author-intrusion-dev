@@ -11,9 +11,11 @@ namespace AuthorIntrusion.IO
 
     using AuthorIntrusion.Buffers;
     using AuthorIntrusion.Cli.Transform;
+    using AuthorIntrusion.Extensions.System.Collections.Generic;
     using AuthorIntrusion.Metadata;
 
     using YamlDotNet.RepresentationModel;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Encapsulates the functionality for a buffer format that handles a Markdown file
@@ -89,8 +91,66 @@ namespace AuthorIntrusion.IO
         }
 
         /// <summary>
-        /// Writes out the project to the given persistence using the
-        /// format instance.
+        /// Stores the specified buffer to the given persistence.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="persistence">
+        /// The persistence.
+        /// </param>
+        /// <param name="stream">
+        /// The stream.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        public void Store(
+            Project project, 
+            IPersistence persistence, 
+            Stream stream, 
+            IProjectBuffer buffer)
+        {
+            using (var writer = new StreamWriter(stream))
+            {
+                this.Store(project, persistence, writer, buffer);
+            }
+        }
+
+        /// <summary>
+        /// Stores the specified project.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="persistence">
+        /// The persistence.
+        /// </param>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        public void Store(
+            Project project, 
+            IPersistence persistence, 
+            TextWriter writer, 
+            IProjectBuffer buffer)
+        {
+            // Write out the YAML header.
+            this.StoreMetadata(writer, buffer);
+
+            // Write out all the buffer lines.
+            foreach (Block block in buffer.Blocks)
+            {
+                writer.WriteLine();
+                writer.WriteLine(block.Text);
+            }
+        }
+
+        /// <summary>
+        /// Stores the specified buffer to the given persistence.
         /// </summary>
         /// <param name="project">
         /// The project to write out.
@@ -103,8 +163,11 @@ namespace AuthorIntrusion.IO
         /// </exception>
         public void StoreProject(Project project, IPersistence persistence)
         {
-            throw new InvalidOperationException(
-                "Cannot write out files with Markdown.");
+            using (Stream stream = persistence.GetProjectWriteStream())
+            {
+                // Load information about the project into memory.
+                this.Store(project, persistence, stream, project);
+            }
         }
 
         #endregion
@@ -410,6 +473,41 @@ namespace AuthorIntrusion.IO
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Writes out the metadata to the given writer.
+        /// </summary>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        /// <exception cref="System.NotImplementedException">
+        /// </exception>
+        private void StoreMetadata(TextWriter writer, IProjectBuffer buffer)
+        {
+            // Create a dictionary with the metadata and start adding elements.
+            var metadata = new Dictionary<string, object>();
+
+            metadata.AddIfNotEmpty("Title", buffer.Titles.Title);
+            metadata.AddIfNotEmpty("Subtitle", buffer.Titles.Subtitle);
+
+            metadata.AddIfNotEmpty("Author", buffer.Authors.PreferredName);
+
+            // Loop through and add the rest of the metadata.
+            foreach (MetadataKey key in buffer.Metadata.Keys)
+            {
+                metadata[key.Name] = buffer.Metadata[key];
+            }
+
+            // Write out the YAML header.
+            var serializer = new Serializer();
+
+            writer.WriteLine("---");
+            serializer.Serialize(writer, metadata);
+            writer.WriteLine("---");
         }
 
         #endregion
