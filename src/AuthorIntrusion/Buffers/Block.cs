@@ -43,20 +43,20 @@ namespace AuthorIntrusion.Buffers
         public BlockType BlockType { get; set; }
 
         /// <summary>
-        /// Gets or sets the line text.
-        /// </summary>
-        /// <value>
-        /// The text.
-        /// </value>
-        public string Text { get; set; }
-
-        /// <summary>
         /// Gets or sets the linked region.
         /// </summary>
         /// <value>
         /// The linked region.
         /// </value>
         public Region LinkedRegion { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line text.
+        /// </summary>
+        /// <value>
+        /// The text.
+        /// </value>
+        public string Text { get; set; }
 
         #endregion
     }

@@ -9,6 +9,8 @@ namespace AuthorIntrusion
     using AuthorIntrusion.Buffers;
     using AuthorIntrusion.Metadata;
 
+    using MarkdownLog;
+
     /// <summary>
     /// Primary organizational unit for a writing project. This manages all of
     /// the internals of the project including access to the buffer for editing.
@@ -93,6 +95,15 @@ namespace AuthorIntrusion
             // Clear out the old regions and rebuild all of the entries that we actually need.
             this.Regions.Clear();
             this.CreateRegion(rootLayout, oldRegions);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="markdown">
+        /// </param>
+        public void ToMarkdown(MarkdownContainer markdown)
+        {
+            markdown.Append(new BulletedList("Title: " + this.Titles));
         }
 
         /// <summary>
