@@ -55,7 +55,9 @@
   <ItemGroup>
     <Compile Include="Buffers\Block.cs" />
     <Compile Include="Buffers\BlockCollection.cs" />
-    <Compile Include="Buffers\ProjectBuffer.cs" />
+    <Compile Include="Buffers\BlockType.cs" />
+    <Compile Include="Buffers\Region.cs" />
+    <Compile Include="Buffers\RegionDictionary.cs" />
     <Compile Include="Buffers\RegionLayout.cs" />
     <Compile Include="Css\CssClassKey.cs" />
     <Compile Include="Extensions\System\Collections\Generic\SystemCollectionsGenericDictionaryExtensions.cs" />

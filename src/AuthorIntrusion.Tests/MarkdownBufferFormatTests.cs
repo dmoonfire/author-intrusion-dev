@@ -23,70 +23,6 @@ namespace AuthorIntrusion.Tests
         #region Public Methods and Operators
 
         /// <summary>
-        /// Tests reading a single inline region.
-        /// </summary>
-        [Test]
-        public void LoadInlineSingleRegion()
-        {
-            // Create the test input.
-            var lines = new List<string>
-                {
-                    "# Region 1",
-                    string.Empty,
-                    "Text in region 1.",
-                };
-            string input = lines.Join();
-
-            // Set up the layout.
-            var project = new Project();
-
-            project.Layout.InnerLayouts.Add(
-                new RegionLayout
-                    {
-                        Name = "Region 1",
-                        Slug = "region-1",
-                        HasContent = true,
-                        Minimum = 1,
-                        Maximum = 1
-                    });
-            project.Layout.HasContent = false;
-
-            // Create the format.
-            var format = new MarkdownBufferFormat();
-
-            // Parse the buffer lines.
-            BlockCollection contents = project.Blocks;
-
-            format.Load(project, input, project);
-
-            // Verify the contents of the project.
-            Region region1 = project.Regions["region-1"];
-
-            Assert.AreEqual(
-                1,
-                project.Blocks.Count,
-                "Number of lines in the project was unexpected.");
-            Assert.AreEqual(
-                BlockType.Region,
-                project.Blocks[0].BlockType,
-                "The block type of project's link block is unexpected.");
-            Assert.AreEqual(
-                region1,
-                project.Blocks[0].LinkedRegion,
-                "The linked region of the link type is unexpected.");
-
-            // Get the second region.
-            Assert.AreEqual(
-                1,
-                region1.Blocks.Count,
-                "Number of lines in region 1 was unexpected.");
-            Assert.AreEqual(
-                "Text in region 1.",
-                region1.Blocks[0].Text,
-                "The text in region 1 was unexpected.");
-        }
-
-        /// <summary>
         /// Tests reading a blank-line separated content.
         /// </summary>
         [Test]
@@ -170,6 +106,73 @@ namespace AuthorIntrusion.Tests
                 "One Two Three.", 
                 contents[0].Text, 
                 "1st output line was unexpected.");
+        }
+
+        /// <summary>
+        /// Tests reading a single inline region.
+        /// </summary>
+        [Test]
+        public void LoadInlineSingleRegion()
+        {
+            // Create the test input.
+            var lines = new List<string>
+                {
+                    "# Region 1", 
+                    string.Empty, 
+                    "Text in region 1.", 
+                };
+            string input = lines.Join();
+
+            // Set up the layout.
+            var projectLayout = new RegionLayout
+                {
+                    Name = "Project", 
+                    Slug = "project", 
+                    HasContent = false, 
+                };
+            projectLayout.InnerLayouts.Add(
+                new RegionLayout
+                    {
+                        Name = "Region 1", 
+                        Slug = "region-1", 
+                        HasContent = true, 
+                    });
+
+            // Create a new project with the given layout.
+            var project = new Project();
+            project.ApplyLayout(projectLayout);
+
+            // Create the format.
+            var format = new MarkdownBufferFormat();
+
+            // Parse the buffer lines.
+            format.Load(project, input, project);
+
+            // Verify the contents of the project.
+            Region region1 = project.Regions["region-1"];
+
+            Assert.AreEqual(
+                1, 
+                project.Blocks.Count, 
+                "Number of lines in the project was unexpected.");
+            Assert.AreEqual(
+                BlockType.Region, 
+                project.Blocks[0].BlockType, 
+                "The block type of project's link block is unexpected.");
+            Assert.AreEqual(
+                region1, 
+                project.Blocks[0].LinkedRegion, 
+                "The linked region of the link type is unexpected.");
+
+            // Get the second region.
+            Assert.AreEqual(
+                1, 
+                region1.Blocks.Count, 
+                "Number of lines in region 1 was unexpected.");
+            Assert.AreEqual(
+                "Text in region 1.", 
+                region1.Blocks[0].Text, 
+                "The text in region 1 was unexpected.");
         }
 
         /// <summary>

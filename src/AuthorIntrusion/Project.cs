@@ -4,15 +4,16 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion
 {
+    using System.Collections.Generic;
+
     using AuthorIntrusion.Buffers;
-    using AuthorIntrusion.IO;
     using AuthorIntrusion.Metadata;
 
     /// <summary>
     /// Primary organizational unit for a writing project. This manages all of
     /// the internals of the project including access to the buffer for editing.
     /// </summary>
-    public class Project : IProjectBuffer
+    public class Project : Region
     {
         #region Constructors and Destructors
 
@@ -24,10 +25,7 @@ namespace AuthorIntrusion
             // Create the collections.
             this.Singletons = new SingletonManager();
             this.MetadataManager = new MetadataManager();
-            this.Metadata = new MetadataDictionary();
-            this.Blocks = new BlockCollection();
-            this.Authors = new NameDictionary();
-            this.Titles = new TitleInfo();
+            this.Regions = new RegionDictionary();
 
             // Hardcode the project layout to be a story.
             this.Layout = new RegionLayout
@@ -46,36 +44,12 @@ namespace AuthorIntrusion
         #region Public Properties
 
         /// <summary>
-        /// Gets the authors of the project.
-        /// </summary>
-        /// <value>
-        /// The names.
-        /// </value>
-        public NameDictionary Authors { get; private set; }
-
-        /// <summary>
-        /// Gets the blocks associated directly with the project buffer.
-        /// </summary>
-        /// <value>
-        /// The blocks.
-        /// </value>
-        public BlockCollection Blocks { get; private set; }
-
-        /// <summary>
         /// Gets or sets the layout for the project.
         /// </summary>
         /// <value>
         /// The layout.
         /// </value>
         public RegionLayout Layout { get; set; }
-
-        /// <summary>
-        /// Gets the metadata associated with the project.
-        /// </summary>
-        /// <value>
-        /// The metadata.
-        /// </value>
-        public MetadataDictionary Metadata { get; private set; }
 
         /// <summary>
         /// Gets the metadata manager for the project.
@@ -86,22 +60,40 @@ namespace AuthorIntrusion
         public MetadataManager MetadataManager { get; private set; }
 
         /// <summary>
+        /// Gets the regions associated with the project.
+        /// </summary>
+        /// <value>
+        /// The regions.
+        /// </value>
+        public RegionDictionary Regions { get; private set; }
+
+        /// <summary>
         /// Gets the singleton manager used for managing keys such as
         /// class names and metadata.
         /// </summary>
         public SingletonManager Singletons { get; private set; }
 
-        /// <summary>
-        /// Gets the titles of the project.
-        /// </summary>
-        /// <value>
-        /// The titles.
-        /// </value>
-        public TitleInfo Titles { get; private set; }
-
         #endregion
 
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Applies the layout to the project, moving as much as possible (based on
+        /// slugs), removing unused regions, and creating new regions.
+        /// </summary>
+        /// <param name="rootLayout">
+        /// The root layout.
+        /// </param>
+        public void ApplyLayout(RegionLayout rootLayout)
+        {
+            // Get a clone of the existing regions in the project so we can
+            // reference it.
+            var oldRegions = new Dictionary<string, Region>(this.Regions);
+
+            // Clear out the old regions and rebuild all of the entries that we actually need.
+            this.Regions.Clear();
+            this.CreateRegion(rootLayout, oldRegions);
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -112,6 +104,73 @@ namespace AuthorIntrusion
         public override string ToString()
         {
             return this.Titles.ToString();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Creates a new region based on the current layout.
+        /// </summary>
+        /// <param name="layout">
+        /// The layout.
+        /// </param>
+        /// <param name="oldRegions">
+        /// The old regions.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private Region CreateRegion(
+            RegionLayout layout, Dictionary<string, Region> oldRegions)
+        {
+            // See if we have an existing region for this name.
+            string regionSlug = layout.Slug;
+            Region region;
+
+            if (oldRegions.TryGetValue(regionSlug, out region))
+            {
+                // If the region doesn't have content, then just remove everything.
+                if (!layout.HasContent)
+                {
+                    region.Blocks.Clear();
+                }
+
+                // We already had this region, so just copy it over but remove the
+                // existing links because we'll be rebuilding it.
+                region.Blocks.RemoveAll(r => r.BlockType == BlockType.Region);
+            }
+            else
+            {
+                // Create a new region for this slug.
+                region = new Region { Slug = regionSlug };
+            }
+
+            // Assign the new flags to the region.
+            region.Name = layout.Name;
+            region.Slug = layout.Slug;
+
+            // Add the region into the new region collection.
+            this.Regions.Add(region);
+
+            // Loop through and create all the child regions.
+            foreach (RegionLayout childLayout in layout.InnerLayouts)
+            {
+                // Create the child region recursively.
+                Region childRegion = this.CreateRegion(childLayout, oldRegions);
+
+                // Add the block to the end of the list.
+                var block = new Block
+                    {
+                        BlockType = BlockType.Region, 
+                        LinkedRegion = childRegion
+                    };
+
+                region.Blocks.Add(block);
+            }
+
+            // Return the resulting region.
+            return region;
         }
 
         #endregion
