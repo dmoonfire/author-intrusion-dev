@@ -7,6 +7,7 @@ namespace AuthorIntrusion.IO
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
 
     using AuthorIntrusion.Buffers;
@@ -395,6 +396,12 @@ namespace AuthorIntrusion.IO
             ref int lineIndex, 
             IProjectBuffer buffer)
         {
+            // Pull out the linked blocks since they are always at the bottom.
+            Block[] links =
+                buffer.Blocks.Where(b => b.BlockType == BlockType.Region)
+                    .ToArray();
+            buffer.Blocks.RemoveAll(b => b.BlockType == BlockType.Region);
+
             // Loop through the remaining lines.
             while (lineIndex < lines.Count)
             {
@@ -413,33 +420,13 @@ namespace AuthorIntrusion.IO
 
                 if (isHeader)
                 {
-                    // Try to find it via the ID.
-                    Region region;
-
-                    if (id == null || !context.Project.Regions.TryGetValue(
-                        id, 
-                        out region))
-                    {
-                        if (!context.Project.Regions.TryGetName(
-                            text, 
-                            out region))
-                        {
-                            // We don't know how to handle this.
-                            throw new Exception(
-                                "Cannot find region by " + text + " or " + id
-                                    + ".");
-                        }
-                    }
-
-                    // Increment the index ahead.
-                    lineIndex += headerOffset;
-
-                    // Read in the region.
-                    this.Load(
+                    this.LoadInlineRegion(
                         context, 
                         lines, 
                         ref lineIndex, 
-                        region);
+                        id, 
+                        text, 
+                        headerOffset);
                     continue;
                 }
 
@@ -450,6 +437,9 @@ namespace AuthorIntrusion.IO
 
                 lineIndex++;
             }
+
+            // Add the links back at the end.
+            buffer.Blocks.AddRange(links);
         }
 
         /// <summary>
@@ -475,6 +465,71 @@ namespace AuthorIntrusion.IO
                     reader, 
                     buffer);
             }
+        }
+
+        /// <summary>
+        /// Loads an inline region and adds it to the project.
+        /// </summary>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        /// <param name="lines">
+        /// The lines.
+        /// </param>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="id">
+        /// The identifier.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="headerOffset">
+        /// The header offset.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// </exception>
+        private void LoadInlineRegion(
+            BufferLoadContext context, 
+            List<string> lines, 
+            ref int lineIndex, 
+            string id, 
+            string text, 
+            int headerOffset)
+        {
+            // Try to find it via the ID.
+            Region region;
+            bool foundSlug = context.Project.Regions.TryGetValue(
+                id, 
+                out region);
+
+            if (id == null || !foundSlug)
+            {
+                bool foundName = context.Project.Regions.TryGetName(
+                    text, 
+                    out region);
+
+                if (!foundName)
+                {
+                    // We don't know how to handle this.
+                    throw new Exception(
+                        string.Format(
+                            "Cannot find region by {0} or {1}.", 
+                            text, 
+                            id));
+                }
+            }
+
+            // Increment the index ahead.
+            lineIndex += headerOffset;
+
+            // Read in the region.
+            this.Load(
+                context, 
+                lines, 
+                ref lineIndex, 
+                region);
         }
 
         /// <summary>

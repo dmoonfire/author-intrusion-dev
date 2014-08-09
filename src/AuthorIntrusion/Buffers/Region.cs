@@ -80,5 +80,22 @@ namespace AuthorIntrusion.Buffers
         public TitleInfo Titles { get; private set; }
 
         #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(
+                "Region({0})", 
+                this.Slug);
+        }
+
+        #endregion
     }
 }

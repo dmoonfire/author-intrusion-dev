@@ -4,6 +4,10 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.Buffers
 {
+    using System;
+
+    using Humanizer;
+
     /// <summary>
     /// Represents a single line or link inside the project.
     /// </summary>
@@ -57,6 +61,41 @@ namespace AuthorIntrusion.Buffers
         /// The text.
         /// </value>
         public string Text { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            string text;
+
+            switch (this.BlockType)
+            {
+                case BlockType.Text:
+                    text = string.Format(
+                        "\"{0}\"", 
+                        this.Text.Truncate(23));
+                    break;
+                case BlockType.Region:
+                    text = this.LinkedRegion.Slug;
+                    break;
+                default:
+                    throw new Exception(
+                        "Unknown block type: " + this.BlockType + ".");
+            }
+
+            return string.Format(
+                "Block({0}, {1})", 
+                this.BlockType, 
+                text);
+        }
 
         #endregion
     }
