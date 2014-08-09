@@ -4,13 +4,11 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.Tests
 {
-    using System.Collections.Generic;
-
     using AuthorIntrusion.Buffers;
     using AuthorIntrusion.IO;
     using AuthorIntrusion.Metadata;
 
-    using MfGames.Extensions.System.Collections.Generic;
+    using MfGames.HierarchicalPaths;
 
     using NUnit.Framework;
 
@@ -29,25 +27,25 @@ namespace AuthorIntrusion.Tests
         public void BlankSeparatedParagraphs()
         {
             // Create the test input.
-            var lines = new List<string>
-                {
-                    "One Two Three.", 
-                    string.Empty, 
-                    "Four Five Six.", 
-                };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(
+                new HierarchicalPath("/"), 
+                "One Two Three.", 
+                string.Empty, 
+                "Four Five Six.");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
             var project = new Project();
-            BlockCollection contents = project.Blocks;
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the contents.
+            BlockCollection contents = project.Blocks;
+
             Assert.AreEqual(
                 2, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
@@ -67,15 +65,14 @@ namespace AuthorIntrusion.Tests
         public void LeadingBlankLineYamlMetadata()
         {
             // Create the test input.
-            var lines = new List<string>
-                {
-                    "---", 
-                    "Scalar: Unit Test", 
-                    "---", 
-                    string.Empty, 
-                    "One Two Three.", 
-                };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(
+                new HierarchicalPath("/"), 
+                "---", 
+                "Scalar: Unit Test", 
+                "---", 
+                string.Empty, 
+                "One Two Three.");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -83,10 +80,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            BlockCollection contents = project.Blocks;
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Scalar"];
@@ -102,6 +98,8 @@ namespace AuthorIntrusion.Tests
                 "Value of Scalar was unexpected.");
 
             // Verify the contents.
+            BlockCollection contents = project.Blocks;
+
             Assert.AreEqual(
                 1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
@@ -117,13 +115,12 @@ namespace AuthorIntrusion.Tests
         public void LoadInlineSingleRegion()
         {
             // Create the test input.
-            var lines = new List<string>
-                {
-                    "# Region 1", 
-                    string.Empty, 
-                    "Text in region 1.", 
-                };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(
+                new HierarchicalPath("/"), 
+                "# Region 1", 
+                string.Empty, 
+                "Text in region 1.");
 
             // Set up the layout.
             var projectLayout = new RegionLayout
@@ -148,9 +145,9 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the contents of the project.
             Region region1 = project.Regions["region-1"];
@@ -186,8 +183,8 @@ namespace AuthorIntrusion.Tests
         public void NoYamlMetadata()
         {
             // Create the test input.
-            var lines = new List<string> { "One Two Three.", };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(new HierarchicalPath("/"), "One Two Three.");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -195,16 +192,17 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            BlockCollection contents = project.Blocks;
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the metadata.
             Assert.AreEqual(
                 0, metadata.Count, "Number of metadata keys is unexpected.");
 
             // Verify the contents.
+            BlockCollection contents = project.Blocks;
+
             Assert.AreEqual(
                 1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
@@ -220,14 +218,13 @@ namespace AuthorIntrusion.Tests
         public void SimpleYamlMetadata()
         {
             // Create the test input.
-            var lines = new List<string>
-                {
-                    "---", 
-                    "Scalar: Unit Test", 
-                    "---", 
-                    "One Two Three.", 
-                };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(
+                new HierarchicalPath("/"), 
+                "---", 
+                "Scalar: Unit Test", 
+                "---", 
+                "One Two Three.");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -235,10 +232,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            BlockCollection contents = project.Blocks;
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Scalar"];
@@ -254,6 +250,8 @@ namespace AuthorIntrusion.Tests
                 "Value of Scalar was unexpected.");
 
             // Verify the contents.
+            BlockCollection contents = project.Blocks;
+
             Assert.AreEqual(
                 1, contents.Count, "Number of output lines was unexpected.");
             Assert.AreEqual(
@@ -269,8 +267,9 @@ namespace AuthorIntrusion.Tests
         public void YamlAuthorOnly()
         {
             // Create the test input.
-            var lines = new List<string> { "---", "Author: Unit Test", "---", };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(
+                new HierarchicalPath("/"), "---", "Author: Unit Test", "---");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -278,9 +277,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the metadata.
             Assert.AreEqual(
@@ -300,8 +299,9 @@ namespace AuthorIntrusion.Tests
         public void YamlMetadataOnly()
         {
             // Create the test input.
-            var lines = new List<string> { "---", "Scalar: Unit Test", "---", };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(
+                new HierarchicalPath("/"), "---", "Scalar: Unit Test", "---");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -309,10 +309,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            BlockCollection contents = project.Blocks;
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Scalar"];
@@ -328,6 +327,8 @@ namespace AuthorIntrusion.Tests
                 "Value of Scalar was unexpected.");
 
             // Verify the contents.
+            BlockCollection contents = project.Blocks;
+
             Assert.AreEqual(
                 0, contents.Count, "Number of output lines was unexpected.");
         }
@@ -339,8 +340,9 @@ namespace AuthorIntrusion.Tests
         public void YamlTitleOnly()
         {
             // Create the test input.
-            var lines = new List<string> { "---", "Title: Unit Test", "---", };
-            string input = lines.Join();
+            var persistence = new MemoryPersistence();
+            persistence.SetData(
+                new HierarchicalPath("/"), "---", "Title: Unit Test", "---");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -348,9 +350,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, null);
+            var context = new BufferLoadContext(project, persistence);
 
-            format.Load(context, input, project);
+            format.LoadProject(context);
 
             // Verify the metadata.
             Assert.AreEqual(
