@@ -35,8 +35,6 @@ namespace AuthorIntrusion
                     Name = "Project", 
                     Slug = "project", 
                     HasContent = true, 
-                    Minimum = 1, 
-                    Maximum = 1, 
                     IsDynamicContainer = false, 
                 };
         }

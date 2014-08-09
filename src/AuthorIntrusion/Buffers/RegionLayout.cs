@@ -87,22 +87,10 @@ namespace AuthorIntrusion.Buffers
         public bool IsDynamicContainer { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum occurrences inside the parent container. This is ignored
-        /// for the root region.
+        /// Gets or sets a value indicating whether this region is an external one
+        /// and stored outside of the containing region.
         /// </summary>
-        /// <value>
-        /// The maximum.
-        /// </value>
-        public int Maximum { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minimum occurrences inside the container. This is ignored for
-        /// the root region.
-        /// </summary>
-        /// <value>
-        /// The minimum.
-        /// </value>
-        public int Minimum { get; set; }
+        public bool IsExternal { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the object.
