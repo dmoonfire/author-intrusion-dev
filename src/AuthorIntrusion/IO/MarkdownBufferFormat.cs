@@ -409,24 +409,24 @@ namespace AuthorIntrusion.IO
                 string line = lines[lineIndex];
 
                 // Figure out if we have a header line.
-                string text, id;
-                int headerOffset;
-                bool isHeader = this.IsMarkdownHeader(
+                bool isInternalRegion = this.LoadInternalRegion(
+                    context, 
                     lines, 
-                    lineIndex, 
-                    out text, 
-                    out id, 
-                    out headerOffset);
+                    ref lineIndex);
 
-                if (isHeader)
+                if (isInternalRegion)
                 {
-                    this.LoadInlineRegion(
-                        context, 
-                        lines, 
-                        ref lineIndex, 
-                        id, 
-                        text, 
-                        headerOffset);
+                    continue;
+                }
+
+                // Figure out if we have an external region.
+                bool isExternalRegion = this.LoadExternalRegion(
+                    context, 
+                    lines[lineIndex]);
+
+                if (isExternalRegion)
+                {
+                    lineIndex++;
                     continue;
                 }
 
@@ -468,7 +468,97 @@ namespace AuthorIntrusion.IO
         }
 
         /// <summary>
-        /// Loads an inline region and adds it to the project.
+        /// Loads an external region which is identified by a single-line link.
+        /// </summary>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        /// <param name="line">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private bool LoadExternalRegion(BufferLoadContext context, string line)
+        {
+            // Check to see if this is a Markdown link. If we don't have one, then skip it.
+            line = line.TrimStart(
+                ' ', 
+                '*');
+
+            int startBracket = line.IndexOf("[");
+
+            if (startBracket != 0)
+            {
+                return false;
+            }
+
+            int endBracket = line.IndexOf(
+                "]", 
+                startBracket);
+
+            if (endBracket < 0)
+            {
+                return false;
+            }
+
+            int startLink = line.IndexOf(
+                "(", 
+                endBracket);
+            int endLink = startLink > 0
+                ? line.IndexOf(
+                    ")", 
+                    endBracket)
+                : -1;
+
+            if (endBracket < 0)
+            {
+                return false;
+            }
+
+            // Pull out the text between the brackets.
+            string name = line.Substring(
+                startBracket + 1, 
+                endBracket - startBracket - 1);
+
+            // See if we have a slug identifier.
+            string slug = endLink > 0
+                ? line.Substring(
+                    startLink + 1, 
+                    endLink - startLink - 1)
+                : null;
+
+            // See if we can find a region by the name or link.
+            Region region;
+            bool foundRegion = context.Project.Regions.TryGetSlugOrName(
+                slug, 
+                name, 
+                out region);
+
+            if (!foundRegion)
+            {
+                // We don't know how to handle this.
+                throw new Exception(
+                    string.Format(
+                        "Cannot find region by {0} or {1}.", 
+                        name, 
+                        slug));
+            }
+
+            // We have to load this region from an external file.
+            using (
+                Stream stream = context.Persistence.GetReadStream(region.Path))
+            {
+                this.Load(
+                    context, 
+                    stream, 
+                    region);
+            }
+
+            // We found the external region.
+            return true;
+        }
+
+        /// <summary>
+        /// Loads the inline region.
         /// </summary>
         /// <param name="context">
         /// The context.
@@ -479,38 +569,35 @@ namespace AuthorIntrusion.IO
         /// <param name="lineIndex">
         /// Index of the line.
         /// </param>
-        /// <param name="id">
-        /// The identifier.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="headerOffset">
-        /// The header offset.
-        /// </param>
+        /// <returns>
+        /// True if an inline region was loaded.
+        /// </returns>
         /// <exception cref="System.Exception">
         /// </exception>
-        private void LoadInlineRegion(
-            BufferLoadContext context, 
-            List<string> lines, 
-            ref int lineIndex, 
-            string id, 
-            string text, 
-            int headerOffset)
+        /// <exception cref="Exception">
+        /// </exception>
+        private bool LoadInternalRegion(
+            BufferLoadContext context, List<string> lines, ref int lineIndex)
         {
-            // Try to find it via the ID.
-            Region region;
-            bool foundSlug = context.Project.Regions.TryGetValue(
-                id, 
-                out region);
+            string text, id;
+            int headerOffset;
+            bool isHeader = this.IsMarkdownHeader(
+                lines, 
+                lineIndex, 
+                out text, 
+                out id, 
+                out headerOffset);
 
-            if (id == null || !foundSlug)
+            if (isHeader)
             {
-                bool foundName = context.Project.Regions.TryGetName(
+                // Try to find it via the ID.
+                Region region;
+                bool foundRegion = context.Project.Regions.TryGetSlugOrName(
+                    id, 
                     text, 
                     out region);
 
-                if (!foundName)
+                if (!foundRegion)
                 {
                     // We don't know how to handle this.
                     throw new Exception(
@@ -519,17 +606,19 @@ namespace AuthorIntrusion.IO
                             text, 
                             id));
                 }
+
+                // Increment the index ahead.
+                lineIndex += headerOffset;
+
+                // Read in the region.
+                this.Load(
+                    context, 
+                    lines, 
+                    ref lineIndex, 
+                    region);
             }
 
-            // Increment the index ahead.
-            lineIndex += headerOffset;
-
-            // Read in the region.
-            this.Load(
-                context, 
-                lines, 
-                ref lineIndex, 
-                region);
+            return isHeader;
         }
 
         /// <summary>

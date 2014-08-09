@@ -7,6 +7,8 @@ namespace AuthorIntrusion.Buffers
     using AuthorIntrusion.IO;
     using AuthorIntrusion.Metadata;
 
+    using MfGames.HierarchicalPaths;
+
     /// <summary>
     /// Encapsulates the logic of a token buffer for a single file in the project. This
     /// contains logic for loading and unloading of data, reordering, and translating
@@ -62,6 +64,20 @@ namespace AuthorIntrusion.Buffers
         /// The name.
         /// </value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets the path associated with this region.
+        /// </summary>
+        /// <value>
+        /// The path.
+        /// </value>
+        public HierarchicalPath Path
+        {
+            get
+            {
+                return new HierarchicalPath("/" + this.Slug);
+            }
+        }
 
         /// <summary>
         /// Gets the slug associated with the project.

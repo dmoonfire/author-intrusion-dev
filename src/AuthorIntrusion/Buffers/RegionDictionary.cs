@@ -40,9 +40,58 @@ namespace AuthorIntrusion.Buffers
         /// </returns>
         public bool TryGetName(string name, out Region region)
         {
-            region = this.Values.ToList().First(r => r.Name == name);
+            region = this.Values.ToList().FirstOrDefault(r => r.Name == name);
 
             return region != null;
+        }
+
+        /// <summary>
+        /// Tries to get the region by slug or name.
+        /// </summary>
+        /// <param name="slug">
+        /// The slug.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="region">
+        /// The region.
+        /// </param>
+        /// <returns>
+        /// True if the region was found, otherwise false.
+        /// </returns>
+        public bool TryGetSlugOrName(
+            string slug, string name, out Region region)
+        {
+            // Start by trying to get it via slug.
+            if (!string.IsNullOrWhiteSpace(slug))
+            {
+                bool foundSlug = this.TryGetValue(
+                    slug, 
+                    out region);
+
+                if (foundSlug)
+                {
+                    return true;
+                }
+            }
+
+            // Try to get it via name.
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                bool foundName = this.TryGetName(
+                    name, 
+                    out region);
+
+                if (foundName)
+                {
+                    return true;
+                }
+            }
+
+            // Otherwise, we didn't find it.
+            region = null;
+            return false;
         }
 
         #endregion

@@ -47,7 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarkdownBufferFormatTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalExternalProject.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineExternalProject.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineSingleRegion.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineInlineProject.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\MarkdownBufferFormatTests.cs" />
     <Compile Include="ProjectLayoutTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MemoryPersistence.cs" />
