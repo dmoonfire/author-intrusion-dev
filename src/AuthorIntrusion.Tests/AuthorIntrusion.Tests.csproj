@@ -50,6 +50,7 @@
     <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalExternalProjectTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineExternalProjectTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineRegionWithWrongTitleTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineSequenceRegion2Tests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineSequenceRegionTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineSingleRegionTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineInlineProjectTests.cs" />

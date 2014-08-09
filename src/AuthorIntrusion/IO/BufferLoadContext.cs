@@ -4,6 +4,7 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.IO
 {
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
     using AuthorIntrusion.Buffers;
@@ -36,6 +37,7 @@ namespace AuthorIntrusion.IO
             Contract.Requires(persistence != null);
 
             this.Options = options;
+            this.RegionStack = new List<Region> { project };
         }
 
         /// <summary>
@@ -66,6 +68,7 @@ namespace AuthorIntrusion.IO
             Contract.Requires(context != null);
 
             this.Options = context.Options;
+            this.RegionStack = context.RegionStack;
         }
 
         #endregion
@@ -78,7 +81,21 @@ namespace AuthorIntrusion.IO
         /// <value>
         /// The current region.
         /// </value>
-        public Region CurrentRegion { get; set; }
+        public Region CurrentRegion
+        {
+            get
+            {
+                return this.RegionStack[0];
+            }
+        }
+
+        /// <summary>
+        /// Gets the header depth in the current file.
+        /// </summary>
+        /// <value>
+        /// The header depth.
+        /// </value>
+        public int HeaderDepth { get; private set; }
 
         /// <summary>
         /// Gets the options for loading the buffer.
@@ -90,7 +107,25 @@ namespace AuthorIntrusion.IO
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the processing stack of regions across files.
+        /// </summary>
+        protected List<Region> RegionStack { get; private set; }
+
+        #endregion
+
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Pops this context for the stack off the list.
+        /// </summary>
+        public void Pop()
+        {
+            this.RegionStack.RemoveAt(0);
+            this.HeaderDepth--;
+        }
 
         /// <summary>
         /// Pushes the region into the loading stack and returns the result.
@@ -98,14 +133,12 @@ namespace AuthorIntrusion.IO
         /// <param name="newRegion">
         /// The new region.
         /// </param>
-        /// <returns>
-        /// The old region being processed.
-        /// </returns>
-        public Region PushRegion(Region newRegion)
+        public void Push(Region newRegion)
         {
-            Region oldRegion = this.CurrentRegion;
-            this.CurrentRegion = newRegion;
-            return oldRegion;
+            this.RegionStack.Insert(
+                0, 
+                newRegion);
+            this.HeaderDepth++;
         }
 
         #endregion

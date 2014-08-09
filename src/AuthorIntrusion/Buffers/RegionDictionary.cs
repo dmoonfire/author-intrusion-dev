@@ -29,6 +29,49 @@ namespace AuthorIntrusion.Buffers
         }
 
         /// <summary>
+        /// Creates a region based on the specified layout.
+        /// </summary>
+        /// <param name="parentRegion">
+        /// </param>
+        /// <param name="layout">
+        /// The layout.
+        /// </param>
+        /// <returns>
+        /// The created region.
+        /// </returns>
+        public Region Create(Region parentRegion, RegionLayout layout)
+        {
+            // Figure out the indexes for the region.
+            int containerIndex = parentRegion.Blocks.LinkCount + 1;
+            int projectIndex = containerIndex;
+
+            // Format the slugs and names.
+            var macros = new MacroExpansion();
+            var variables = new Dictionary<string, object>
+                {
+                    { "ContainerIndex", containerIndex }, 
+                    { "ProjectIndex", projectIndex }
+                };
+
+            // Create a new region.
+            var region = new Region
+                {
+                    Slug = macros.Expand(
+                        layout.Slug, 
+                        variables), 
+                    Name = macros.Expand(
+                        layout.Name, 
+                        variables), 
+                };
+
+            // Add the region into the collection.
+            this[region.Slug] = region;
+
+            // Return the constructed region.
+            return region;
+        }
+
+        /// <summary>
         /// Tries to retrieve the region via the name.
         /// </summary>
         /// <param name="name">
@@ -97,43 +140,5 @@ namespace AuthorIntrusion.Buffers
         }
 
         #endregion
-
-        /// <summary>
-        /// Creates a region based on the specified layout.
-        /// </summary>
-        /// <param name="layout">The layout.</param>
-        /// <returns>The created region.</returns>
-        public Region Create(RegionLayout layout)
-        {
-            // Figure out the indexes for the region.
-            int containerIndex = 1;
-            int projectIndex = 1;
-
-            // Format the slugs and names.
-            var macros = new MacroExpansion();
-            var variables =
-                new Dictionary<string, object>
-                    {
-                        { "ContainerIndex", containerIndex },
-                        { "ProjectIndex", projectIndex }
-                    };
-
-            // Create a new region.
-            var region = new Region
-                {
-                    Slug = macros.Expand(
-                        layout.Slug,
-                        variables),
-                    Name = macros.Expand(
-                        layout.Name,
-                        variables),
-                };
-
-            // Add the region into the collection.
-            this[region.Slug] = region;
-
-            // Return the constructed region.
-            return region;
-        }
     }
 }

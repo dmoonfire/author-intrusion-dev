@@ -53,6 +53,9 @@ namespace AuthorIntrusion.IO
         /// <param name="lineIndexOffset">
         /// The line index offset.
         /// </param>
+        /// <param name="headerDepth">
+        /// The resulting header depth.
+        /// </param>
         /// <returns>
         /// True if the line is a header, otherwise false.
         /// </returns>
@@ -61,16 +64,20 @@ namespace AuthorIntrusion.IO
             int lineIndex, 
             out string headerText, 
             out string headerSlug, 
-            out int lineIndexOffset)
+            out int lineIndexOffset, 
+            out int headerDepth)
         {
             // Check for an ATX-style header.
             string line = lines[lineIndex];
             bool isAtx = false;
 
+            headerDepth = 0;
+
             while (line.StartsWith("#"))
             {
                 line = line.Substring(1).TrimStart();
                 isAtx = true;
+                headerDepth++;
             }
 
             if (isAtx)
@@ -82,6 +89,14 @@ namespace AuthorIntrusion.IO
             {
                 // This is a underline-style header.
                 lineIndexOffset = 2;
+                headerDepth = 1;
+            }
+            else if (lineIndex + 1 < lines.Count
+                && lines[lineIndex + 1].StartsWith("-"))
+            {
+                // This is a underline-style subheader.
+                lineIndexOffset = 2;
+                headerDepth = 2;
             }
             else
             {
@@ -163,8 +178,6 @@ namespace AuthorIntrusion.IO
             using (Stream stream = context.Persistence.GetProjectReadStream())
             {
                 // Load information about the project into memory.
-                context.CurrentRegion = context.Project;
-
                 this.Load(
                     context, 
                     stream, 
@@ -582,16 +595,24 @@ namespace AuthorIntrusion.IO
             BufferLoadContext context, List<string> lines, ref int lineIndex)
         {
             string text, id;
-            int headerOffset;
+            int headerOffset, headerDepth;
             bool isHeader = this.IsMarkdownHeader(
                 lines, 
                 lineIndex, 
                 out text, 
                 out id, 
-                out headerOffset);
+                out headerOffset, 
+                out headerDepth);
 
             if (isHeader)
             {
+                // We have a header, so pop off the context until we are above the region
+                // we're processing.
+                while (context.HeaderDepth >= headerDepth)
+                {
+                    context.Pop();
+                }
+
                 // Try to find it via the ID.
                 Region region;
                 bool foundRegion = context.Project.Regions.TryGetSlugOrName(
@@ -609,14 +630,17 @@ namespace AuthorIntrusion.IO
                     if (layout != null)
                     {
                         // We have a new region, so create one and add it to the list.
-                        region = context.Project.Regions.Create(layout);
+                        region =
+                            context.Project.Regions.Create(
+                                context.CurrentRegion, 
+                                layout);
                         foundRegion = true;
 
                         // Add a link into the current buffer.
                         context.CurrentRegion.Blocks.Add(
-                            new Block()
+                            new Block
                                 {
-                                    BlockType = BlockType.Region,
+                                    BlockType = BlockType.Region, 
                                     LinkedRegion = region
                                 });
                     }
@@ -637,15 +661,13 @@ namespace AuthorIntrusion.IO
                 lineIndex += headerOffset;
 
                 // Read in the region.
-                var oldRegion = context.PushRegion(region);
+                context.Push(region);
 
                 this.Load(
                     context, 
                     lines, 
                     ref lineIndex, 
                     region);
-
-                context.CurrentRegion = oldRegion;
             }
 
             return isHeader;
