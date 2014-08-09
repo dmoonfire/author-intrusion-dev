@@ -70,11 +70,13 @@ namespace AuthorIntrusion.Cli.Transform
             this.SetFormatSettings(outputFormat, null, options.OutputOptions);
 
             // Load the project into memory.
-            inputFormat.LoadProject(
-                project, inputPersistence, BufferFormatLoadOptions.Full);
+            var inputContext = new BufferLoadContext(project, inputPersistence);
+            inputFormat.LoadProject(inputContext);
 
             // Write out the project from memory.
-            outputFormat.StoreProject(project, outputPersistence);
+            var outputContext = new BufferStoreContext(
+                project, outputPersistence);
+            outputFormat.StoreProject(outputContext);
         }
 
         #endregion

@@ -43,8 +43,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             BlockCollection contents = project.Blocks;
+            var context = new BufferLoadContext(project, null);
 
-            format.Load(project, input, project);
+            format.Load(context, input, project);
 
             // Verify the contents.
             Assert.AreEqual(
@@ -83,8 +84,9 @@ namespace AuthorIntrusion.Tests
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
             BlockCollection contents = project.Blocks;
+            var context = new BufferLoadContext(project, null);
 
-            format.Load(project, input, project);
+            format.Load(context, input, project);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Scalar"];
@@ -146,7 +148,9 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            format.Load(project, input, project);
+            var context = new BufferLoadContext(project, null);
+
+            format.Load(context, input, project);
 
             // Verify the contents of the project.
             Region region1 = project.Regions["region-1"];
@@ -192,8 +196,9 @@ namespace AuthorIntrusion.Tests
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
             BlockCollection contents = project.Blocks;
+            var context = new BufferLoadContext(project, null);
 
-            format.Load(project, input, project);
+            format.Load(context, input, project);
 
             // Verify the metadata.
             Assert.AreEqual(
@@ -231,8 +236,9 @@ namespace AuthorIntrusion.Tests
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
             BlockCollection contents = project.Blocks;
+            var context = new BufferLoadContext(project, null);
 
-            format.Load(project, input, project);
+            format.Load(context, input, project);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Scalar"];
@@ -272,8 +278,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
+            var context = new BufferLoadContext(project, null);
 
-            format.Load(project, input, project);
+            format.Load(context, input, project);
 
             // Verify the metadata.
             Assert.AreEqual(
@@ -303,8 +310,9 @@ namespace AuthorIntrusion.Tests
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
             BlockCollection contents = project.Blocks;
+            var context = new BufferLoadContext(project, null);
 
-            format.Load(project, input, project);
+            format.Load(context, input, project);
 
             // Verify the metadata.
             MetadataKey titleKey = project.MetadataManager["Scalar"];
@@ -340,8 +348,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
+            var context = new BufferLoadContext(project, null);
 
-            format.Load(project, input, project);
+            format.Load(context, input, project);
 
             // Verify the metadata.
             Assert.AreEqual(

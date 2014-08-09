@@ -1,4 +1,4 @@
-﻿// <copyright file="BufferFormatLoadOptions.cs" company="Moonfire Games">
+﻿// <copyright file="BufferLoadOptions.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -10,7 +10,7 @@ namespace AuthorIntrusion.IO
     /// Describes the various controls and options for loading data from a buffer.
     /// </summary>
     [Flags]
-    public enum BufferFormatLoadOptions : byte
+    public enum BufferLoadOptions : byte
     {
         /// <summary>
         /// Indicates no options for loading, which will result in no data.

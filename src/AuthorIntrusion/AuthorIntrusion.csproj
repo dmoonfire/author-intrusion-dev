@@ -65,7 +65,9 @@
     <Compile Include="Css\CssClassKey.cs" />
     <Compile Include="Extensions\System\Collections\Generic\SystemCollectionsGenericDictionaryExtensions.cs" />
     <Compile Include="Extensions\System\Xml\SystemXmlXmlWriterExtensions.cs" />
-    <Compile Include="IO\BufferFormatLoadOptions.cs" />
+    <Compile Include="IO\BufferLoadOptions.cs" />
+    <Compile Include="IO\BufferLoadContext.cs" />
+    <Compile Include="IO\BufferStoreContext.cs" />
     <Compile Include="IO\DocBookBufferFormat.cs" />
     <Compile Include="IO\DocBookBufferFormatFactory.cs" />
     <Compile Include="IO\DocBookBufferFormatSettings.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="IO\MarkdownBufferFormat.cs" />
     <Compile Include="IO\MarkdownBufferFormatFactory.cs" />
     <Compile Include="IO\NameDictionary.cs" />
+    <Compile Include="IO\ProjectPersistenceContext.cs" />
     <Compile Include="IO\TitleInfo.cs" />
     <Compile Include="IProjectBuffer.cs" />
     <Compile Include="ISlugged.cs" />
@@ -97,6 +100,7 @@
     <Compile Include="Plugins\PluginContainer.cs" />
     <Compile Include="Plugins\PluginRegistry.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="ProjectContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingletonManager.cs" />
   </ItemGroup>

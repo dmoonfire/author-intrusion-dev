@@ -36,31 +36,18 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads project data from the persistence layer and populates the project.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
+        /// The context for the load.
         /// </param>
-        /// <param name="persistence">
-        /// The persistence.
-        /// </param>
-        /// <param name="options">
-        /// The options.
-        /// </param>
-        void LoadProject(
-            Project project, 
-            IPersistence persistence, 
-            BufferFormatLoadOptions options);
+        void LoadProject(BufferLoadContext context);
 
         /// <summary>
         /// Writes out the project to the given persistence using the 
         /// format instance.
         /// </summary>
-        /// <param name="project">
-        /// The project to write out.
+        /// <param name="context">
         /// </param>
-        /// <param name="persistence">
-        /// The persistence layer to use.
-        /// </param>
-        void StoreProject(Project project, IPersistence persistence);
+        void StoreProject(BufferStoreContext context);
 
         #endregion
     }

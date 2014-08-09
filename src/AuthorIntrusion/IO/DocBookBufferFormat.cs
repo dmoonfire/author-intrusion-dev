@@ -80,22 +80,12 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads project data from the persistence layer and populates the project.
         /// </summary>
-        /// <param name="project">
-        /// The project.
-        /// </param>
-        /// <param name="persistence">
-        /// The persistence.
-        /// </param>
-        /// <param name="options">
-        /// The options.
+        /// <param name="context">
         /// </param>
         /// <exception cref="System.InvalidOperationException">
         /// Cannot read DocBook 5 files.
         /// </exception>
-        public void LoadProject(
-            Project project, 
-            IPersistence persistence, 
-            BufferFormatLoadOptions options)
+        public void LoadProject(BufferLoadContext context)
         {
             throw new InvalidOperationException("Cannot read DocBook 5 files.");
         }
@@ -104,17 +94,13 @@ namespace AuthorIntrusion.IO
         /// Writes out the project to the given persistence using the
         /// format instance.
         /// </summary>
-        /// <param name="project">
-        /// The project to write out.
+        /// <param name="context">
         /// </param>
-        /// <param name="persistence">
-        /// The persistence layer to use.
-        /// </param>
-        public void StoreProject(Project project, IPersistence persistence)
+        public void StoreProject(BufferStoreContext context)
         {
             // Write out the project's stream first. This will recursively call
             // all of the other write operations.
-            using (Stream stream = persistence.GetProjectWriteStream())
+            using (Stream stream = context.Persistence.GetProjectWriteStream())
             {
                 // Create the XML writer for the file.
                 var settings = new XmlWriterSettings
@@ -137,11 +123,12 @@ namespace AuthorIntrusion.IO
 
                     // Write out the info tag.
                     writer.WriteStartElement("info");
-                    writer.WriteElementString("title", project.Titles.Title);
+                    writer.WriteElementString(
+                        "title", context.Project.Titles.Title);
                     writer.WriteEndElement();
 
                     // Loop through and add all the lines.
-                    foreach (Block block in project.Blocks)
+                    foreach (Block block in context.Project.Blocks)
                     {
                         writer.WriteElementString("para", block.Text);
                     }

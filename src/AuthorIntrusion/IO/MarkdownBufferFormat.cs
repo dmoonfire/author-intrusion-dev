@@ -117,8 +117,7 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads the data from a string.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="input">
         /// The input.
@@ -126,11 +125,12 @@ namespace AuthorIntrusion.IO
         /// <param name="buffer">
         /// The buffer.
         /// </param>
-        public void Load(Project project, string input, IProjectBuffer buffer)
+        public void Load(
+            BufferLoadContext context, string input, IProjectBuffer buffer)
         {
             using (var reader = new StringReader(input))
             {
-                this.Load(project, reader, buffer);
+                this.Load(context, reader, buffer);
             }
         }
 
@@ -149,35 +149,21 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads project data from the persistence layer and populates the project.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
-        /// <param name="persistence">
-        /// The persistence.
-        /// </param>
-        /// <param name="options">
-        /// The options.
-        /// </param>
-        public void LoadProject(
-            Project project, 
-            IPersistence persistence, 
-            BufferFormatLoadOptions options)
+        public void LoadProject(BufferLoadContext context)
         {
-            using (Stream stream = persistence.GetProjectReadStream())
+            using (Stream stream = context.Persistence.GetProjectReadStream())
             {
                 // Load information about the project into memory.
-                this.Load(project, stream, project);
+                this.Load(context, stream, context.Project);
             }
         }
 
         /// <summary>
         /// Stores the specified buffer to the given persistence.
         /// </summary>
-        /// <param name="project">
-        /// The project.
-        /// </param>
-        /// <param name="persistence">
-        /// The persistence.
+        /// <param name="context">
         /// </param>
         /// <param name="stream">
         /// The stream.
@@ -186,25 +172,18 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         public void Store(
-            Project project, 
-            IPersistence persistence, 
-            Stream stream, 
-            IProjectBuffer buffer)
+            BufferStoreContext context, Stream stream, IProjectBuffer buffer)
         {
             using (var writer = new StreamWriter(stream))
             {
-                this.Store(project, persistence, writer, buffer);
+                this.Store(context, writer, buffer);
             }
         }
 
         /// <summary>
         /// Stores the specified project.
         /// </summary>
-        /// <param name="project">
-        /// The project.
-        /// </param>
-        /// <param name="persistence">
-        /// The persistence.
+        /// <param name="context">
         /// </param>
         /// <param name="writer">
         /// The writer.
@@ -213,10 +192,7 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         public void Store(
-            Project project, 
-            IPersistence persistence, 
-            TextWriter writer, 
-            IProjectBuffer buffer)
+            BufferStoreContext context, TextWriter writer, IProjectBuffer buffer)
         {
             // Write out the YAML header.
             this.StoreMetadata(writer, buffer);
@@ -232,21 +208,17 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Stores the specified buffer to the given persistence.
         /// </summary>
-        /// <param name="project">
-        /// The project to write out.
-        /// </param>
-        /// <param name="persistence">
-        /// The persistence layer to use.
+        /// <param name="context">
         /// </param>
         /// <exception cref="System.InvalidOperationException">
         /// Cannot write out files with Markdown.
         /// </exception>
-        public void StoreProject(Project project, IPersistence persistence)
+        public void StoreProject(BufferStoreContext context)
         {
-            using (Stream stream = persistence.GetProjectWriteStream())
+            using (Stream stream = context.Persistence.GetProjectWriteStream())
             {
                 // Load information about the project into memory.
-                this.Store(project, persistence, stream, project);
+                this.Store(context, stream, context.Project);
             }
         }
 
@@ -257,8 +229,7 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Parses the YAML metadata.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="buffer">
         /// The buffer.
@@ -275,10 +246,13 @@ namespace AuthorIntrusion.IO
         /// Cannot parse YAML metadata with mapping/dictionary values.
         /// </exception>
         private static void ParseYamlMetadata(
-            Project project, IProjectBuffer buffer, string key, YamlNode node)
+            BufferLoadContext context, 
+            IProjectBuffer buffer, 
+            string key, 
+            YamlNode node)
         {
             // For everything else, we keep it as a metadata entry.
-            MetadataKey metadataKey = project.MetadataManager[key];
+            MetadataKey metadataKey = context.Project.MetadataManager[key];
             MetadataValue metadataValue =
                 buffer.Metadata.GetOrCreate(metadataKey);
 
@@ -317,8 +291,7 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads the Markdown file using the given reader.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="reader">
         /// The reader.
@@ -327,7 +300,7 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         private void Load(
-            Project project, TextReader reader, IProjectBuffer buffer)
+            BufferLoadContext context, TextReader reader, IProjectBuffer buffer)
         {
             // Loop through the lines, starting with looking for the metadata.
             string line = reader.ReadLine();
@@ -343,7 +316,7 @@ namespace AuthorIntrusion.IO
             if (line == "---")
             {
                 // Read and parse in teh YAML.
-                this.ReadYamlMetadata(project, reader, buffer);
+                this.ReadYamlMetadata(context, reader, buffer);
                 line = reader.ReadLine();
 
                 // If the line is blank, then we don't have content.
@@ -375,14 +348,13 @@ namespace AuthorIntrusion.IO
             // Load the lines through the loop.
             int index = 0;
 
-            this.Load(project, lines, ref index, buffer);
+            this.Load(context, lines, ref index, buffer);
         }
 
         /// <summary>
         /// Loads the buffer contents from the given line index.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="lines">
         /// The lines.
@@ -394,7 +366,7 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         private void Load(
-            Project project, 
+            BufferLoadContext context, 
             List<string> lines, 
             ref int lineIndex, 
             IProjectBuffer buffer)
@@ -417,9 +389,11 @@ namespace AuthorIntrusion.IO
                     Region region;
 
                     if (id == null
-                        || !project.Regions.TryGetValue(id, out region))
+                        || !context.Project.Regions.TryGetValue(id, out region))
                     {
-                        if (!project.Regions.TryGetName(text, out region))
+                        if (
+                            !context.Project.Regions.TryGetName(
+                                text, out region))
                         {
                             // We don't know how to handle this.
                             throw new Exception(
@@ -432,7 +406,7 @@ namespace AuthorIntrusion.IO
                     lineIndex += headerOffset;
 
                     // Read in the region.
-                    this.Load(project, lines, ref lineIndex, region);
+                    this.Load(context, lines, ref lineIndex, region);
                     continue;
                 }
 
@@ -448,8 +422,7 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads the metadata and content from the given stream.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="stream">
         /// The stream to read.
@@ -457,19 +430,19 @@ namespace AuthorIntrusion.IO
         /// <param name="buffer">
         /// The buffer.
         /// </param>
-        private void Load(Project project, Stream stream, IProjectBuffer buffer)
+        private void Load(
+            BufferLoadContext context, Stream stream, IProjectBuffer buffer)
         {
             using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
-                this.Load(project, reader, buffer);
+                this.Load(context, reader, buffer);
             }
         }
 
         /// <summary>
         /// Parses the YAML author.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="buffer">
         /// The buffer.
@@ -481,7 +454,10 @@ namespace AuthorIntrusion.IO
         /// The node.
         /// </param>
         private void ParseYamlAuthor(
-            Project project, IProjectBuffer buffer, string key, YamlNode node)
+            BufferLoadContext context, 
+            IProjectBuffer buffer, 
+            string key, 
+            YamlNode node)
         {
             string scalar = ((YamlScalarNode)node).Value;
 
@@ -496,8 +472,7 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Parses the YAML title.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="buffer">
         /// The buffer.
@@ -509,7 +484,10 @@ namespace AuthorIntrusion.IO
         /// The node.
         /// </param>
         private void ParseYamlTitle(
-            Project project, IProjectBuffer buffer, string key, YamlNode node)
+            BufferLoadContext context, 
+            IProjectBuffer buffer, 
+            string key, 
+            YamlNode node)
         {
             string scalar = ((YamlScalarNode)node).Value;
 
@@ -528,8 +506,7 @@ namespace AuthorIntrusion.IO
         /// <summary>
         /// Loads metadata from a YAML format.
         /// </summary>
-        /// <param name="project">
-        /// The project.
+        /// <param name="context">
         /// </param>
         /// <param name="reader">
         /// The reader.
@@ -552,7 +529,7 @@ namespace AuthorIntrusion.IO
         /// Cannot parse YAML metadata with non-scalar values.
         /// </exception>
         private void ReadYamlMetadata(
-            Project project, TextReader reader, IProjectBuffer buffer)
+            BufferLoadContext context, TextReader reader, IProjectBuffer buffer)
         {
             // Build up the rest of the line.
             var builder = new StringBuilder();
@@ -611,19 +588,19 @@ namespace AuthorIntrusion.IO
                     {
                         case "author":
                             this.ParseYamlAuthor(
-                                project, buffer, lowerKey, entry.Value);
+                                context, buffer, lowerKey, entry.Value);
                             break;
 
                         case "title":
                         case "subtitle":
                             this.ParseYamlTitle(
-                                project, buffer, lowerKey, entry.Value);
+                                context, buffer, lowerKey, entry.Value);
                             break;
 
                         default:
 
                             // For everything else, treat it as metadata.
-                            ParseYamlMetadata(project, buffer, key, entry.Value);
+                            ParseYamlMetadata(context, buffer, key, entry.Value);
                             return;
                     }
                 }
