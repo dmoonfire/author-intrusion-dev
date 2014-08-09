@@ -94,7 +94,9 @@ namespace AuthorIntrusion
 
             // Clear out the old regions and rebuild all of the entries that we actually need.
             this.Regions.Clear();
-            this.CreateRegion(rootLayout, oldRegions);
+            this.CreateRegion(
+                rootLayout, 
+                oldRegions);
         }
 
         /// <summary>
@@ -143,7 +145,9 @@ namespace AuthorIntrusion
             {
                 region = this;
             }
-            else if (!oldRegions.TryGetValue(regionSlug, out region))
+            else if (!oldRegions.TryGetValue(
+                regionSlug, 
+                out region))
             {
                 // Create a new region for this slug.
                 region = new Region { Slug = regionSlug };
@@ -170,7 +174,9 @@ namespace AuthorIntrusion
             foreach (RegionLayout childLayout in layout.InnerLayouts)
             {
                 // Create the child region recursively.
-                Region childRegion = this.CreateRegion(childLayout, oldRegions);
+                Region childRegion = this.CreateRegion(
+                    childLayout, 
+                    oldRegions);
 
                 // Add the block to the end of the list.
                 var block = new Block

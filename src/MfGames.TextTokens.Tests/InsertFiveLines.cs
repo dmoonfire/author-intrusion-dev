@@ -21,7 +21,9 @@ namespace MfGames.TextTokens.Tests
         public void HasCorrectLineCount()
         {
             this.Setup();
-            Assert.AreEqual(5, this.State.Lines.Count);
+            Assert.AreEqual(
+                5, 
+                this.State.Lines.Count);
         }
 
         /// <summary>
@@ -43,7 +45,9 @@ namespace MfGames.TextTokens.Tests
         public void Line1HasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(9, this.State.Lines[0].Tokens.Count);
+            Assert.AreEqual(
+                9, 
+                this.State.Lines[0].Tokens.Count);
         }
 
         /// <summary>
@@ -104,7 +108,9 @@ namespace MfGames.TextTokens.Tests
         protected override void Setup()
         {
             base.Setup();
-            this.Buffer.PopulateRowColumn(5, 5);
+            this.Buffer.PopulateRowColumn(
+                5, 
+                5);
         }
 
         #endregion

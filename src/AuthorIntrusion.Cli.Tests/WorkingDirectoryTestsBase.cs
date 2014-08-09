@@ -61,10 +61,15 @@ namespace AuthorIntrusion.Cli.Tests
             // Figure out where all the directories are.
             string className = this.GetType().FullName;
 
-            string workingPath = Path.Combine("Tests", "Working", className);
+            string workingPath = Path.Combine(
+                "Tests", 
+                "Working", 
+                className);
             this.WorkingDirectory = new DirectoryInfo(workingPath);
 
-            string testPath = Path.Combine("Tests", className);
+            string testPath = Path.Combine(
+                "Tests", 
+                className);
             this.TestDirectory = new DirectoryInfo(testPath);
 
             // Get the samples directory.

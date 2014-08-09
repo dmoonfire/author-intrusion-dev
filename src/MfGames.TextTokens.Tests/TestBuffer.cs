@@ -57,7 +57,9 @@ namespace MfGames.TextTokens.Tests
                 if (initialTokens == 0)
                 {
                     // Create an empty line via Insert lines.
-                    line = (Line)this.InsertLines(afterLineIndex, 1).First();
+                    line = (Line)this.InsertLines(
+                        afterLineIndex, 
+                        1).First();
                 }
                 else
                 {
@@ -67,24 +69,32 @@ namespace MfGames.TextTokens.Tests
 
                     // Create the initial text for the line.
                     tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                    token = new Token(tokenKey, (word++).ToWords());
+                    token = new Token(
+                        tokenKey, 
+                        (word++).ToWords());
                     line.AddTokens(token);
 
                     for (int index = 1; index < initialTokens; index++)
                     {
                         // Add in the separating space.
                         tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                        token = new Token(tokenKey, " ");
+                        token = new Token(
+                            tokenKey, 
+                            " ");
                         line.AddTokens(token);
 
                         // Add in the next text token.
                         tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                        token = new Token(tokenKey, (word++).ToWords());
+                        token = new Token(
+                            tokenKey, 
+                            (word++).ToWords());
                         line.AddTokens(token);
                     }
 
                     // Add the line into the buffer.
-                    this.InsertLines(afterLineIndex, line);
+                    this.InsertLines(
+                        afterLineIndex, 
+                        line);
                 }
 
                 // If we have a null line, then this is a critical problem.
@@ -102,13 +112,17 @@ namespace MfGames.TextTokens.Tests
                     if (index > 0)
                     {
                         tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                        token = new Token(tokenKey, " ");
+                        token = new Token(
+                            tokenKey, 
+                            " ");
                         line.AddTokens(token);
                     }
 
                     // Add in the next text token.
                     tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-                    token = new Token(tokenKey, (word++).ToWords());
+                    token = new Token(
+                        tokenKey, 
+                        (word++).ToWords());
                     line.AddTokens(token);
                 }
             }

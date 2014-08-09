@@ -131,9 +131,10 @@ namespace AuthorIntrusion.IO
             // See if we have a first and/or a last name.
             if (this.ContainsKey(FirstNameKey) || this.ContainsKey(LastNameKey))
             {
-                return
-                    string.Format("{0} {1}", this.FirstName, this.LastName)
-                        .Trim();
+                return string.Format(
+                    "{0} {1}", 
+                    this.FirstName, 
+                    this.LastName).Trim();
             }
 
             // If we still don't have a name, pick a random one.

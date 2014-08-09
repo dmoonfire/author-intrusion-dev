@@ -27,7 +27,8 @@ namespace AuthorIntrusion.IO
         /// </param>
         public BufferLoadContext(
             Project project, IPersistence persistence, BufferLoadOptions options)
-            : base(project, persistence)
+            : base(project, 
+                persistence)
         {
             Contract.Requires(project != null);
             Contract.Requires(persistence != null);
@@ -45,7 +46,9 @@ namespace AuthorIntrusion.IO
         /// The persistence.
         /// </param>
         public BufferLoadContext(Project project, IPersistence persistence)
-            : this(project, persistence, BufferLoadOptions.Full)
+            : this(project, 
+                persistence, 
+                BufferLoadOptions.Full)
         {
         }
 

@@ -39,7 +39,9 @@ namespace AuthorIntrusion.Tests
 
             // Parse the buffer lines.
             var project = new Project();
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
@@ -47,7 +49,9 @@ namespace AuthorIntrusion.Tests
             BlockCollection contents = project.Blocks;
 
             Assert.AreEqual(
-                2, contents.Count, "Number of output lines was unexpected.");
+                2, 
+                contents.Count, 
+                "Number of output lines was unexpected.");
             Assert.AreEqual(
                 "One Two Three.", 
                 contents[0].Text, 
@@ -80,7 +84,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
@@ -88,7 +94,9 @@ namespace AuthorIntrusion.Tests
             MetadataKey titleKey = project.MetadataManager["Scalar"];
 
             Assert.AreEqual(
-                1, metadata.Count, "Number of metadata keys is unexpected.");
+                1, 
+                metadata.Count, 
+                "Number of metadata keys is unexpected.");
             Assert.IsTrue(
                 metadata.ContainsKey(titleKey), 
                 "Could not find Scalar key in metadata.");
@@ -101,7 +109,9 @@ namespace AuthorIntrusion.Tests
             BlockCollection contents = project.Blocks;
 
             Assert.AreEqual(
-                1, contents.Count, "Number of output lines was unexpected.");
+                1, 
+                contents.Count, 
+                "Number of output lines was unexpected.");
             Assert.AreEqual(
                 "One Two Three.", 
                 contents[0].Text, 
@@ -145,7 +155,9 @@ namespace AuthorIntrusion.Tests
             var format = new MarkdownBufferFormat();
 
             // Parse the buffer lines.
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
@@ -184,7 +196,9 @@ namespace AuthorIntrusion.Tests
         {
             // Create the test input.
             var persistence = new MemoryPersistence();
-            persistence.SetData(new HierarchicalPath("/"), "One Two Three.");
+            persistence.SetData(
+                new HierarchicalPath("/"), 
+                "One Two Three.");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -192,19 +206,25 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
             // Verify the metadata.
             Assert.AreEqual(
-                0, metadata.Count, "Number of metadata keys is unexpected.");
+                0, 
+                metadata.Count, 
+                "Number of metadata keys is unexpected.");
 
             // Verify the contents.
             BlockCollection contents = project.Blocks;
 
             Assert.AreEqual(
-                1, contents.Count, "Number of output lines was unexpected.");
+                1, 
+                contents.Count, 
+                "Number of output lines was unexpected.");
             Assert.AreEqual(
                 "One Two Three.", 
                 contents[0].Text, 
@@ -232,7 +252,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
@@ -240,7 +262,9 @@ namespace AuthorIntrusion.Tests
             MetadataKey titleKey = project.MetadataManager["Scalar"];
 
             Assert.AreEqual(
-                1, metadata.Count, "Number of metadata keys is unexpected.");
+                1, 
+                metadata.Count, 
+                "Number of metadata keys is unexpected.");
             Assert.IsTrue(
                 metadata.ContainsKey(titleKey), 
                 "Could not find Scalar key in metadata.");
@@ -253,7 +277,9 @@ namespace AuthorIntrusion.Tests
             BlockCollection contents = project.Blocks;
 
             Assert.AreEqual(
-                1, contents.Count, "Number of output lines was unexpected.");
+                1, 
+                contents.Count, 
+                "Number of output lines was unexpected.");
             Assert.AreEqual(
                 "One Two Three.", 
                 contents[0].Text, 
@@ -269,7 +295,10 @@ namespace AuthorIntrusion.Tests
             // Create the test input.
             var persistence = new MemoryPersistence();
             persistence.SetData(
-                new HierarchicalPath("/"), "---", "Author: Unit Test", "---");
+                new HierarchicalPath("/"), 
+                "---", 
+                "Author: Unit Test", 
+                "---");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -277,13 +306,17 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
             // Verify the metadata.
             Assert.AreEqual(
-                0, metadata.Count, "Number of metadata keys is unexpected.");
+                0, 
+                metadata.Count, 
+                "Number of metadata keys is unexpected.");
 
             // Verify the title.
             Assert.AreEqual(
@@ -301,7 +334,10 @@ namespace AuthorIntrusion.Tests
             // Create the test input.
             var persistence = new MemoryPersistence();
             persistence.SetData(
-                new HierarchicalPath("/"), "---", "Scalar: Unit Test", "---");
+                new HierarchicalPath("/"), 
+                "---", 
+                "Scalar: Unit Test", 
+                "---");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -309,7 +345,9 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
@@ -317,7 +355,9 @@ namespace AuthorIntrusion.Tests
             MetadataKey titleKey = project.MetadataManager["Scalar"];
 
             Assert.AreEqual(
-                1, metadata.Count, "Number of metadata keys is unexpected.");
+                1, 
+                metadata.Count, 
+                "Number of metadata keys is unexpected.");
             Assert.IsTrue(
                 metadata.ContainsKey(titleKey), 
                 "Could not find Scalar key in metadata.");
@@ -330,7 +370,9 @@ namespace AuthorIntrusion.Tests
             BlockCollection contents = project.Blocks;
 
             Assert.AreEqual(
-                0, contents.Count, "Number of output lines was unexpected.");
+                0, 
+                contents.Count, 
+                "Number of output lines was unexpected.");
         }
 
         /// <summary>
@@ -342,7 +384,10 @@ namespace AuthorIntrusion.Tests
             // Create the test input.
             var persistence = new MemoryPersistence();
             persistence.SetData(
-                new HierarchicalPath("/"), "---", "Title: Unit Test", "---");
+                new HierarchicalPath("/"), 
+                "---", 
+                "Title: Unit Test", 
+                "---");
 
             // Create the format.
             var format = new MarkdownBufferFormat();
@@ -350,17 +395,23 @@ namespace AuthorIntrusion.Tests
             // Parse the buffer lines.
             var project = new Project();
             MetadataDictionary metadata = project.Metadata;
-            var context = new BufferLoadContext(project, persistence);
+            var context = new BufferLoadContext(
+                project, 
+                persistence);
 
             format.LoadProject(context);
 
             // Verify the metadata.
             Assert.AreEqual(
-                0, metadata.Count, "Number of metadata keys is unexpected.");
+                0, 
+                metadata.Count, 
+                "Number of metadata keys is unexpected.");
 
             // Verify the title.
             Assert.AreEqual(
-                "Unit Test", project.Titles.Title, "Title was unexpected.");
+                "Unit Test", 
+                project.Titles.Title, 
+                "Title was unexpected.");
         }
 
         #endregion

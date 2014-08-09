@@ -79,7 +79,8 @@ namespace AuthorIntrusion.IO
             if (Directory.Exists(path))
             {
                 throw new ArgumentException(
-                    "The URI must point to a filename, not a directory.", "uri");
+                    "The URI must point to a filename, not a directory.", 
+                    "uri");
             }
 
             // Save the project file.
@@ -106,7 +107,9 @@ namespace AuthorIntrusion.IO
 
             // The file exists, so create the file persistence for it.
             IFileBufferFormat format = projectFormatFactory.Create();
-            var persistence = new FilePersistence(projectFile, format);
+            var persistence = new FilePersistence(
+                projectFile, 
+                format);
             return persistence;
         }
 

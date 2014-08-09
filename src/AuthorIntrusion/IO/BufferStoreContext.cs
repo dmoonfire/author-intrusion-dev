@@ -20,7 +20,8 @@ namespace AuthorIntrusion.IO
         /// The persistence.
         /// </param>
         public BufferStoreContext(Project project, IPersistence persistence)
-            : base(project, persistence)
+            : base(project, 
+                persistence)
         {
         }
 

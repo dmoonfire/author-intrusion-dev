@@ -36,7 +36,8 @@ namespace MfGames.TextTokens.Buffers
 
             // Get our token.
             IToken results = buffer.GetToken(
-                location.LineIndex, location.TokenIndex);
+                location.LineIndex, 
+                location.TokenIndex);
             return results;
         }
 

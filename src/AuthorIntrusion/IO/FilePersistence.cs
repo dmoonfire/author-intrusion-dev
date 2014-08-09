@@ -73,7 +73,9 @@ namespace AuthorIntrusion.IO
         /// </returns>
         public Stream GetProjectWriteStream()
         {
-            return this.ProjectFile.Open(FileMode.Create, FileAccess.Write);
+            return this.ProjectFile.Open(
+                FileMode.Create, 
+                FileAccess.Write);
         }
 
         /// <summary>

@@ -84,7 +84,9 @@ namespace MfGames.TextTokens.Tests
         private void OnLinesDeleted(
             object sender, LineIndexLinesDeletedEventArgs e)
         {
-            this.Lines.RemoveRange(e.LineIndex.Index, e.Count);
+            this.Lines.RemoveRange(
+                e.LineIndex.Index, 
+                e.Count);
         }
 
         /// <summary>
@@ -108,11 +110,17 @@ namespace MfGames.TextTokens.Tests
             // Report which lines we've inserted.
             string[] lineKeys =
                 insertedLines.Select(l => l.LineKey.ToString()).ToArray();
-            string text = string.Join(", ", lineKeys);
-            Console.WriteLine("Inserted lines: {0}", text);
+            string text = string.Join(
+                ", ", 
+                lineKeys);
+            Console.WriteLine(
+                "Inserted lines: {0}", 
+                text);
 
             // Insert our copy of the line into the buffer.
-            this.Lines.InsertRange(e.LineIndex.Index, insertedLines);
+            this.Lines.InsertRange(
+                e.LineIndex.Index, 
+                insertedLines);
         }
 
         /// <summary>
@@ -145,14 +153,18 @@ namespace MfGames.TextTokens.Tests
             // First remove the tokens, if we have at least one.
             if (e.Count > 0)
             {
-                line.Tokens.RemoveRange(e.TokenIndex.Index, e.Count);
+                line.Tokens.RemoveRange(
+                    e.TokenIndex.Index, 
+                    e.Count);
             }
 
             // Insert the newly created lines, if we have any.
             if (e.ReplacementTokens.Length > 0)
             {
                 // Insert the tokens into the line.
-                line.InsertTokens(e.TokenIndex, e.ReplacementTokens);
+                line.InsertTokens(
+                    e.TokenIndex, 
+                    e.ReplacementTokens);
             }
         }
 

@@ -22,7 +22,9 @@ namespace MfGames.TextTokens.Tests
         {
             this.Setup();
             Assert.AreEqual(
-                0, this.State.Lines.Count, "Number of lines was unexpected.");
+                0, 
+                this.State.Lines.Count, 
+                "Number of lines was unexpected.");
         }
 
         #endregion

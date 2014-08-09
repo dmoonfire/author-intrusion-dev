@@ -129,7 +129,9 @@ namespace MfGames.TextTokens.Lines
 
             // Insert the tokens.
             var afterTokenIndex = new TokenIndex(this.tokens.Count);
-            this.InsertTokens(afterTokenIndex, newTokens);
+            this.InsertTokens(
+                afterTokenIndex, 
+                newTokens);
         }
 
         /// <summary>
@@ -169,7 +171,9 @@ namespace MfGames.TextTokens.Lines
             Token[] tokenArray =
                 newTokens.Select(t => t as Token ?? new Token(t)).ToArray();
 
-            this.tokens.InsertRange(afterTokenIndex.Index, tokenArray);
+            this.tokens.InsertRange(
+                afterTokenIndex.Index, 
+                tokenArray);
 
             // Raise an event to indicate we've inserted a token.
             const int ReplacingNothing = 0;
@@ -217,9 +221,14 @@ namespace MfGames.TextTokens.Lines
             // Create the event arguments and raise the event.
             ImmutableArray<IToken> array = tokensInserted.ToImmutableArray();
             var args = new TokenIndexTokensReplacedEventArgs(
-                tokenIndex, count, array, replacementType);
+                tokenIndex, 
+                count, 
+                array, 
+                replacementType);
 
-            listeners(this, args);
+            listeners(
+                this, 
+                args);
         }
 
         #endregion

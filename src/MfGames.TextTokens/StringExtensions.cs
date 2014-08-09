@@ -30,7 +30,11 @@ namespace MfGames.TextTokens
             }
 
             // For everything else, normalize the returns.
-            return input.Replace("\r\n", "\n").Replace("\r", "\n");
+            return input.Replace(
+                "\r\n", 
+                "\n").Replace(
+                    "\r", 
+                    "\n");
         }
 
         #endregion

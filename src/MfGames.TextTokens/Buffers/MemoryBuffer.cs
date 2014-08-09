@@ -166,7 +166,9 @@ namespace MfGames.TextTokens.Buffers
         public IToken CreateToken(string newText)
         {
             TokenKey tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-            var token = new Token(tokenKey, newText);
+            var token = new Token(
+                tokenKey, 
+                newText);
             return token;
         }
 
@@ -186,7 +188,9 @@ namespace MfGames.TextTokens.Buffers
         public IToken CreateToken(IToken oldToken, string newText)
         {
             TokenKey tokenKey = KeyGenerator.Instance.GetNextTokenKey();
-            var token = new Token(tokenKey, newText);
+            var token = new Token(
+                tokenKey, 
+                newText);
             return token;
         }
 
@@ -206,13 +210,18 @@ namespace MfGames.TextTokens.Buffers
         {
             // Retrieve the list of lines deleted.
             List<Line> deletedLines = this.lines.GetRange(
-                lineIndex.Index, count);
+                lineIndex.Index, 
+                count);
 
             // Remove the lines from the buffer.
-            this.lines.RemoveRange(lineIndex.Index, count);
+            this.lines.RemoveRange(
+                lineIndex.Index, 
+                count);
 
             // Raise the event to indicate we deleted the lines.
-            this.RaiseLinesDeleted(lineIndex, count);
+            this.RaiseLinesDeleted(
+                lineIndex, 
+                count);
 
             // Return the resulting lines.
             return deletedLines;
@@ -367,7 +376,9 @@ namespace MfGames.TextTokens.Buffers
             }
 
             // Insert the lines into the buffer.
-            this.InsertLines(afterLineIndex, insertedLines);
+            this.InsertLines(
+                afterLineIndex, 
+                insertedLines);
 
             // Return the resulting lines.
             return insertedLines;
@@ -390,10 +401,14 @@ namespace MfGames.TextTokens.Buffers
             Contract.Requires(insertedLines != null);
 
             // Insert the lines into the buffer.
-            this.InsertLines(afterLineIndex, (IEnumerable<Line>)insertedLines);
+            this.InsertLines(
+                afterLineIndex, 
+                (IEnumerable<Line>)insertedLines);
 
             // Mark that all of these lines changed.
-            Array.ForEach(insertedLines, l => this.changedLines.Add(l));
+            Array.ForEach(
+                insertedLines, 
+                l => this.changedLines.Add(l));
         }
 
         /// <summary>
@@ -416,10 +431,14 @@ namespace MfGames.TextTokens.Buffers
                 l => l.TokensReplaced += this.OnLineTokensReplaced);
 
             // Insert the lines into the buffer at the given position.
-            this.lines.InsertRange(afterLineIndex.Index, lineArray);
+            this.lines.InsertRange(
+                afterLineIndex.Index, 
+                lineArray);
 
             // Raise an event for the inserted lines.
-            this.RaiseLinesInserted(afterLineIndex, lineArray);
+            this.RaiseLinesInserted(
+                afterLineIndex, 
+                lineArray);
         }
 
         /// <summary>
@@ -446,7 +465,9 @@ namespace MfGames.TextTokens.Buffers
             // Otherwise, raise the event.
             var args = new ReplaceSelectionEventArgs(newTextRange);
 
-            listeners(this, args);
+            listeners(
+                this, 
+                args);
 
             return args.OldTextRanges;
         }
@@ -472,7 +493,9 @@ namespace MfGames.TextTokens.Buffers
             // Otherwise, raise the event.
             var args = new RestoreSelectionEventArgs(oldTextRanges);
 
-            listeners(this, args);
+            listeners(
+                this, 
+                args);
         }
 
         /// <summary>
@@ -529,19 +552,22 @@ namespace MfGames.TextTokens.Buffers
             if (count < 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    "count", "Count cannot be less than zero.");
+                    "count", 
+                    "Count cannot be less than zero.");
             }
 
             if (newTokens == null)
             {
                 throw new ArgumentNullException(
-                    "newTokens", "newTokens cannot be null.");
+                    "newTokens", 
+                    "newTokens cannot be null.");
             }
 
             // Get the line and tokens for this request.
             Line line = this.lines[lineIndex.Index];
             List<Token> oldTokens = line.Tokens.GetRange(
-                tokenIndex.Index, count);
+                tokenIndex.Index, 
+                count);
 
             // Make sure we have the right type.
             Token[] tokenArray =
@@ -555,12 +581,20 @@ namespace MfGames.TextTokens.Buffers
                 : TokenReplacement.Different;
 
             // Replace the tokens in our collection.
-            line.Tokens.RemoveRange(tokenIndex.Index, count);
-            line.Tokens.InsertRange(tokenIndex.Index, tokenArray);
+            line.Tokens.RemoveRange(
+                tokenIndex.Index, 
+                count);
+            line.Tokens.InsertRange(
+                tokenIndex.Index, 
+                tokenArray);
 
             // Raise an event about the change.
             this.RaiseTokensReplaced(
-                lineIndex, tokenIndex, count, tokenArray, replacementType);
+                lineIndex, 
+                tokenIndex, 
+                count, 
+                tokenArray, 
+                replacementType);
             this.changedLines.Add(line);
 
             // Return the replaced tokens.
@@ -614,9 +648,12 @@ namespace MfGames.TextTokens.Buffers
             ReadOnlyCollection<ILine> readOnlyLines =
                 new List<ILine>(insertedLines).AsReadOnly();
             var args = new LineIndexLinesInsertedEventArgs(
-                afterLineIndex, readOnlyLines);
+                afterLineIndex, 
+                readOnlyLines);
 
-            listener(this, args);
+            listener(
+                this, 
+                args);
         }
 
         /// <summary>
@@ -659,9 +696,15 @@ namespace MfGames.TextTokens.Buffers
 
             // Call the event with the property event arguments.
             var args = new LineIndexTokenIndexTokensReplacedEventArgs(
-                lineIndex, tokenIndex, count, tokenArray, replacementType);
+                lineIndex, 
+                tokenIndex, 
+                count, 
+                tokenArray, 
+                replacementType);
 
-            listener(this, args);
+            listener(
+                this, 
+                args);
         }
 
         /// <summary>
@@ -717,9 +760,13 @@ namespace MfGames.TextTokens.Buffers
             }
 
             // Construct the event arguments and raise the event.
-            var args = new LineIndexLinesDeletedEventArgs(lineIndex, count);
+            var args = new LineIndexLinesDeletedEventArgs(
+                lineIndex, 
+                count);
 
-            listeners(this, args);
+            listeners(
+                this, 
+                args);
         }
 
         #endregion

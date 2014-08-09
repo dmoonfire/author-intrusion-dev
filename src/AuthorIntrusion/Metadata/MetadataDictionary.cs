@@ -26,7 +26,9 @@ namespace AuthorIntrusion.Metadata
         {
             MetadataValue value;
 
-            if (!this.TryGetValue(key, out value))
+            if (!this.TryGetValue(
+                key, 
+                out value))
             {
                 value = new MetadataValue();
                 this[key] = value;

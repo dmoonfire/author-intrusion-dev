@@ -52,7 +52,9 @@ namespace AuthorIntrusion.Metadata
             {
                 MetadataKey key;
 
-                if (!this.keys.TryGetValue(keyName, out key))
+                if (!this.keys.TryGetValue(
+                    keyName, 
+                    out key))
                 {
                     key = new MetadataKey(keyName);
                     this.keys[keyName] = key;

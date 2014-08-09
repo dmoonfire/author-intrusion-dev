@@ -37,7 +37,11 @@ namespace AuthorIntrusion.Extensions.System.Xml
             string metadataKey)
         {
             WriteElementString(
-                writer, elementName, project, project.Metadata, metadataKey);
+                writer, 
+                elementName, 
+                project, 
+                project.Metadata, 
+                metadataKey);
         }
 
         /// <summary>
@@ -67,7 +71,12 @@ namespace AuthorIntrusion.Extensions.System.Xml
         {
             MetadataKey key = project.MetadataManager[metadataKey];
 
-            WriteElementString(writer, elementName, project, metadata, key);
+            WriteElementString(
+                writer, 
+                elementName, 
+                project, 
+                metadata, 
+                key);
         }
 
         /// <summary>
@@ -97,7 +106,9 @@ namespace AuthorIntrusion.Extensions.System.Xml
         {
             string value = metadata.GetOrCreate(metadataKey).Value;
 
-            writer.WriteElementString(elementName, value);
+            writer.WriteElementString(
+                elementName, 
+                value);
         }
 
         #endregion

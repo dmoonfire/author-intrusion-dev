@@ -101,8 +101,11 @@ namespace AuthorIntrusion.IO
             {
                 // Pull out the identifier.
                 headerSlug = headerText.Substring(
-                    lastOpenBracket + 1, lastCloseBracket - lastOpenBracket);
-                headerText = headerText.Substring(0, lastOpenBracket);
+                    lastOpenBracket + 1, 
+                    lastCloseBracket - lastOpenBracket);
+                headerText = headerText.Substring(
+                    0, 
+                    lastOpenBracket);
             }
             else
             {
@@ -130,7 +133,10 @@ namespace AuthorIntrusion.IO
         {
             using (var reader = new StringReader(input))
             {
-                this.Load(context, reader, buffer);
+                this.Load(
+                    context, 
+                    reader, 
+                    buffer);
             }
         }
 
@@ -156,7 +162,10 @@ namespace AuthorIntrusion.IO
             using (Stream stream = context.Persistence.GetProjectReadStream())
             {
                 // Load information about the project into memory.
-                this.Load(context, stream, context.Project);
+                this.Load(
+                    context, 
+                    stream, 
+                    context.Project);
             }
         }
 
@@ -176,7 +185,10 @@ namespace AuthorIntrusion.IO
         {
             using (var writer = new StreamWriter(stream))
             {
-                this.Store(context, writer, buffer);
+                this.Store(
+                    context, 
+                    writer, 
+                    buffer);
             }
         }
 
@@ -195,7 +207,9 @@ namespace AuthorIntrusion.IO
             BufferStoreContext context, TextWriter writer, IProjectBuffer buffer)
         {
             // Write out the YAML header.
-            this.StoreMetadata(writer, buffer);
+            this.StoreMetadata(
+                writer, 
+                buffer);
 
             // Write out all the buffer lines.
             foreach (Block block in buffer.Blocks)
@@ -218,7 +232,10 @@ namespace AuthorIntrusion.IO
             using (Stream stream = context.Persistence.GetProjectWriteStream())
             {
                 // Load information about the project into memory.
-                this.Store(context, stream, context.Project);
+                this.Store(
+                    context, 
+                    stream, 
+                    context.Project);
             }
         }
 
@@ -316,7 +333,10 @@ namespace AuthorIntrusion.IO
             if (line == "---")
             {
                 // Read and parse in teh YAML.
-                this.ReadYamlMetadata(context, reader, buffer);
+                this.ReadYamlMetadata(
+                    context, 
+                    reader, 
+                    buffer);
                 line = reader.ReadLine();
 
                 // If the line is blank, then we don't have content.
@@ -348,7 +368,11 @@ namespace AuthorIntrusion.IO
             // Load the lines through the loop.
             int index = 0;
 
-            this.Load(context, lines, ref index, buffer);
+            this.Load(
+                context, 
+                lines, 
+                ref index, 
+                buffer);
         }
 
         /// <summary>
@@ -381,19 +405,24 @@ namespace AuthorIntrusion.IO
                 string text, id;
                 int headerOffset;
                 bool isHeader = this.IsMarkdownHeader(
-                    lines, lineIndex, out text, out id, out headerOffset);
+                    lines, 
+                    lineIndex, 
+                    out text, 
+                    out id, 
+                    out headerOffset);
 
                 if (isHeader)
                 {
                     // Try to find it via the ID.
                     Region region;
 
-                    if (id == null
-                        || !context.Project.Regions.TryGetValue(id, out region))
+                    if (id == null || !context.Project.Regions.TryGetValue(
+                        id, 
+                        out region))
                     {
-                        if (
-                            !context.Project.Regions.TryGetName(
-                                text, out region))
+                        if (!context.Project.Regions.TryGetName(
+                            text, 
+                            out region))
                         {
                             // We don't know how to handle this.
                             throw new Exception(
@@ -406,7 +435,11 @@ namespace AuthorIntrusion.IO
                     lineIndex += headerOffset;
 
                     // Read in the region.
-                    this.Load(context, lines, ref lineIndex, region);
+                    this.Load(
+                        context, 
+                        lines, 
+                        ref lineIndex, 
+                        region);
                     continue;
                 }
 
@@ -433,9 +466,14 @@ namespace AuthorIntrusion.IO
         private void Load(
             BufferLoadContext context, Stream stream, IProjectBuffer buffer)
         {
-            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            using (var reader = new StreamReader(
+                stream, 
+                Encoding.UTF8))
             {
-                this.Load(context, reader, buffer);
+                this.Load(
+                    context, 
+                    reader, 
+                    buffer);
             }
         }
 
@@ -588,19 +626,29 @@ namespace AuthorIntrusion.IO
                     {
                         case "author":
                             this.ParseYamlAuthor(
-                                context, buffer, lowerKey, entry.Value);
+                                context, 
+                                buffer, 
+                                lowerKey, 
+                                entry.Value);
                             break;
 
                         case "title":
                         case "subtitle":
                             this.ParseYamlTitle(
-                                context, buffer, lowerKey, entry.Value);
+                                context, 
+                                buffer, 
+                                lowerKey, 
+                                entry.Value);
                             break;
 
                         default:
 
                             // For everything else, treat it as metadata.
-                            ParseYamlMetadata(context, buffer, key, entry.Value);
+                            ParseYamlMetadata(
+                                context, 
+                                buffer, 
+                                key, 
+                                entry.Value);
                             return;
                     }
                 }
@@ -623,10 +671,16 @@ namespace AuthorIntrusion.IO
             // Create a dictionary with the metadata and start adding elements.
             var metadata = new Dictionary<string, object>();
 
-            metadata.AddIfNotEmpty("Title", buffer.Titles.Title);
-            metadata.AddIfNotEmpty("Subtitle", buffer.Titles.Subtitle);
+            metadata.AddIfNotEmpty(
+                "Title", 
+                buffer.Titles.Title);
+            metadata.AddIfNotEmpty(
+                "Subtitle", 
+                buffer.Titles.Subtitle);
 
-            metadata.AddIfNotEmpty("Author", buffer.Authors.PreferredName);
+            metadata.AddIfNotEmpty(
+                "Author", 
+                buffer.Authors.PreferredName);
 
             // Loop through and add the rest of the metadata.
             foreach (MetadataKey key in buffer.Metadata.Keys)
@@ -638,7 +692,9 @@ namespace AuthorIntrusion.IO
             var serializer = new Serializer();
 
             writer.WriteLine("---");
-            serializer.Serialize(writer, metadata);
+            serializer.Serialize(
+                writer, 
+                metadata);
             writer.WriteLine("---");
         }
 

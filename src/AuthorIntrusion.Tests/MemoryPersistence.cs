@@ -91,7 +91,9 @@ namespace AuthorIntrusion.Tests
         public Stream GetReadStream(HierarchicalPath path)
         {
             byte[] bytes = this.data[path];
-            return new MemoryStream(bytes, false);
+            return new MemoryStream(
+                bytes, 
+                false);
         }
 
         /// <summary>
@@ -122,7 +124,9 @@ namespace AuthorIntrusion.Tests
         {
             // Convert the lines to an UTF-8 byte array.
             using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream, Encoding.UTF8))
+            using (var writer = new StreamWriter(
+                stream, 
+                Encoding.UTF8))
             {
                 // Go through the lines and write them out.
                 foreach (string line in lines)
@@ -153,7 +157,9 @@ namespace AuthorIntrusion.Tests
         public void SetData(string path, params string[] lines)
         {
             var newPath = new HierarchicalPath(path);
-            this.SetData(newPath, lines);
+            this.SetData(
+                newPath, 
+                lines);
         }
 
         #endregion

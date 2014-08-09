@@ -87,7 +87,8 @@ namespace MfGames.TextTokens.Commands
         {
             // Actually delete the lines from the buffer.
             IEnumerable<ILine> lines = buffer.DeleteLines(
-                this.LineIndex, this.Count);
+                this.LineIndex, 
+                this.Count);
             this.DeletedLines = lines.ToList();
         }
 
@@ -100,7 +101,9 @@ namespace MfGames.TextTokens.Commands
         public void Undo(IBuffer buffer)
         {
             // Get the new lines from the buffer.
-            buffer.InsertLines(this.LineIndex, this.DeletedLines);
+            buffer.InsertLines(
+                this.LineIndex, 
+                this.DeletedLines);
         }
 
         #endregion

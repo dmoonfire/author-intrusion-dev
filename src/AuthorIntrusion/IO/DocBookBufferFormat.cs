@@ -113,24 +113,32 @@ namespace AuthorIntrusion.IO
                         Encoding = Encoding.UTF8, 
                     };
 
-                using (XmlWriter writer = XmlWriter.Create(stream, settings))
+                using (XmlWriter writer = XmlWriter.Create(
+                    stream, 
+                    settings))
                 {
                     // Write out the document start.
                     writer.WriteStartDocument();
                     writer.WriteStartElement(
-                        this.settings.RootElement, DocBookNamespace);
-                    writer.WriteAttributeString("version", "5.0");
+                        this.settings.RootElement, 
+                        DocBookNamespace);
+                    writer.WriteAttributeString(
+                        "version", 
+                        "5.0");
 
                     // Write out the info tag.
                     writer.WriteStartElement("info");
                     writer.WriteElementString(
-                        "title", context.Project.Titles.Title);
+                        "title", 
+                        context.Project.Titles.Title);
                     writer.WriteEndElement();
 
                     // Loop through and add all the lines.
                     foreach (Block block in context.Project.Blocks)
                     {
-                        writer.WriteElementString("para", block.Text);
+                        writer.WriteElementString(
+                            "para", 
+                            block.Text);
                     }
 
                     // Write out the end of the document.

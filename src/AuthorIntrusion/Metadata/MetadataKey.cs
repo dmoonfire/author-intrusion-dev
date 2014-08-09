@@ -54,7 +54,9 @@ namespace AuthorIntrusion.Metadata
         /// </returns>
         public static bool operator ==(MetadataKey left, MetadataKey right)
         {
-            return Equals(left, right);
+            return Equals(
+                left, 
+                right);
         }
 
         /// <summary>
@@ -67,7 +69,9 @@ namespace AuthorIntrusion.Metadata
         /// </returns>
         public static bool operator !=(MetadataKey left, MetadataKey right)
         {
-            return !Equals(left, right);
+            return !Equals(
+                left, 
+                right);
         }
 
         /// <summary>
@@ -81,17 +85,23 @@ namespace AuthorIntrusion.Metadata
         /// </returns>
         public bool Equals(MetadataKey other)
         {
-            if (ReferenceEquals(null, other))
+            if (ReferenceEquals(
+                null, 
+                other))
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, other))
+            if (ReferenceEquals(
+                this, 
+                other))
             {
                 return true;
             }
 
-            return string.Equals(this.Name, other.Name);
+            return string.Equals(
+                this.Name, 
+                other.Name);
         }
 
         /// <summary>
@@ -105,12 +115,16 @@ namespace AuthorIntrusion.Metadata
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (ReferenceEquals(
+                null, 
+                obj))
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, obj))
+            if (ReferenceEquals(
+                this, 
+                obj))
             {
                 return true;
             }

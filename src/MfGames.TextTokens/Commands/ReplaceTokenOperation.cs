@@ -93,7 +93,10 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public ReplaceTokenOperation(
             TextLocation location, int count, IToken newToken)
-            : this(location.LineIndex, location.TokenIndex, count, newToken)
+            : this(location.LineIndex, 
+                location.TokenIndex, 
+                count, 
+                newToken)
         {
         }
 

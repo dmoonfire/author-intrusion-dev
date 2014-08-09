@@ -37,7 +37,8 @@ namespace MfGames.TextTokens.Tests
         /// The token.
         /// </param>
         public TestToken(IToken token)
-            : this(token.TokenKey, token.Text)
+            : this(token.TokenKey, 
+                token.Text)
         {
             // Establish our contracts.
             Contract.Requires(token != null);
@@ -69,7 +70,10 @@ namespace MfGames.TextTokens.Tests
         /// </returns>
         public override string ToString()
         {
-            return string.Format("({1}, \"{0}\")", this.Text, this.TokenKey.Id);
+            return string.Format(
+                "({1}, \"{0}\")", 
+                this.Text, 
+                this.TokenKey.Id);
         }
 
         #endregion

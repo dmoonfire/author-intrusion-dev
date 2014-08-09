@@ -136,7 +136,8 @@ namespace MfGames.TextTokens.Controllers
                 int tokenOffset = this.Cursor.TokenIndex.Index + 1;
                 ImmutableList<IToken> remainingTokens =
                     firstLine.Tokens.GetRange(
-                        tokenOffset, firstLine.Tokens.Count - tokenOffset);
+                        tokenOffset, 
+                        firstLine.Tokens.Count - tokenOffset);
                 var noopState = new PostSelectionDeleteState(
                     this.Cursor, 
                     this.Buffer.GetToken(this.Cursor), 
@@ -150,14 +151,18 @@ namespace MfGames.TextTokens.Controllers
 
             // Pull out the first and last token and their associated texts.
             IToken firstToken = this.Buffer.GetToken(
-                this.First.LineIndex, this.First.TokenIndex);
+                this.First.LineIndex, 
+                this.First.TokenIndex);
             string firstText = firstToken.Text;
             IToken lastToken = this.Buffer.GetToken(
-                this.Last.LineIndex, this.Last.TokenIndex);
+                this.Last.LineIndex, 
+                this.Last.TokenIndex);
             string lastText = lastToken.Text;
 
             // Create the combined token together.
-            string newText = firstText.Substring(0, this.First.TextIndex.Index)
+            string newText = firstText.Substring(
+                0, 
+                this.First.TextIndex.Index)
                 + lastText.Substring(this.Last.TextIndex.Index);
             IToken newToken = this.Buffer.CreateToken(newText);
 
@@ -182,10 +187,13 @@ namespace MfGames.TextTokens.Controllers
                 int tokenOffset = this.First.TokenIndex.Index + count;
                 ImmutableList<IToken> remainingTokens =
                     firstLine.Tokens.GetRange(
-                        tokenOffset, firstLine.Tokens.Count - tokenOffset);
+                        tokenOffset, 
+                        firstLine.Tokens.Count - tokenOffset);
 
                 var singleLineState = new PostSelectionDeleteState(
-                    this.First, newToken, remainingTokens);
+                    this.First, 
+                    newToken, 
+                    remainingTokens);
                 return singleLineState;
             }
 
@@ -225,7 +233,9 @@ namespace MfGames.TextTokens.Controllers
         /// </returns>
         public TextRange ToTextRange()
         {
-            return new TextRange(this.Anchor, this.Cursor);
+            return new TextRange(
+                this.Anchor, 
+                this.Cursor);
         }
 
         #endregion
@@ -263,7 +273,9 @@ namespace MfGames.TextTokens.Controllers
         {
             TextRange newTextRange;
 
-            if (e.PreviousTextRanges.TryGetValue(this, out newTextRange))
+            if (e.PreviousTextRanges.TryGetValue(
+                this, 
+                out newTextRange))
             {
                 this.Anchor = newTextRange.Anchor;
                 this.Cursor = newTextRange.Cursor;

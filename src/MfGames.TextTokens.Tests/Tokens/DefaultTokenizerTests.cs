@@ -34,9 +34,13 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                0, results.Count, "The number of tokens is unexpected.");
+                0, 
+                results.Count, 
+                "The number of tokens is unexpected.");
         }
 
         /// <summary>
@@ -53,12 +57,25 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                3, results.Count, "The number of tokens is unexpected.");
-            Assert.AreEqual("didn", results[0], "1st result is unexpected.");
-            Assert.AreEqual("'", results[1], "2nd result is unexpected.");
-            Assert.AreEqual("t", results[2], "3rd result is unexpected.");
+                3, 
+                results.Count, 
+                "The number of tokens is unexpected.");
+            Assert.AreEqual(
+                "didn", 
+                results[0], 
+                "1st result is unexpected.");
+            Assert.AreEqual(
+                "'", 
+                results[1], 
+                "2nd result is unexpected.");
+            Assert.AreEqual(
+                "t", 
+                results[2], 
+                "3rd result is unexpected.");
         }
 
         /// <summary>
@@ -75,14 +92,30 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                4, results.Count, "The number of tokens is unexpected.");
+                4, 
+                results.Count, 
+                "The number of tokens is unexpected.");
 
-            Assert.AreEqual("_", results[0], "1st token is unexpected.");
-            Assert.AreEqual("e", results[1], "2nd token is unexpected.");
-            Assert.AreEqual(" ", results[2], "3rd token is unexpected.");
-            Assert.AreEqual("two", results[3], "4th token is unexpected.");
+            Assert.AreEqual(
+                "_", 
+                results[0], 
+                "1st token is unexpected.");
+            Assert.AreEqual(
+                "e", 
+                results[1], 
+                "2nd token is unexpected.");
+            Assert.AreEqual(
+                " ", 
+                results[2], 
+                "3rd token is unexpected.");
+            Assert.AreEqual(
+                "two", 
+                results[3], 
+                "4th token is unexpected.");
         }
 
         /// <summary>
@@ -99,9 +132,13 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                0, results.Count, "The number of tokens is unexpected.");
+                0, 
+                results.Count, 
+                "The number of tokens is unexpected.");
         }
 
         /// <summary>
@@ -118,9 +155,13 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                1, results.Count, "The number of tokens is unexpected.");
+                1, 
+                results.Count, 
+                "The number of tokens is unexpected.");
         }
 
         /// <summary>
@@ -137,9 +178,13 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                1, results.Count, "The number of tokens is unexpected.");
+                1, 
+                results.Count, 
+                "The number of tokens is unexpected.");
         }
 
         /// <summary>
@@ -156,15 +201,34 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                5, results.Count, "The number of tokens is unexpected.");
+                5, 
+                results.Count, 
+                "The number of tokens is unexpected.");
 
-            Assert.AreEqual("one", results[0], "1st token is unexpected.");
-            Assert.AreEqual(" ", results[1], "2nd token is unexpected.");
-            Assert.AreEqual("two", results[2], "3rd token is unexpected.");
-            Assert.AreEqual(" ", results[3], "4th token is unexpected.");
-            Assert.AreEqual("three", results[4], "5th token is unexpected.");
+            Assert.AreEqual(
+                "one", 
+                results[0], 
+                "1st token is unexpected.");
+            Assert.AreEqual(
+                " ", 
+                results[1], 
+                "2nd token is unexpected.");
+            Assert.AreEqual(
+                "two", 
+                results[2], 
+                "3rd token is unexpected.");
+            Assert.AreEqual(
+                " ", 
+                results[3], 
+                "4th token is unexpected.");
+            Assert.AreEqual(
+                "three", 
+                results[4], 
+                "5th token is unexpected.");
         }
 
         /// <summary>
@@ -181,9 +245,13 @@ namespace MfGames.TextTokens.Tests.Tokens
             List<string> results = tokenizer.Tokenize(input).ToList();
 
             // Assert
-            Assert.IsNotNull(results, "The results were null");
+            Assert.IsNotNull(
+                results, 
+                "The results were null");
             Assert.AreEqual(
-                1, results.Count, "The number of tokens is unexpected.");
+                1, 
+                results.Count, 
+                "The number of tokens is unexpected.");
         }
 
         #endregion

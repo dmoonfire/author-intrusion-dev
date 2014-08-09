@@ -35,7 +35,8 @@ namespace MfGames.TextTokens.Tokens
         /// The token.
         /// </param>
         public Token(IToken token)
-            : this(token.TokenKey, token.Text)
+            : this(token.TokenKey, 
+                token.Text)
         {
             // Establish our contracts.
             Contract.Requires(token != null);

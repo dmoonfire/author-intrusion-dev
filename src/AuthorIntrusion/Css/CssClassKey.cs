@@ -81,7 +81,9 @@ namespace AuthorIntrusion.Css
         /// </returns>
         public bool Equals(CssClassKey other)
         {
-            return string.Equals(this.Name, other.Name);
+            return string.Equals(
+                this.Name, 
+                other.Name);
         }
 
         /// <summary>
@@ -95,7 +97,9 @@ namespace AuthorIntrusion.Css
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (ReferenceEquals(
+                null, 
+                obj))
             {
                 return false;
             }

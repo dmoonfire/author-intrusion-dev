@@ -26,7 +26,11 @@ namespace MfGames.TextTokens.Tests
         {
             this.Setup();
             Assert.AreEqual(
-                new TextLocation(0, 2, 2), this.Controller.SelectionAnchor);
+                new TextLocation(
+                    0, 
+                    2, 
+                    2), 
+                this.Controller.SelectionAnchor);
         }
 
         /// <summary>
@@ -37,7 +41,11 @@ namespace MfGames.TextTokens.Tests
         {
             this.Setup();
             Assert.AreEqual(
-                new TextLocation(0, 2, 2), this.Controller.SelectionCursor);
+                new TextLocation(
+                    0, 
+                    2, 
+                    2), 
+                this.Controller.SelectionCursor);
         }
 
         /// <summary>
@@ -47,7 +55,9 @@ namespace MfGames.TextTokens.Tests
         public void HasCorrectLineCount()
         {
             this.Setup();
-            Assert.AreEqual(1, this.State.Lines.Count);
+            Assert.AreEqual(
+                1, 
+                this.State.Lines.Count);
         }
 
         /// <summary>
@@ -58,7 +68,8 @@ namespace MfGames.TextTokens.Tests
         {
             this.Setup();
             Assert.AreEqual(
-                "zero ontwo", this.State.Lines[0].Tokens.GetVisibleText());
+                "zero ontwo", 
+                this.State.Lines[0].Tokens.GetVisibleText());
         }
 
         /// <summary>
@@ -68,7 +79,9 @@ namespace MfGames.TextTokens.Tests
         public virtual void Line1HasCorrectTokenCount()
         {
             this.Setup();
-            Assert.AreEqual(3, this.State.Lines[0].Tokens.Count);
+            Assert.AreEqual(
+                3, 
+                this.State.Lines[0].Tokens.Count);
         }
 
         #endregion
@@ -81,8 +94,13 @@ namespace MfGames.TextTokens.Tests
         protected override void Setup()
         {
             base.Setup();
-            this.Buffer.PopulateRowColumn(1, 3);
-            var textLocation = new TextLocation(0, 2, 2);
+            this.Buffer.PopulateRowColumn(
+                1, 
+                3);
+            var textLocation = new TextLocation(
+                0, 
+                2, 
+                2);
             this.Controller.SetCursor(textLocation);
             this.Controller.DeleteRight(2);
         }
@@ -105,7 +123,11 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    new TextLocation(0, 2, 2), this.Controller.SelectionAnchor);
+                    new TextLocation(
+                        0, 
+                        2, 
+                        2), 
+                    this.Controller.SelectionAnchor);
             }
 
             /// <summary>
@@ -116,7 +138,11 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    new TextLocation(0, 2, 2), this.Controller.SelectionCursor);
+                    new TextLocation(
+                        0, 
+                        2, 
+                        2), 
+                    this.Controller.SelectionCursor);
             }
 
             /// <summary>
@@ -127,7 +153,8 @@ namespace MfGames.TextTokens.Tests
             {
                 this.Setup();
                 Assert.AreEqual(
-                    "zero one two", this.State.Lines[0].Tokens.GetVisibleText());
+                    "zero one two", 
+                    this.State.Lines[0].Tokens.GetVisibleText());
             }
 
             /// <summary>
@@ -137,7 +164,9 @@ namespace MfGames.TextTokens.Tests
             public override void Line1HasCorrectTokenCount()
             {
                 this.Setup();
-                Assert.AreEqual(5, this.State.Lines[0].Tokens.Count);
+                Assert.AreEqual(
+                    5, 
+                    this.State.Lines[0].Tokens.Count);
             }
 
             #endregion

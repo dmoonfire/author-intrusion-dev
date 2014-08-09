@@ -69,8 +69,7 @@ namespace MfGames.TextTokens.Texts
         /// Index of the text.
         /// </param>
         public TextLocation(int lineIndex, int tokenIndex, int textIndex)
-            : this(
-                new LineIndex(lineIndex), 
+            : this(new LineIndex(lineIndex), 
                 new TokenIndex(tokenIndex), 
                 new TextIndex(textIndex))
         {
@@ -216,7 +215,9 @@ namespace MfGames.TextTokens.Texts
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (ReferenceEquals(
+                null, 
+                obj))
             {
                 return false;
             }

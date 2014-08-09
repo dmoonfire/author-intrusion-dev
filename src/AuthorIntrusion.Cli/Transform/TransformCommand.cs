@@ -66,16 +66,25 @@ namespace AuthorIntrusion.Cli.Transform
             IFileBufferFormat inputFormat = inputPersistence.ProjectFormat;
             IFileBufferFormat outputFormat = outputPersistence.ProjectFormat;
 
-            this.SetFormatSettings(inputFormat, null, null);
-            this.SetFormatSettings(outputFormat, null, options.OutputOptions);
+            this.SetFormatSettings(
+                inputFormat, 
+                null, 
+                null);
+            this.SetFormatSettings(
+                outputFormat, 
+                null, 
+                options.OutputOptions);
 
             // Load the project into memory.
-            var inputContext = new BufferLoadContext(project, inputPersistence);
+            var inputContext = new BufferLoadContext(
+                project, 
+                inputPersistence);
             inputFormat.LoadProject(inputContext);
 
             // Write out the project from memory.
             var outputContext = new BufferStoreContext(
-                project, outputPersistence);
+                project, 
+                outputPersistence);
             outputFormat.StoreProject(outputContext);
         }
 
@@ -123,15 +132,20 @@ namespace AuthorIntrusion.Cli.Transform
                 foreach (string option in options)
                 {
                     // Split the options line.
-                    string[] parts = option.Split(new[] { '=' }, 2);
+                    string[] parts = option.Split(
+                        new[] { '=' }, 
+                        2);
                     string name = parts[0];
                     string value = parts[1];
 
                     // Get the public property on the setting.
                     PropertyInfo property = settings.GetType().GetProperty(name);
                     object propertyValue = Convert.ChangeType(
-                        value, property.PropertyType);
-                    property.SetValue(settings, propertyValue);
+                        value, 
+                        property.PropertyType);
+                    property.SetValue(
+                        settings, 
+                        propertyValue);
                 }
             }
         }

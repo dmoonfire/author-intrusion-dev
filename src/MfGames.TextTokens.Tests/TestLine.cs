@@ -98,7 +98,9 @@ namespace MfGames.TextTokens.Tests
             }
 
             // Insert the tokens into the list.
-            this.Tokens.InsertRange(tokenIndex.Index, tokens);
+            this.Tokens.InsertRange(
+                tokenIndex.Index, 
+                tokens);
         }
 
         #endregion

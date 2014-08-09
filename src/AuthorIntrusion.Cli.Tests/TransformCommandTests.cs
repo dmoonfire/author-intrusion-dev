@@ -28,14 +28,14 @@ namespace AuthorIntrusion.Cli.Tests
         {
             // Create the options and populate the values.
             string outputFilename = Path.Combine(
-                this.WorkingDirectory.FullName, "output.xml");
+                this.WorkingDirectory.FullName, 
+                "output.xml");
             var options = new TransformOptions
                 {
-                    Input =
-                        Path.Combine(
-                            this.SamplesDirectory.FullName, 
-                            "Frankenstein Markdown", 
-                            "chapter-01.markdown"), 
+                    Input = Path.Combine(
+                        this.SamplesDirectory.FullName, 
+                        "Frankenstein Markdown", 
+                        "chapter-01.markdown"), 
                     Output = outputFilename, 
                 };
 
@@ -64,14 +64,14 @@ namespace AuthorIntrusion.Cli.Tests
         {
             // Create the options and populate the values.
             string outputFilename = Path.Combine(
-                this.WorkingDirectory.FullName, "output.xml");
+                this.WorkingDirectory.FullName, 
+                "output.xml");
             var options = new TransformOptions
                 {
-                    Input =
-                        Path.Combine(
-                            this.SamplesDirectory.FullName, 
-                            "Frankenstein Markdown", 
-                            "chapter-01.markdown"), 
+                    Input = Path.Combine(
+                        this.SamplesDirectory.FullName, 
+                        "Frankenstein Markdown", 
+                        "chapter-01.markdown"), 
                     Output = outputFilename, 
                     OutputOptions = new List<string> { "RootElement=chapter" }, 
                 };
@@ -101,14 +101,14 @@ namespace AuthorIntrusion.Cli.Tests
         {
             // Create the options and populate the values.
             string outputFilename = Path.Combine(
-                this.WorkingDirectory.FullName, "output.markdown");
+                this.WorkingDirectory.FullName, 
+                "output.markdown");
             var options = new TransformOptions
                 {
-                    Input =
-                        Path.Combine(
-                            this.SamplesDirectory.FullName, 
-                            "Frankenstein Markdown", 
-                            "chapter-01.markdown"), 
+                    Input = Path.Combine(
+                        this.SamplesDirectory.FullName, 
+                        "Frankenstein Markdown", 
+                        "chapter-01.markdown"), 
                     Output = outputFilename, 
                 };
 
@@ -122,7 +122,9 @@ namespace AuthorIntrusion.Cli.Tests
 
             // Assert the output.
             Assert.AreEqual(
-                17, lines.Length, "The number of lines was unexpected.");
+                17, 
+                lines.Length, 
+                "The number of lines was unexpected.");
         }
 
         #endregion

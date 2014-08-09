@@ -65,7 +65,9 @@ namespace AuthorIntrusion
             // Look for the key.
             CssClassKey results;
 
-            if (this.cssClassKeys.TryGetValue(className, out results))
+            if (this.cssClassKeys.TryGetValue(
+                className, 
+                out results))
             {
                 return results;
             }
@@ -99,7 +101,9 @@ namespace AuthorIntrusion
             // Look for the key.
             MetadataKey results;
 
-            if (this.metadataKeys.TryGetValue(keyName, out results))
+            if (this.metadataKeys.TryGetValue(
+                keyName, 
+                out results))
             {
                 return results;
             }

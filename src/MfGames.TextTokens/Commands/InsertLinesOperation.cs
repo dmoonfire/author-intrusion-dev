@@ -61,7 +61,9 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public void Do(IBuffer buffer)
         {
-            buffer.InsertLines(this.LineIndex, this.Count);
+            buffer.InsertLines(
+                this.LineIndex, 
+                this.Count);
         }
 
         /// <summary>
@@ -72,7 +74,9 @@ namespace MfGames.TextTokens.Commands
         /// </param>
         public void Undo(IBuffer buffer)
         {
-            buffer.DeleteLines(this.LineIndex, this.Count);
+            buffer.DeleteLines(
+                this.LineIndex, 
+                this.Count);
         }
 
         #endregion

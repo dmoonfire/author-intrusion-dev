@@ -45,7 +45,8 @@ namespace MfGames.TextTokens.Events
             int count, 
             ImmutableArray<IToken> replacementTokens, 
             TokenReplacement replacementType)
-            : base(lineIndex, tokenIndex)
+            : base(lineIndex, 
+                tokenIndex)
         {
             // Establish our contracts.
             Contract.Requires(count >= 0);

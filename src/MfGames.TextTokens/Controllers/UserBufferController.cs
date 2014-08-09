@@ -124,8 +124,12 @@ namespace MfGames.TextTokens.Controllers
             if (maxDeletable > 0)
             {
                 // Delete the characters from the first token.
-                int deleteCount = Math.Min(maxDeletable, remainingCount);
-                string beforeText = newText.Substring(0, textOffset);
+                int deleteCount = Math.Min(
+                    maxDeletable, 
+                    remainingCount);
+                string beforeText = newText.Substring(
+                    0, 
+                    textOffset);
                 string afterText = newText.Substring(textOffset + deleteCount);
                 newText = beforeText + afterText;
 
@@ -177,7 +181,8 @@ namespace MfGames.TextTokens.Controllers
                     // Delete the next line.
                     command.Add(
                         new DeleteLinesOperation(
-                            state.Cursor.LineIndex.Add(1), 1));
+                            state.Cursor.LineIndex.Add(1), 
+                            1));
 
                     // Add these tokens to the remaining.
                     remainingTokens.AddRange(nextLineTokens);
@@ -213,7 +218,9 @@ namespace MfGames.TextTokens.Controllers
             IToken newToken = this.Buffer.CreateToken(newText);
 
             var replaceOperation = new ReplaceTokenOperation(
-                state.Cursor, removeTokenCount, newToken);
+                state.Cursor, 
+                removeTokenCount, 
+                newToken);
             command.Add(replaceOperation);
 
             // Submit the command to the buffer.
@@ -265,12 +272,18 @@ namespace MfGames.TextTokens.Controllers
             if (text.Contains("\n"))
             {
                 // Insert multiple lines of text.
-                this.InsertMultipleLines(text, state, command);
+                this.InsertMultipleLines(
+                    text, 
+                    state, 
+                    command);
             }
             else
             {
                 // Insert a single line text.
-                this.InsertSingleLine(text, state, command);
+                this.InsertSingleLine(
+                    text, 
+                    state, 
+                    command);
             }
 
             // Submit the command to the buffer.
@@ -341,10 +354,13 @@ namespace MfGames.TextTokens.Controllers
             // append the first line to the before token and prepend the last line to the
             // after token to get a complete token. We don't have to worry about splitting
             // the tokens since the buffer will handle that.
-            string[] lines = text.Split(new[] { '\n' }, StringSplitOptions.None);
+            string[] lines = text.Split(
+                new[] { '\n' }, 
+                StringSplitOptions.None);
             int lastTokenlength = lines[lines.Length - 1].Length;
             string before = state.CursorToken.Text.Substring(
-                0, state.Cursor.TextIndex.Index) + lines[0];
+                0, 
+                state.Cursor.TextIndex.Index) + lines[0];
             string after = lines[lines.Length - 1]
                 + state.CursorToken.Text.Substring(state.Cursor.TextIndex.Index);
 
@@ -355,7 +371,8 @@ namespace MfGames.TextTokens.Controllers
 
             command.Add(
                 new InsertLinesOperation(
-                    state.Cursor.LineIndex.Add(1), newLineCount));
+                    state.Cursor.LineIndex.Add(1), 
+                    newLineCount));
 
             // Move all tokens to the right of the first line into the last one.
             ILine beforeLine = this.Buffer.Lines[state.Cursor.LineIndex.Index];
@@ -395,7 +412,9 @@ namespace MfGames.TextTokens.Controllers
 
             // Figure out the new text of the string and create a new token with the modified
             // version. This will also copy the attributes of the old token.
-            IToken newToken = this.Buffer.CreateToken(state.CursorToken, before);
+            IToken newToken = this.Buffer.CreateToken(
+                state.CursorToken, 
+                before);
 
             // Add the text replacement command into the buffer.
             const int SingleTokenReplacement = 1;
@@ -436,9 +455,11 @@ namespace MfGames.TextTokens.Controllers
             // version. This will also copy the attributes of the old token.
             string newText =
                 state.CursorToken.Text.Insert(
-                    state.Cursor.TextIndex.Index, text);
+                    state.Cursor.TextIndex.Index, 
+                    text);
             IToken newToken = this.Buffer.CreateToken(
-                state.CursorToken, newText);
+                state.CursorToken, 
+                newText);
 
             // Add the text replacement command into the buffer.
             const int SingleTokenReplacement = 1;
