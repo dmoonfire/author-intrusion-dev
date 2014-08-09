@@ -139,23 +139,25 @@ namespace AuthorIntrusion
             string regionSlug = layout.Slug;
             Region region;
 
-            if (oldRegions.TryGetValue(regionSlug, out region))
+            if (regionSlug == "project")
             {
-                // If the region doesn't have content, then just remove everything.
-                if (!layout.HasContent)
-                {
-                    region.Blocks.Clear();
-                }
-
-                // We already had this region, so just copy it over but remove the
-                // existing links because we'll be rebuilding it.
-                region.Blocks.RemoveAll(r => r.BlockType == BlockType.Region);
+                region = this;
             }
-            else
+            else if (!oldRegions.TryGetValue(regionSlug, out region))
             {
                 // Create a new region for this slug.
                 region = new Region { Slug = regionSlug };
             }
+
+            // If the region doesn't have content, then just remove everything.
+            if (!layout.HasContent)
+            {
+                region.Blocks.Clear();
+            }
+
+            // We already had this region, so just copy it over but remove the
+            // existing links because we'll be rebuilding it.
+            region.Blocks.RemoveAll(r => r.BlockType == BlockType.Region);
 
             // Assign the new flags to the region.
             region.Name = layout.Name;

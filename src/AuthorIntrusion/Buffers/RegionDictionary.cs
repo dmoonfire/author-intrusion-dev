@@ -5,6 +5,7 @@
 namespace AuthorIntrusion.Buffers
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Encapslates the functionality for managing a collection of regions. The
@@ -23,6 +24,25 @@ namespace AuthorIntrusion.Buffers
         public void Add(Region region)
         {
             this[region.Slug] = region;
+        }
+
+        /// <summary>
+        /// Tries to retrieve the region via the name.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="region">
+        /// The region.
+        /// </param>
+        /// <returns>
+        /// True if the item is found, false if not.
+        /// </returns>
+        public bool TryGetName(string name, out Region region)
+        {
+            region = this.Values.ToList().First(r => r.Name == name);
+
+            return region != null;
         }
 
         #endregion

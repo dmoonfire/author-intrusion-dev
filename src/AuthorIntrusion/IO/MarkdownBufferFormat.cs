@@ -35,6 +35,86 @@ namespace AuthorIntrusion.IO
         #region Public Methods and Operators
 
         /// <summary>
+        /// Determines if the current line is a Markdown header.
+        /// </summary>
+        /// <param name="lines">
+        /// The lines.
+        /// </param>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="headerText">
+        /// The header text.
+        /// </param>
+        /// <param name="headerSlug">
+        /// The header slug.
+        /// </param>
+        /// <param name="lineIndexOffset">
+        /// The line index offset.
+        /// </param>
+        /// <returns>
+        /// True if the line is a header, otherwise false.
+        /// </returns>
+        public bool IsMarkdownHeader(
+            List<string> lines, 
+            int lineIndex, 
+            out string headerText, 
+            out string headerSlug, 
+            out int lineIndexOffset)
+        {
+            // Check for an ATX-style header.
+            string line = lines[lineIndex];
+            bool isAtx = false;
+
+            while (line.StartsWith("#"))
+            {
+                line = line.Substring(1).TrimStart();
+                isAtx = true;
+            }
+
+            if (isAtx)
+            {
+                lineIndexOffset = 1;
+            }
+            else if (lineIndex + 1 < lines.Count
+                && lines[lineIndex + 1].StartsWith("="))
+            {
+                // This is a underline-style header.
+                lineIndexOffset = 2;
+            }
+            else
+            {
+                // This is not a header.
+                headerText = null;
+                headerSlug = null;
+                lineIndexOffset = 0;
+                return false;
+            }
+
+            // Check to see if we have an identifier.
+            headerText = line;
+
+            int lastOpenBracket = headerText.LastIndexOf('[');
+            int lastCloseBracket = headerText.LastIndexOf(']');
+
+            if (lastOpenBracket > 0 && lastCloseBracket > lastOpenBracket)
+            {
+                // Pull out the identifier.
+                headerSlug = headerText.Substring(
+                    lastOpenBracket + 1, lastCloseBracket - lastOpenBracket);
+                headerText = headerText.Substring(0, lastOpenBracket);
+            }
+            else
+            {
+                // We don't have a slug.
+                headerSlug = null;
+            }
+
+            // Return the header.
+            return true;
+        }
+
+        /// <summary>
         /// Loads the data from a string.
         /// </summary>
         /// <param name="project">
@@ -249,44 +329,119 @@ namespace AuthorIntrusion.IO
         private void Load(
             Project project, TextReader reader, IProjectBuffer buffer)
         {
-            // This is a complete load.
-            buffer.Metadata.Clear();
-            buffer.Blocks.Clear();
-
             // Loop through the lines, starting with looking for the metadata.
-            bool first = true;
-            string line;
+            string line = reader.ReadLine();
+
+            if (line == null)
+            {
+                // We don't have even one line.
+                return;
+            }
+
+            // Look for YAML. If we find it, parse the the metadata data. This will
+            // advance the reader until after the next "---" in the stream.
+            if (line == "---")
+            {
+                // Read and parse in teh YAML.
+                this.ReadYamlMetadata(project, reader, buffer);
+                line = reader.ReadLine();
+
+                // If the line is blank, then we don't have content.
+                if (line == null)
+                {
+                    return;
+                }
+            }
+
+            // Load in the read of the file into memory. We have to do this since Markdown's
+            // formats may require peeking at the next line.
+            var lines = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                lines.Add(line);
+            }
 
             while ((line = reader.ReadLine()) != null)
             {
-                // If we are on the first line and it appears to be metadata, then parse
-                // that first.
-                if (first)
-                {
-                    // We are no longer the first line.
-                    first = false;
-
-                    // Look for YAML. If we find it, parse the the metadata data. This will
-                    // advance the reader until after the next "---" in the stream.
-                    if (line == "---")
-                    {
-                        this.ReadYamlMetadata(project, reader, buffer);
-                        continue;
-                    }
-                }
-
                 // Because AI-flavored Markdown is based on Github, we pretty much ignore
                 // blank lines.
-                if (string.IsNullOrWhiteSpace(line))
+                if (!string.IsNullOrWhiteSpace(line))
                 {
+                    lines.Add(line);
+                }
+            }
+
+            // Load the lines through the loop.
+            int index = 0;
+
+            this.Load(project, lines, ref index, buffer);
+        }
+
+        /// <summary>
+        /// Loads the buffer contents from the given line index.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="lines">
+        /// The lines.
+        /// </param>
+        /// <param name="lineIndex">
+        /// Index of the line.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        private void Load(
+            Project project, 
+            List<string> lines, 
+            ref int lineIndex, 
+            IProjectBuffer buffer)
+        {
+            // Loop through the remaining lines.
+            while (lineIndex < lines.Count)
+            {
+                // Pull out the next line.
+                string line = lines[lineIndex];
+
+                // Figure out if we have a header line.
+                string text, id;
+                int headerOffset;
+                bool isHeader = this.IsMarkdownHeader(
+                    lines, lineIndex, out text, out id, out headerOffset);
+
+                if (isHeader)
+                {
+                    // Try to find it via the ID.
+                    Region region;
+
+                    if (id == null
+                        || !project.Regions.TryGetValue(id, out region))
+                    {
+                        if (!project.Regions.TryGetName(text, out region))
+                        {
+                            // We don't know how to handle this.
+                            throw new Exception(
+                                "Cannot find region by " + text + " or " + id
+                                    + ".");
+                        }
+                    }
+
+                    // Increment the index ahead.
+                    lineIndex += headerOffset;
+
+                    // Read in the region.
+                    this.Load(project, lines, ref lineIndex, region);
                     continue;
                 }
 
-                // For the rest of the lines, we add them to the buffer while normalizing
-                // the wrapping and line combinations.
+                // Create a block out of the line and add it.
                 var block = new Block(line);
 
                 buffer.Blocks.Add(block);
+
+                lineIndex++;
             }
         }
 
