@@ -4,8 +4,6 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.IO
 {
-    using AuthorIntrusion.Cli.Transform;
-
     /// <summary>
     /// Describes the common interface for working with a buffer format, which may be specific
     /// to a persistence or be general.

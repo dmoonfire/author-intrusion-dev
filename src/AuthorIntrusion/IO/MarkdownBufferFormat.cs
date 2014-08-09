@@ -11,7 +11,6 @@ namespace AuthorIntrusion.IO
     using System.Text;
 
     using AuthorIntrusion.Buffers;
-    using AuthorIntrusion.Cli.Transform;
     using AuthorIntrusion.Extensions.System.Collections.Generic;
     using AuthorIntrusion.Metadata;
 

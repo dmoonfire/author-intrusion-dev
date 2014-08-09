@@ -2,7 +2,7 @@
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace AuthorIntrusion.Cli.Transform
+namespace AuthorIntrusion.IO
 {
     /// <summary>
     /// Indicates a buffer format settings which is specific to a given format.

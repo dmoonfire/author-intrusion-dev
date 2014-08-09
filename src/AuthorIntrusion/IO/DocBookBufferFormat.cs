@@ -10,7 +10,6 @@ namespace AuthorIntrusion.IO
     using System.Xml;
 
     using AuthorIntrusion.Buffers;
-    using AuthorIntrusion.Cli.Transform;
 
     /// <summary>
     /// Encapsulates the functionality for a buffer format that handles a DocBook 5

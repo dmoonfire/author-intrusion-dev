@@ -4,8 +4,6 @@
 // MIT Licensed (http://opensource.org/licenses/MIT)
 namespace AuthorIntrusion.IO
 {
-    using AuthorIntrusion.Cli.Transform;
-
     /// <summary>
     /// Defines the settings for the DocBook buffer format.
     /// </summary>
