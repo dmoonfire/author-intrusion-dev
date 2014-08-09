@@ -103,7 +103,7 @@ namespace AuthorIntrusion.IO
                 // Pull out the identifier.
                 headerSlug = headerText.Substring(
                     lastOpenBracket + 1, 
-                    lastCloseBracket - lastOpenBracket);
+                    lastCloseBracket - lastOpenBracket - 1);
                 headerText = headerText.Substring(
                     0, 
                     lastOpenBracket);
