@@ -47,11 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalExternalProject.cs" />
-    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineExternalProject.cs" />
-    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineRegionWithWrongTitle.cs" />
-    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineSingleRegion.cs" />
-    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineInlineProject.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalExternalProjectTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineExternalProjectTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineRegionWithWrongTitleTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineSequenceRegionTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineSingleRegionTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineInlineProjectTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\MarkdownBufferFormatTests.cs" />
     <Compile Include="ProjectLayoutTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

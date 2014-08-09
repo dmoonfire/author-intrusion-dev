@@ -1,4 +1,4 @@
-﻿// <copyright file="LoadInlineRegionWithWrongTitle.cs" company="Moonfire Games">
+﻿// <copyright file="LoadInlineSingleRegionTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -12,11 +12,10 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests the loading of a single buffer with a single inline region that has
-    /// an identifier but an unknown title.
+    /// Tests the loading of a single buffer with a single inline region.
     /// </summary>
     [TestFixture]
-    public class LoadInlineRegionWithWrongTitle
+    public class LoadInlineSingleRegionTests
     {
         #region Public Methods and Operators
 
@@ -79,7 +78,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             var persistence = new MemoryPersistence();
             persistence.SetData(
                 new HierarchicalPath("/"), 
-                "# Unknown Title [region-1]", 
+                "# Region 1", 
                 string.Empty, 
                 "Text in region 1.");
 

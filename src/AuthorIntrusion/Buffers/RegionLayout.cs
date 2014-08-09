@@ -5,8 +5,11 @@
 namespace AuthorIntrusion.Buffers
 {
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
 
     using AuthorIntrusion.IO;
+
+    using MfGames.Text;
 
     /// <summary>
     /// Represents the layout of the project, in a nested structure that identifies
@@ -14,9 +17,23 @@ namespace AuthorIntrusion.Buffers
     /// </summary>
     public class RegionLayout : INamedSlugged
     {
+        #region Fields
+
+        /// <summary>
+        /// </summary>
+        private string slug;
+
+        /// <summary>
+        /// Contains the cached slug regex used to parse slugs to determine sequencing.
+        /// </summary>
+        private Regex slugRegex;
+
+        #endregion
+
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RegionLayout"/> class.
         /// </summary>
         public RegionLayout()
         {
@@ -26,36 +43,6 @@ namespace AuthorIntrusion.Buffers
         #endregion
 
         #region Public Properties
-
-        /// <summary>
-        /// Gets or sets the buffer format for all of the dynamic regions within the
-        /// container.
-        /// </summary>
-        /// <value>
-        /// The dynamic buffer format.
-        /// </value>
-        public IBufferFormat DynamicBufferFormat { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path format for the dynamic regions. When resolved, it will
-        /// determine the persistence name (the physical filename) for each of the dynamic
-        /// regions. This uses the standard formatting for dynamic regions, with the
-        /// "$(ProjectIndex)" or "$(ContainerIndex)" variables substitution.
-        /// </summary>
-        /// <value>
-        /// The dynamic path format.
-        /// </value>
-        public string DynamicPathFormat { get; set; }
-
-        /// <summary>
-        /// Gets or sets the slug format for any dynamic regions. This uses the standard
-        /// formatting for dynamic regions, with the "$(ProjectIndex)" or "$(ContainerIndex)"
-        /// variables substitution.
-        /// </summary>
-        /// <value>
-        /// The dynamic slug format.
-        /// </value>
-        public string DynamicSlugFormat { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance has line content
@@ -77,20 +64,19 @@ namespace AuthorIntrusion.Buffers
         public IList<RegionLayout> InnerLayouts { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is a dynamic container
-        /// that can have zero or more child regions. If this is true, then InnerRegions
-        /// must be empty.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is dynamic container; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsDynamicContainer { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this region is an external one
         /// and stored outside of the containing region.
         /// </summary>
         public bool IsExternal { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is a dynamic region
+        /// layout that will expand into multiple regions.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is dynamic container; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsSequenced { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the object.
@@ -101,12 +87,95 @@ namespace AuthorIntrusion.Buffers
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the buffer format factory used for all the sequenced
+        /// regions within the region.
+        /// </summary>
+        /// <value>
+        /// The dynamic buffer format factory.
+        /// </value>
+        public IBufferFormatFactory SequenceBufferFormatFactory { get; set; }
+
+        /// <summary>
         /// Gets or sets the slug for the object.
         /// </summary>
         /// <value>
         /// The slug.
         /// </value>
-        public string Slug { get; set; }
+        public string Slug
+        {
+            get
+            {
+                return this.slug;
+            }
+
+            set
+            {
+                this.slug = value;
+                this.slugRegex = null;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Returns an enumeration of all sequenced containers within the layout.
+        /// </summary>
+        /// <returns>An enumeration of regions that are sequences.</returns>
+        public IEnumerable<RegionLayout> GetSequencedRegions()
+        {
+            // Create a list of regions with sequences.
+            var list = new List<RegionLayout>();
+
+            if (this.IsSequenced)
+            {
+                list.Add(this);
+            }
+
+            // Loop through the inner layouts and see if any of them are a
+            // sequence container.
+            foreach (RegionLayout innerLayout in this.InnerLayouts)
+            {
+                IEnumerable<RegionLayout> innerContainers =
+                    innerLayout.GetSequencedRegions();
+
+                list.AddRange(innerContainers);
+            }
+
+            // Return the resulting list.
+            return list;
+        }
+
+        /// <summary>
+        /// Determines whether the given slug represents a sequenced slug underneath
+        /// the given region.
+        /// </summary>
+        /// <param name="testSlug">The slug to parse.</param>
+        /// <returns>
+        /// True if it is a sequenced slug, otherwise false.
+        /// </returns>
+        public bool IsSequenceSlug(string testSlug)
+        {
+            // If we aren't sequenced, we don't bother.
+            if (!this.IsSequenced)
+            {
+                return false;
+            }
+
+            // If we don't have the regex, build it.
+            if (this.slugRegex == null)
+            {
+                var macros = new MacroExpansion();
+
+                this.slugRegex = macros.GetRegex(this.Slug);
+            }
+
+            // Return if this is a match.
+            bool results = this.slugRegex.IsMatch(testSlug);
+
+            return results;
+        }
 
         #endregion
     }

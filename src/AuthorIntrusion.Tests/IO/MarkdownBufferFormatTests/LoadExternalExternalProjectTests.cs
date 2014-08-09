@@ -1,4 +1,4 @@
-﻿// <copyright file="LoadInlineSingleRegion.cs" company="Moonfire Games">
+﻿// <copyright file="LoadExternalExternalProjectTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -12,22 +12,46 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests the loading of a single buffer with a single inline region.
+    /// Tests loading a single file that has an external file leading to an external
+    /// file.
     /// </summary>
     [TestFixture]
-    public class LoadInlineSingleRegion
+    public class LoadExternalExternalProjectTests
     {
         #region Public Methods and Operators
 
         /// <summary>
-        /// Verifies the state of the project.
+        /// Verifies the state of the project's region.
         /// </summary>
         [Test]
-        public void VerifyProjectBuffer()
+        public void VerifyNestedRegion()
         {
-            // Prepare the test.
             Project project = this.Setup();
+            Region nestedRegion = project.Regions["nested"];
             Region region1 = project.Regions["region-1"];
+
+            Assert.AreEqual(
+                1, 
+                nestedRegion.Blocks.Count, 
+                "Number of lines in the project was unexpected.");
+            Assert.AreEqual(
+                BlockType.Region, 
+                nestedRegion.Blocks[0].BlockType, 
+                "The block type of project's link block is unexpected.");
+            Assert.AreEqual(
+                region1, 
+                nestedRegion.Blocks[0].LinkedRegion, 
+                "The linked region of the link type is unexpected.");
+        }
+
+        /// <summary>
+        /// Verifies the state of the project's region.
+        /// </summary>
+        [Test]
+        public void VerifyProject()
+        {
+            Project project = this.Setup();
+            Region nestedRegion = project.Regions["nested"];
 
             Assert.AreEqual(
                 1, 
@@ -38,16 +62,16 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 project.Blocks[0].BlockType, 
                 "The block type of project's link block is unexpected.");
             Assert.AreEqual(
-                region1, 
+                nestedRegion, 
                 project.Blocks[0].LinkedRegion, 
                 "The linked region of the link type is unexpected.");
         }
 
         /// <summary>
-        /// Verifies the state of region-1.
+        /// Verifies the state of the project's region.
         /// </summary>
         [Test]
-        public void VerifyRegion1()
+        public void VerifyRegion()
         {
             Project project = this.Setup();
             Region region1 = project.Regions["region-1"];
@@ -67,7 +91,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         #region Methods
 
         /// <summary>
-        /// Sets up the unit test.
+        /// Tests reading a single nested inline region.
         /// </summary>
         /// <returns>
         /// The loaded project.
@@ -78,8 +102,13 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             var persistence = new MemoryPersistence();
             persistence.SetData(
                 new HierarchicalPath("/"), 
-                "# Region 1", 
-                string.Empty, 
+                "# Nested", 
+                "* [Region 1](region-1)");
+            persistence.SetData(
+                new HierarchicalPath("/nested"), 
+                "* Nested");
+            persistence.SetData(
+                new HierarchicalPath("/region-1"), 
                 "Text in region 1.");
 
             // Set up the layout.
@@ -89,13 +118,22 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     Slug = "project", 
                     HasContent = false, 
                 };
-            projectLayout.InnerLayouts.Add(
-                new RegionLayout
-                    {
-                        Name = "Region 1", 
-                        Slug = "region-1", 
-                        HasContent = true, 
-                    });
+            var nestedLayout = new RegionLayout
+                {
+                    Name = "Nested", 
+                    Slug = "nested", 
+                    HasContent = false, 
+                    IsExternal = true, 
+                };
+            var regionLayout = new RegionLayout
+                {
+                    Name = "Region 1", 
+                    Slug = "region-1", 
+                    HasContent = true, 
+                    IsExternal = true, 
+                };
+            projectLayout.InnerLayouts.Add(nestedLayout);
+            nestedLayout.InnerLayouts.Add(regionLayout);
 
             // Create a new project with the given layout.
             var project = new Project();
@@ -111,7 +149,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
 
             format.LoadProject(context);
 
-            // Return the project.
+            // Return the resulting project.
             return project;
         }
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="LoadInlineExternalProject.cs" company="Moonfire Games">
+﻿// <copyright file="LoadInlineInlineProjectTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -12,10 +12,11 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests loading a single file that has an inline region with external regions.
+    /// Tests loading a single file that has a nested inline region with nested inline
+    /// regions inside it.
     /// </summary>
     [TestFixture]
-    public class LoadInlineExternalProject
+    public class LoadInlineInlineProjectTests
     {
         #region Public Methods and Operators
 
@@ -102,9 +103,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             persistence.SetData(
                 new HierarchicalPath("/"), 
                 "# Nested", 
-                "* [Region 1](region-1)");
-            persistence.SetData(
-                new HierarchicalPath("/region-1"), 
+                "## Region 1", 
                 "Text in region 1.");
 
             // Set up the layout.
@@ -125,7 +124,6 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     Name = "Region 1", 
                     Slug = "region-1", 
                     HasContent = true, 
-                    IsExternal = true, 
                 };
             projectLayout.InnerLayouts.Add(nestedLayout);
             nestedLayout.InnerLayouts.Add(regionLayout);

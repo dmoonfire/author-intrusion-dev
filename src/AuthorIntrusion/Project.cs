@@ -35,7 +35,7 @@ namespace AuthorIntrusion
                     Name = "Project", 
                     Slug = "project", 
                     HasContent = true, 
-                    IsDynamicContainer = false, 
+                    IsSequenced = false, 
                 };
         }
 
@@ -95,12 +95,15 @@ namespace AuthorIntrusion
             this.CreateRegion(
                 rootLayout, 
                 oldRegions);
+
+            // Save the layout.
+            this.Layout = rootLayout;
         }
 
         /// <summary>
+        /// Converts the region information into a bulleted list.
         /// </summary>
-        /// <param name="markdown">
-        /// </param>
+        /// <param name="markdown">The markdown.</param>
         public void ToMarkdown(MarkdownContainer markdown)
         {
             markdown.Append(new BulletedList("Title: " + this.Titles));
@@ -131,10 +134,17 @@ namespace AuthorIntrusion
         /// The old regions.
         /// </param>
         /// <returns>
+        /// The created region or null if one cannot be created.
         /// </returns>
         private Region CreateRegion(
             RegionLayout layout, Dictionary<string, Region> oldRegions)
         {
+            // We don't do anything with sequenced regions.
+            if (layout.IsSequenced)
+            {
+                return null;
+            }
+
             // See if we have an existing region for this name.
             string regionSlug = layout.Slug;
             Region region;
