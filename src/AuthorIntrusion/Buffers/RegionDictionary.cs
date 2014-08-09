@@ -7,6 +7,8 @@ namespace AuthorIntrusion.Buffers
     using System.Collections.Generic;
     using System.Linq;
 
+    using MfGames.Text;
+
     /// <summary>
     /// Encapslates the functionality for managing a collection of regions. The
     /// actual sequencing of the regions is done by the Region/Block pair.
@@ -95,5 +97,43 @@ namespace AuthorIntrusion.Buffers
         }
 
         #endregion
+
+        /// <summary>
+        /// Creates a region based on the specified layout.
+        /// </summary>
+        /// <param name="layout">The layout.</param>
+        /// <returns>The created region.</returns>
+        public Region Create(RegionLayout layout)
+        {
+            // Figure out the indexes for the region.
+            int containerIndex = 1;
+            int projectIndex = 1;
+
+            // Format the slugs and names.
+            var macros = new MacroExpansion();
+            var variables =
+                new Dictionary<string, object>
+                    {
+                        { "ContainerIndex", containerIndex },
+                        { "ProjectIndex", projectIndex }
+                    };
+
+            // Create a new region.
+            var region = new Region
+                {
+                    Slug = macros.Expand(
+                        layout.Slug,
+                        variables),
+                    Name = macros.Expand(
+                        layout.Name,
+                        variables),
+                };
+
+            // Add the region into the collection.
+            this[region.Slug] = region;
+
+            // Return the constructed region.
+            return region;
+        }
     }
 }

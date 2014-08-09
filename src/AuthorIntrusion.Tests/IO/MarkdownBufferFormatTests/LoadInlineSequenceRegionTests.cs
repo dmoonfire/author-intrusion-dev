@@ -24,6 +24,20 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         #region Public Methods and Operators
 
         /// <summary>
+        /// Verifies initial state of the project buffer.
+        /// </summary>
+        [Test]
+        public void VerifyIntialProjectBuffer()
+        {
+            Project project = this.CreateProject();
+
+            Assert.AreEqual(
+                0, 
+                project.Blocks.Count, 
+                "The number of blocks is unexpected.");
+        }
+
+        /// <summary>
         /// Verifies the identification of sequenced containers within the layout.
         /// </summary>
         [Test]
@@ -39,7 +53,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 sequencedContainers.Count, 
                 "The number of sequenced containers is unexpected.");
             Assert.AreEqual(
-                "region-$(ContainerSequence)", 
+                "region-$(ContainerIndex:0)", 
                 sequencedContainers[0].Slug, 
                 "The container slug is unexpected.");
             Assert.AreEqual(
@@ -81,7 +95,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
 
             Assert.AreEqual(
                 2, 
-                project.Regions, 
+                project.Regions.Count, 
                 "The number of regions is unexpected.");
 
             Assert.IsTrue(
@@ -130,7 +144,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 };
             var regionLayout = new RegionLayout
                 {
-                    Slug = "region-$(ContainerSequence)", 
+                    Slug = "region-$(ContainerIndex:0)", 
                     HasContent = true, 
                     IsSequenced = true, 
                     SequenceBufferFormatFactory = new MarkdownBufferFormatFactory(), 

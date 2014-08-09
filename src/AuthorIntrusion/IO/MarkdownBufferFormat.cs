@@ -163,6 +163,8 @@ namespace AuthorIntrusion.IO
             using (Stream stream = context.Persistence.GetProjectReadStream())
             {
                 // Load information about the project into memory.
+                context.CurrentRegion = context.Project;
+
                 this.Load(
                     context, 
                     stream, 
@@ -599,6 +601,30 @@ namespace AuthorIntrusion.IO
 
                 if (!foundRegion)
                 {
+                    // If we didn't find a region, see if we can create a region that
+                    // matches it.
+                    RegionLayout layout =
+                        context.Project.Layout.GetSequencedRegion(id);
+
+                    if (layout != null)
+                    {
+                        // We have a new region, so create one and add it to the list.
+                        region = context.Project.Regions.Create(layout);
+                        foundRegion = true;
+
+                        // Add a link into the current buffer.
+                        context.CurrentRegion.Blocks.Add(
+                            new Block()
+                                {
+                                    BlockType = BlockType.Region,
+                                    LinkedRegion = region
+                                });
+                    }
+                }
+
+                // Check to see if we still haven't found a valid region.
+                if (!foundRegion)
+                {
                     // We don't know how to handle this.
                     throw new Exception(
                         string.Format(
@@ -611,11 +637,15 @@ namespace AuthorIntrusion.IO
                 lineIndex += headerOffset;
 
                 // Read in the region.
+                var oldRegion = context.PushRegion(region);
+
                 this.Load(
                     context, 
                     lines, 
                     ref lineIndex, 
                     region);
+
+                context.CurrentRegion = oldRegion;
             }
 
             return isHeader;

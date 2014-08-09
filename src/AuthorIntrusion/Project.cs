@@ -103,7 +103,9 @@ namespace AuthorIntrusion
         /// <summary>
         /// Converts the region information into a bulleted list.
         /// </summary>
-        /// <param name="markdown">The markdown.</param>
+        /// <param name="markdown">
+        /// The markdown.
+        /// </param>
         public void ToMarkdown(MarkdownContainer markdown)
         {
             markdown.Append(new BulletedList("Title: " + this.Titles));
@@ -185,6 +187,13 @@ namespace AuthorIntrusion
                 Region childRegion = this.CreateRegion(
                     childLayout, 
                     oldRegions);
+
+                // If we got a null, then this is a sequenced child and we don't
+                // want to add the links.
+                if (childRegion == null)
+                {
+                    continue;
+                }
 
                 // Add the block to the end of the list.
                 var block = new Block

@@ -5,6 +5,7 @@
 namespace AuthorIntrusion.Buffers
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     using AuthorIntrusion.IO;
@@ -20,6 +21,7 @@ namespace AuthorIntrusion.Buffers
         #region Fields
 
         /// <summary>
+        /// Contains the slug for this layout.
         /// </summary>
         private string slug;
 
@@ -120,6 +122,24 @@ namespace AuthorIntrusion.Buffers
         #region Public Methods and Operators
 
         /// <summary>
+        /// Attempts to retrieve a region that matches the given pattern.
+        /// </summary>
+        /// <param name="testSlug">
+        /// The slug to match again.
+        /// </param>
+        /// <returns>
+        /// The found region layout or null.
+        /// </returns>
+        public RegionLayout GetSequencedRegion(string testSlug)
+        {
+            RegionLayout layout =
+                this.GetSequencedRegions()
+                    .FirstOrDefault(l => l.IsSequenceSlug(testSlug));
+
+            return layout;
+        }
+
+        /// <summary>
         /// Returns an enumeration of all sequenced containers within the layout.
         /// </summary>
         /// <returns>An enumeration of regions that are sequences.</returns>
@@ -151,7 +171,9 @@ namespace AuthorIntrusion.Buffers
         /// Determines whether the given slug represents a sequenced slug underneath
         /// the given region.
         /// </summary>
-        /// <param name="testSlug">The slug to parse.</param>
+        /// <param name="testSlug">
+        /// The slug to parse.
+        /// </param>
         /// <returns>
         /// True if it is a sequenced slug, otherwise false.
         /// </returns>

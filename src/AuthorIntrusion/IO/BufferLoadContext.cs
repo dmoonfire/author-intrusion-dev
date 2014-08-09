@@ -6,6 +6,8 @@ namespace AuthorIntrusion.IO
 {
     using System.Diagnostics.Contracts;
 
+    using AuthorIntrusion.Buffers;
+
     /// <summary>
     /// Contains the context for loading a buffer into a project.
     /// </summary>
@@ -71,12 +73,40 @@ namespace AuthorIntrusion.IO
         #region Public Properties
 
         /// <summary>
+        /// Gets or sets the current region being loaded.
+        /// </summary>
+        /// <value>
+        /// The current region.
+        /// </value>
+        public Region CurrentRegion { get; set; }
+
+        /// <summary>
         /// Gets the options for loading the buffer.
         /// </summary>
         /// <value>
         /// The options.
         /// </value>
         public BufferLoadOptions Options { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Pushes the region into the loading stack and returns the result.
+        /// </summary>
+        /// <param name="newRegion">
+        /// The new region.
+        /// </param>
+        /// <returns>
+        /// The old region being processed.
+        /// </returns>
+        public Region PushRegion(Region newRegion)
+        {
+            Region oldRegion = this.CurrentRegion;
+            this.CurrentRegion = newRegion;
+            return oldRegion;
+        }
 
         #endregion
     }
