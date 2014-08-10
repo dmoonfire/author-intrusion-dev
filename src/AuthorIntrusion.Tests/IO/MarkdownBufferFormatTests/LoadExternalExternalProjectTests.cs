@@ -91,7 +91,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         #region Methods
 
         /// <summary>
-        /// Tests reading a single nested inline region.
+        /// Tests reading a single nested Internal region.
         /// </summary>
         /// <returns>
         /// The loaded project.

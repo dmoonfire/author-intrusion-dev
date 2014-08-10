@@ -24,7 +24,7 @@ namespace AuthorIntrusion.Tests
         /// Tests applying a single region from the default.
         /// </summary>
         [Test]
-        public void ApplySingleInlineLayout()
+        public void ApplySingleInternalLayout()
         {
             // Set up the layout.
             var projectLayout = new RegionLayout
@@ -77,10 +77,10 @@ namespace AuthorIntrusion.Tests
         }
 
         /// <summary>
-        /// Tests applying two serial inline regions.
+        /// Tests applying two serial Internal regions.
         /// </summary>
         [Test]
-        public void ApplyTwoInlineLayout()
+        public void ApplyTwoInternalLayout()
         {
             // Set up the layout.
             var projectLayout = new RegionLayout
@@ -148,10 +148,10 @@ namespace AuthorIntrusion.Tests
         }
 
         /// <summary>
-        /// Tests applying two nested inline regions.
+        /// Tests applying two nested Internal regions.
         /// </summary>
         [Test]
-        public void ApplyTwoNestedInlineLayout()
+        public void ApplyTwoNestedInternalLayout()
         {
             // Set up the layout.
             var projectLayout = new RegionLayout

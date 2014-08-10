@@ -605,7 +605,7 @@ namespace AuthorIntrusion.IO
         }
 
         /// <summary>
-        /// Loads the inline region.
+        /// Loads the Internal region.
         /// </summary>
         /// <param name="context">
         /// The context.
@@ -617,7 +617,7 @@ namespace AuthorIntrusion.IO
         /// Index of the line.
         /// </param>
         /// <returns>
-        /// True if an inline region was loaded.
+        /// True if an Internal region was loaded.
         /// </returns>
         /// <exception cref="System.Exception">
         /// </exception>

@@ -1,4 +1,4 @@
-﻿// <copyright file="LoadInlineSequenceRegionTests.cs" company="Moonfire Games">
+﻿// <copyright file="LoadInternalSequenceRegionTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -15,11 +15,11 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests the loading of a single buffer with an inline region identified by
+    /// Tests the loading of a single buffer with an Internal region identified by
     /// a dynamic sequence.
     /// </summary>
     [TestFixture]
-    public class LoadInlineSequenceRegionTests
+    public class LoadInternalSequenceRegionTests
     {
         #region Public Methods and Operators
 

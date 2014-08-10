@@ -1,4 +1,4 @@
-﻿// <copyright file="LoadInlineExternalProjectTests.cs" company="Moonfire Games">
+﻿// <copyright file="LoadInternalExternalProjectTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -12,10 +12,10 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests loading a single file that has an inline region with external regions.
+    /// Tests loading a single file that has an Internal region with external regions.
     /// </summary>
     [TestFixture]
-    public class LoadInlineExternalProjectTests
+    public class LoadInternalExternalProjectTests
     {
         #region Public Methods and Operators
 
@@ -90,7 +90,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         #region Methods
 
         /// <summary>
-        /// Tests reading a single nested inline region.
+        /// Tests reading a single nested Internal region.
         /// </summary>
         /// <returns>
         /// The loaded project.
