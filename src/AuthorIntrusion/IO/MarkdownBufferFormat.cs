@@ -919,14 +919,14 @@ namespace AuthorIntrusion.IO
             var metadata = new Dictionary<string, object>();
 
             metadata.AddIfNotEmpty(
-                "Title", 
+                "title", 
                 buffer.Titles.Title);
             metadata.AddIfNotEmpty(
-                "Subtitle", 
+                "subtitle", 
                 buffer.Titles.Subtitle);
 
             metadata.AddIfNotEmpty(
-                "Author", 
+                "author", 
                 buffer.Authors.PreferredName);
 
             // Loop through and add the rest of the metadata.

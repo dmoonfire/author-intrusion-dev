@@ -12,6 +12,7 @@ namespace AuthorIntrusion.Tests
     using AuthorIntrusion.IO;
 
     using MfGames.HierarchicalPaths;
+    using MfGames.IO;
 
     /// <summary>
     /// Implements a persistence class that has all of the data stored in memory.
@@ -42,6 +43,20 @@ namespace AuthorIntrusion.Tests
         #region Public Properties
 
         /// <summary>
+        /// Gets the number of data elements in memory.
+        /// </summary>
+        /// <value>
+        /// The data count.
+        /// </value>
+        public int DataCount
+        {
+            get
+            {
+                return this.data.Count;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the format of the project file.
         /// </summary>
         public IFileBufferFormat ProjectFormat { get; set; }
@@ -49,6 +64,52 @@ namespace AuthorIntrusion.Tests
         #endregion
 
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Retrieves the lines from a given data element.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <returns>
+        /// An array of lines.
+        /// </returns>
+        public List<string> GetDataLines(string path)
+        {
+            return this.GetDataLines(new HierarchicalPath(path));
+        }
+
+        /// <summary>
+        /// Retrieves the lines from a given data element.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <returns>
+        /// An array of lines.
+        /// </returns>
+        public List<string> GetDataLines(HierarchicalPath path)
+        {
+            // Get the element from the persistence.
+            byte[] bytes = this.data[path];
+
+            // Scan it as a UTF-8 lines.
+            var lines = new List<string>();
+
+            using (var stream = new MemoryStream(bytes))
+            using (var reader = new StreamReader(stream))
+            {
+                string line;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+            }
+
+            // Return the resulting lines.
+            return lines;
+        }
 
         /// <summary>
         /// Gets a read stream for the project file.
@@ -72,7 +133,7 @@ namespace AuthorIntrusion.Tests
         /// </returns>
         public Stream GetProjectWriteStream()
         {
-            throw new NotImplementedException();
+            return this.GetWriteStream(new HierarchicalPath("/"));
         }
 
         /// <summary>
@@ -108,7 +169,18 @@ namespace AuthorIntrusion.Tests
         /// </returns>
         public Stream GetWriteStream(HierarchicalPath path)
         {
-            throw new NotImplementedException();
+            // Create a memory stream and wrap it into a callback so we can record the
+            // results once the stream is closed.
+            var stream = new MemoryStream();
+            var callback = new CallbackStream<MemoryStream>(stream);
+
+            callback.Closed += (sender, 
+                args) => SetData(
+                    path, 
+                    args.UnderlyingStream);
+
+            // Return the resulting callback stream.
+            return callback;
         }
 
         /// <summary>
@@ -164,6 +236,46 @@ namespace AuthorIntrusion.Tests
             this.SetData(
                 newPath, 
                 lines);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Sets the data from a stream.
+        /// </summary>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="stream">
+        /// The stream.
+        /// </param>
+        private void SetData(
+            HierarchicalPath path, 
+            MemoryStream stream)
+        {
+            // Figure out the buffer without the trailing nulls.
+            byte[] bytes = stream.GetBuffer();
+            int index = bytes.Length - 1;
+
+            while (index >= 0 && bytes[index] == 0)
+            {
+                index--;
+            }
+
+            // Copy the truncated byte array out.
+            var truncated = new byte[index + 1];
+
+            Array.Copy(
+                bytes, 
+                0, 
+                truncated, 
+                0, 
+                index + 1);
+
+            // Set the data.
+            this.data[path] = truncated;
         }
 
         #endregion
