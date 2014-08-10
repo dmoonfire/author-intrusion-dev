@@ -8,7 +8,8 @@ namespace AuthorIntrusion
     /// Indicates that the item has both a name and a slug, used for some extension methods
     /// and selectors.
     /// </summary>
-    public interface INamedSlugged : INamed, ISlugged
+    public interface INamedSlugged : INamed, 
+        ISlugged
     {
     }
 }

@@ -29,7 +29,8 @@ namespace MfGames.TextTokens.Buffers
         /// Returns the resulting token.
         /// </returns>
         public static IToken GetToken(
-            this IBuffer buffer, TextLocation location)
+            this IBuffer buffer, 
+            TextLocation location)
         {
             // Establish our contracts.
             Contract.Requires(buffer != null);

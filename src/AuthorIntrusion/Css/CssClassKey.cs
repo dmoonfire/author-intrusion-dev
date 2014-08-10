@@ -52,7 +52,8 @@ namespace AuthorIntrusion.Css
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(CssClassKey left, CssClassKey right)
+        public static bool operator ==(CssClassKey left, 
+            CssClassKey right)
         {
             return left.Equals(right);
         }
@@ -65,7 +66,8 @@ namespace AuthorIntrusion.Css
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(CssClassKey left, CssClassKey right)
+        public static bool operator !=(CssClassKey left, 
+            CssClassKey right)
         {
             return !left.Equals(right);
         }

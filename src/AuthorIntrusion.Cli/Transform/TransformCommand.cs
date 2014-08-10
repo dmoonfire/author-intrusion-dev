@@ -139,7 +139,8 @@ namespace AuthorIntrusion.Cli.Transform
                     string value = parts[1];
 
                     // Get the public property on the setting.
-                    PropertyInfo property = settings.GetType().GetProperty(name);
+                    PropertyInfo property = settings.GetType()
+                        .GetProperty(name);
                     object propertyValue = Convert.ChangeType(
                         value, 
                         property.PropertyType);

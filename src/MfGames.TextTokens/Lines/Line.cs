@@ -107,7 +107,8 @@ namespace MfGames.TextTokens.Lines
         {
             get
             {
-                return this.tokens.Cast<IToken>().ToImmutableList();
+                return this.tokens.Cast<IToken>()
+                    .ToImmutableList();
             }
         }
 
@@ -161,7 +162,8 @@ namespace MfGames.TextTokens.Lines
         /// The token to insert.
         /// </param>
         public void InsertTokens(
-            TokenIndex afterTokenIndex, IEnumerable<IToken> newTokens)
+            TokenIndex afterTokenIndex, 
+            IEnumerable<IToken> newTokens)
         {
             // Establish our contracts.
             Contract.Requires(afterTokenIndex.Index >= 0);
@@ -169,7 +171,8 @@ namespace MfGames.TextTokens.Lines
 
             // Insert the token into the list.
             Token[] tokenArray =
-                newTokens.Select(t => t as Token ?? new Token(t)).ToArray();
+                newTokens.Select(t => t as Token ?? new Token(t))
+                    .ToArray();
 
             this.tokens.InsertRange(
                 afterTokenIndex.Index, 

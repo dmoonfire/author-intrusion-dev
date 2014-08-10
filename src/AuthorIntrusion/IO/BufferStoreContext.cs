@@ -19,7 +19,9 @@ namespace AuthorIntrusion.IO
         /// <param name="persistence">
         /// The persistence.
         /// </param>
-        public BufferStoreContext(Project project, IPersistence persistence)
+        public BufferStoreContext(
+            Project project, 
+            IPersistence persistence)
             : base(project, 
                 persistence)
         {

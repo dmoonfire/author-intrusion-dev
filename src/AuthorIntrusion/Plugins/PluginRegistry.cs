@@ -23,7 +23,8 @@ namespace AuthorIntrusion.Plugins
         public PluginRegistry(params Registry[] additionalRegistries)
         {
             // Set up the persistence from this assembly.
-            this.For<PersistenceFactoryManager>().Singleton();
+            this.For<PersistenceFactoryManager>()
+                .Singleton();
             this.For<IPersistenceFactory>()
                 .Add<FilePersistenceFactory>()
                 .Singleton();

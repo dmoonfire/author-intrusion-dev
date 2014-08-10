@@ -57,7 +57,8 @@ namespace MfGames.TextTokens.Lines
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(LineIndex left, LineIndex right)
+        public static bool operator ==(LineIndex left, 
+            LineIndex right)
         {
             return left.Equals(right);
         }
@@ -70,7 +71,8 @@ namespace MfGames.TextTokens.Lines
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(LineIndex left, LineIndex right)
+        public static bool operator !=(LineIndex left, 
+            LineIndex right)
         {
             return !left.Equals(right);
         }

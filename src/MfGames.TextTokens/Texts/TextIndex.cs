@@ -48,7 +48,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(TextIndex left, TextIndex right)
+        public static bool operator ==(TextIndex left, 
+            TextIndex right)
         {
             return left.Equals(right);
         }
@@ -61,7 +62,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(TextIndex left, TextIndex right)
+        public static bool operator !=(TextIndex left, 
+            TextIndex right)
         {
             return !left.Equals(right);
         }

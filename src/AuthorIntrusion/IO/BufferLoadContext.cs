@@ -29,7 +29,9 @@ namespace AuthorIntrusion.IO
         /// The options.
         /// </param>
         public BufferLoadContext(
-            Project project, IPersistence persistence, BufferLoadOptions options)
+            Project project, 
+            IPersistence persistence, 
+            BufferLoadOptions options)
             : base(project, 
                 persistence)
         {
@@ -37,7 +39,10 @@ namespace AuthorIntrusion.IO
             Contract.Requires(persistence != null);
 
             this.Options = options;
-            this.RegionStack = new List<Region> { project };
+            this.RegionStack = new List<Region>
+                {
+                    project
+                };
         }
 
         /// <summary>
@@ -49,7 +54,9 @@ namespace AuthorIntrusion.IO
         /// <param name="persistence">
         /// The persistence.
         /// </param>
-        public BufferLoadContext(Project project, IPersistence persistence)
+        public BufferLoadContext(
+            Project project, 
+            IPersistence persistence)
             : this(project, 
                 persistence, 
                 BufferLoadOptions.Full)

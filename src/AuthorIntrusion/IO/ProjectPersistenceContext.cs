@@ -23,7 +23,8 @@ namespace AuthorIntrusion.IO
         /// The persistence.
         /// </param>
         public ProjectPersistenceContext(
-            Project project, IPersistence persistence)
+            Project project, 
+            IPersistence persistence)
             : base(project)
         {
             Contract.Requires(project != null);

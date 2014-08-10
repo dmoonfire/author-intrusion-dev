@@ -46,7 +46,8 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             Project project = this.CreateProject();
 
             List<RegionLayout> sequencedContainers =
-                project.Layout.GetSequencedRegions().ToList();
+                project.Layout.GetSequencedRegions()
+                    .ToList();
 
             Assert.AreEqual(
                 1, 

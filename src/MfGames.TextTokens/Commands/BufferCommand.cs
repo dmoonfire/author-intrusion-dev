@@ -41,7 +41,8 @@ namespace MfGames.TextTokens.Commands
             }
 
             // Include any operations for tokenization.
-            this.updateOperations = buffer.GetUpdateOperations().ToList();
+            this.updateOperations = buffer.GetUpdateOperations()
+                .ToList();
 
             foreach (IBufferOperation operation in this.updateOperations)
             {

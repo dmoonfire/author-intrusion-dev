@@ -39,7 +39,9 @@ namespace AuthorIntrusion.Buffers
         /// <returns>
         /// The created region.
         /// </returns>
-        public Region Create(Region parentRegion, RegionLayout layout)
+        public Region Create(
+            Region parentRegion, 
+            RegionLayout layout)
         {
             // Figure out the indexes for the region.
             int containerIndex = parentRegion.Blocks.LinkCount + 1;
@@ -83,9 +85,12 @@ namespace AuthorIntrusion.Buffers
         /// <returns>
         /// True if the item is found, false if not.
         /// </returns>
-        public bool TryGetName(string name, out Region region)
+        public bool TryGetName(
+            string name, 
+            out Region region)
         {
-            region = this.Values.ToList().FirstOrDefault(r => r.Name == name);
+            region = this.Values.ToList()
+                .FirstOrDefault(r => r.Name == name);
 
             return region != null;
         }
@@ -106,7 +111,9 @@ namespace AuthorIntrusion.Buffers
         /// True if the region was found, otherwise false.
         /// </returns>
         public bool TryGetSlugOrName(
-            string slug, string name, out Region region)
+            string slug, 
+            string name, 
+            out Region region)
         {
             // Start by trying to get it via slug.
             if (!string.IsNullOrWhiteSpace(slug))

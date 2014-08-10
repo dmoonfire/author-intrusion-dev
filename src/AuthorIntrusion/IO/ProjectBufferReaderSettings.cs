@@ -21,7 +21,9 @@ namespace AuthorIntrusion.IO
         /// <param name="readDetail">
         /// if set to <c>true</c> [read detail].
         /// </param>
-        public ProjectBufferReaderSettings(bool readSummary, bool readDetail)
+        public ProjectBufferReaderSettings(
+            bool readSummary, 
+            bool readDetail)
         {
             this.ReadSummary = readSummary;
             this.ReadDetail = readDetail;

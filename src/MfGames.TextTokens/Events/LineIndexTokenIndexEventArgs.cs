@@ -24,7 +24,8 @@ namespace MfGames.TextTokens.Events
         /// Index of the token.
         /// </param>
         protected LineIndexTokenIndexEventArgs(
-            LineIndex lineIndex, TokenIndex tokenIndex)
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex)
             : base(lineIndex)
         {
             this.TokenIndex = tokenIndex;

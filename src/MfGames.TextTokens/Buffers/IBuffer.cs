@@ -78,7 +78,9 @@ namespace MfGames.TextTokens.Buffers
         /// <returns>
         /// A new token.
         /// </returns>
-        IToken CreateToken(IToken oldToken, string newText);
+        IToken CreateToken(
+            IToken oldToken, 
+            string newText);
 
         /// <summary>
         /// Creates a new token.
@@ -103,7 +105,9 @@ namespace MfGames.TextTokens.Buffers
         /// <returns>
         /// The lines deleted from the buffer.
         /// </returns>
-        IEnumerable<ILine> DeleteLines(LineIndex lineIndex, int count);
+        IEnumerable<ILine> DeleteLines(
+            LineIndex lineIndex, 
+            int count);
 
         /// <summary>
         /// Executes a command on the buffer, running through each operation in turn.
@@ -125,7 +129,9 @@ namespace MfGames.TextTokens.Buffers
         /// <returns>
         /// The token at the given indexes.
         /// </returns>
-        IToken GetToken(LineIndex lineIndex, TokenIndex tokenIndex);
+        IToken GetToken(
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex);
 
         /// <summary>
         /// Retrieves operations to normalize the changed lines including rebuilding
@@ -148,7 +154,9 @@ namespace MfGames.TextTokens.Buffers
         /// <returns>
         /// An enumerable of the created lines.
         /// </returns>
-        IEnumerable<ILine> InsertLines(LineIndex afterLineIndex, int count);
+        IEnumerable<ILine> InsertLines(
+            LineIndex afterLineIndex, 
+            int count);
 
         /// <summary>
         /// Inserts lines into the buffer.
@@ -159,7 +167,9 @@ namespace MfGames.TextTokens.Buffers
         /// <param name="lines">
         /// The lines.
         /// </param>
-        void InsertLines(LineIndex afterLineIndex, IEnumerable<ILine> lines);
+        void InsertLines(
+            LineIndex afterLineIndex, 
+            IEnumerable<ILine> lines);
 
         /// <summary>
         /// Raises the ReplaceSelection event with the given arguments.

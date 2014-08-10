@@ -73,7 +73,10 @@ namespace AuthorIntrusion.Cli.Tests
                         "Frankenstein Markdown", 
                         "chapter-01.markdown"), 
                     Output = outputFilename, 
-                    OutputOptions = new List<string> { "RootElement=chapter" }, 
+                    OutputOptions = new List<string>
+                        {
+                            "RootElement=chapter"
+                        }, 
                 };
 
             // Create the transform command and run the job.

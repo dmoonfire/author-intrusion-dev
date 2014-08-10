@@ -22,7 +22,9 @@ namespace MfGames.TextTokens.Tokens
         /// <param name="text">
         /// The text.
         /// </param>
-        public Token(TokenKey tokenKey, string text)
+        public Token(
+            TokenKey tokenKey, 
+            string text)
         {
             this.TokenKey = tokenKey;
             this.Text = text;

@@ -53,7 +53,8 @@ namespace MfGames.TextTokens.Tests
                 // For each line, give the line index and each token separated by [] brackets.
                 Console.Write(
                     "{0}: ", 
-                    index.ToString().PadLeft(4));
+                    index.ToString()
+                        .PadLeft(4));
 
                 foreach (IToken token in this.Buffer.Lines[index].Tokens)
                 {

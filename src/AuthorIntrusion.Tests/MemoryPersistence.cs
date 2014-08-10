@@ -120,7 +120,9 @@ namespace AuthorIntrusion.Tests
         /// <param name="lines">
         /// The lines.
         /// </param>
-        public void SetData(HierarchicalPath path, params string[] lines)
+        public void SetData(
+            HierarchicalPath path, 
+            params string[] lines)
         {
             // Convert the lines to an UTF-8 byte array.
             using (var stream = new MemoryStream())
@@ -154,7 +156,9 @@ namespace AuthorIntrusion.Tests
         /// <param name="lines">
         /// The lines.
         /// </param>
-        public void SetData(string path, params string[] lines)
+        public void SetData(
+            string path, 
+            params string[] lines)
         {
             var newPath = new HierarchicalPath(path);
             this.SetData(

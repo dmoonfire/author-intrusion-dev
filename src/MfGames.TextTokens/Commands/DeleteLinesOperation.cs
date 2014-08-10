@@ -27,7 +27,9 @@ namespace MfGames.TextTokens.Commands
         /// <param name="count">
         /// The count.
         /// </param>
-        public DeleteLinesOperation(LineIndex lineIndex, int count)
+        public DeleteLinesOperation(
+            LineIndex lineIndex, 
+            int count)
         {
             this.LineIndex = lineIndex;
             this.Count = count;

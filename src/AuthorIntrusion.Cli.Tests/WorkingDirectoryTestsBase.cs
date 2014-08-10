@@ -59,7 +59,8 @@ namespace AuthorIntrusion.Cli.Tests
         public void Setup()
         {
             // Figure out where all the directories are.
-            string className = this.GetType().FullName;
+            string className = this.GetType()
+                .FullName;
 
             string workingPath = Path.Combine(
                 "Tests", 

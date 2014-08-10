@@ -134,13 +134,15 @@ namespace AuthorIntrusion.IO
                 return string.Format(
                     "{0} {1}", 
                     this.FirstName, 
-                    this.LastName).Trim();
+                    this.LastName)
+                    .Trim();
             }
 
             // If we still don't have a name, pick a random one.
             if (this.Count > 0)
             {
-                return this[this.Keys.OrderBy(k => k).First()];
+                return this[this.Keys.OrderBy(k => k)
+                    .First()];
             }
 
             // There are no names within the container, so just give a placeholder.

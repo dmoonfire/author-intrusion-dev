@@ -82,7 +82,8 @@ namespace MfGames.TextTokens.Tests
         /// The <see cref="LineIndexLinesDeletedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnLinesDeleted(
-            object sender, LineIndexLinesDeletedEventArgs e)
+            object sender, 
+            LineIndexLinesDeletedEventArgs e)
         {
             this.Lines.RemoveRange(
                 e.LineIndex.Index, 
@@ -99,7 +100,8 @@ namespace MfGames.TextTokens.Tests
         /// The <see cref="LineIndexLinesInsertedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnLinesInserted(
-            object sender, LineIndexLinesInsertedEventArgs e)
+            object sender, 
+            LineIndexLinesInsertedEventArgs e)
         {
             // Wrap the lines in a line object.
             var insertedLines = new List<TestLine>(e.LinesInserted.Count);
@@ -108,8 +110,8 @@ namespace MfGames.TextTokens.Tests
                 e.LinesInserted.Select(line => new TestLine(line)));
 
             // Report which lines we've inserted.
-            string[] lineKeys =
-                insertedLines.Select(l => l.LineKey.ToString()).ToArray();
+            string[] lineKeys = insertedLines.Select(l => l.LineKey.ToString())
+                .ToArray();
             string text = string.Join(
                 ", ", 
                 lineKeys);
@@ -133,12 +135,14 @@ namespace MfGames.TextTokens.Tests
         /// The <see cref="LineIndexTokenIndexTokensReplacedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnTokensReplaced(
-            object sender, LineIndexTokenIndexTokensReplacedEventArgs e)
+            object sender, 
+            LineIndexTokenIndexTokensReplacedEventArgs e)
         {
             // Report which tokens are being replaced and added.
             string tokenList = string.Join(
                 ", ", 
-                e.ReplacementTokens.Select(t => t.TokenKey.ToString()).ToArray());
+                e.ReplacementTokens.Select(t => t.TokenKey.ToString())
+                    .ToArray());
 
             Console.WriteLine(
                 "Replaced tokens: @({0}, {1}x{2}): {3}", 

@@ -83,7 +83,8 @@ namespace MfGames.TextTokens.Tests
         /// The tokens inserted.
         /// </param>
         public void InsertTokens(
-            TokenIndex tokenIndex, IEnumerable<IToken> tokensInserted)
+            TokenIndex tokenIndex, 
+            IEnumerable<IToken> tokensInserted)
         {
             // Establish our contracts.
             Contract.Requires(tokensInserted != null);

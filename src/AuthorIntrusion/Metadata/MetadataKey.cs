@@ -52,7 +52,8 @@ namespace AuthorIntrusion.Metadata
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(MetadataKey left, MetadataKey right)
+        public static bool operator ==(MetadataKey left, 
+            MetadataKey right)
         {
             return Equals(
                 left, 
@@ -67,7 +68,8 @@ namespace AuthorIntrusion.Metadata
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(MetadataKey left, MetadataKey right)
+        public static bool operator !=(MetadataKey left, 
+            MetadataKey right)
         {
             return !Equals(
                 left, 

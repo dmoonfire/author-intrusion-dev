@@ -27,7 +27,8 @@ namespace MfGames.TextTokens.Events
         /// The lines inserted.
         /// </param>
         public LineIndexLinesInsertedEventArgs(
-            LineIndex lineIndex, IReadOnlyList<ILine> linesInserted)
+            LineIndex lineIndex, 
+            IReadOnlyList<ILine> linesInserted)
             : base(lineIndex)
         {
             this.LinesInserted = linesInserted;

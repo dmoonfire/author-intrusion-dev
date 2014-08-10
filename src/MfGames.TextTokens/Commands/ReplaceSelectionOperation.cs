@@ -49,7 +49,8 @@ namespace MfGames.TextTokens.Commands
         /// The cursor.
         /// </param>
         public ReplaceSelectionOperation(
-            TextLocation anchor, TextLocation cursor)
+            TextLocation anchor, 
+            TextLocation cursor)
             : this(new TextRange(
                 anchor, 
                 cursor))

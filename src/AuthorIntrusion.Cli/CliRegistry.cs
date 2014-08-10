@@ -20,7 +20,8 @@ namespace AuthorIntrusion.Cli
         /// </summary>
         public CliRegistry()
         {
-            this.For<TransformCommand>().Singleton();
+            this.For<TransformCommand>()
+                .Singleton();
         }
 
         #endregion

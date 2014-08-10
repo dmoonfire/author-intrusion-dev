@@ -23,7 +23,9 @@ namespace MfGames.TextTokens.Commands
         /// <param name="count">
         /// The count.
         /// </param>
-        public InsertLinesOperation(LineIndex lineIndex, int count)
+        public InsertLinesOperation(
+            LineIndex lineIndex, 
+            int count)
         {
             this.LineIndex = lineIndex;
             this.Count = count;

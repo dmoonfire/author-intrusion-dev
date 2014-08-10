@@ -24,7 +24,9 @@ namespace MfGames.TextTokens.Tests
         /// <param name="text">
         /// The text.
         /// </param>
-        public TestToken(TokenKey tokenKey, string text)
+        public TestToken(
+            TokenKey tokenKey, 
+            string text)
         {
             this.TokenKey = tokenKey;
             this.Text = text;

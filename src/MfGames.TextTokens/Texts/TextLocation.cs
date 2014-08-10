@@ -49,7 +49,9 @@ namespace MfGames.TextTokens.Texts
         /// Index of the text.
         /// </param>
         public TextLocation(
-            LineIndex lineIndex, TokenIndex tokenIndex, TextIndex textIndex)
+            LineIndex lineIndex, 
+            TokenIndex tokenIndex, 
+            TextIndex textIndex)
         {
             this.LineIndex = lineIndex;
             this.TokenIndex = tokenIndex;
@@ -68,7 +70,10 @@ namespace MfGames.TextTokens.Texts
         /// <param name="textIndex">
         /// Index of the text.
         /// </param>
-        public TextLocation(int lineIndex, int tokenIndex, int textIndex)
+        public TextLocation(
+            int lineIndex, 
+            int tokenIndex, 
+            int textIndex)
             : this(new LineIndex(lineIndex), 
                 new TokenIndex(tokenIndex), 
                 new TextIndex(textIndex))
@@ -90,7 +95,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(TextLocation left, TextLocation right)
+        public static bool operator ==(TextLocation left, 
+            TextLocation right)
         {
             return left.Equals(right);
         }
@@ -103,7 +109,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator >(TextLocation left, TextLocation right)
+        public static bool operator >(TextLocation left, 
+            TextLocation right)
         {
             if (left.LineIndex.Index != right.LineIndex.Index)
             {
@@ -126,7 +133,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator >=(TextLocation left, TextLocation right)
+        public static bool operator >=(TextLocation left, 
+            TextLocation right)
         {
             return left > right || left == right;
         }
@@ -139,7 +147,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(TextLocation left, TextLocation right)
+        public static bool operator !=(TextLocation left, 
+            TextLocation right)
         {
             return !left.Equals(right);
         }
@@ -152,7 +161,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator <(TextLocation left, TextLocation right)
+        public static bool operator <(TextLocation left, 
+            TextLocation right)
         {
             return right > left;
         }
@@ -165,7 +175,8 @@ namespace MfGames.TextTokens.Texts
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator <=(TextLocation left, TextLocation right)
+        public static bool operator <=(TextLocation left, 
+            TextLocation right)
         {
             return left < right || left == right;
         }

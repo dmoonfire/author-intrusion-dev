@@ -237,7 +237,9 @@ namespace MfGames.TextTokens.Controllers
         /// <param name="text">
         /// The text to insert.
         /// </param>
-        public void InsertText(TextLocation textLocation, string text)
+        public void InsertText(
+            TextLocation textLocation, 
+            string text)
         {
             // Establish our contracts.
             Contract.Requires(text != null);
@@ -348,7 +350,9 @@ namespace MfGames.TextTokens.Controllers
         /// The command.
         /// </param>
         private void InsertMultipleLines(
-            string text, PostSelectionDeleteState state, BufferCommand command)
+            string text, 
+            PostSelectionDeleteState state, 
+            BufferCommand command)
         {
             // Split the text of the old token where we're going to insert the values. We
             // append the first line to the before token and prepend the last line to the
@@ -449,7 +453,9 @@ namespace MfGames.TextTokens.Controllers
         /// The command.
         /// </param>
         private void InsertSingleLine(
-            string text, PostSelectionDeleteState state, BufferCommand command)
+            string text, 
+            PostSelectionDeleteState state, 
+            BufferCommand command)
         {
             // Figure out the new text of the string and create a new token with the modified
             // version. This will also copy the attributes of the old token.

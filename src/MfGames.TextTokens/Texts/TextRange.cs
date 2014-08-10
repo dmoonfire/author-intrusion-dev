@@ -20,7 +20,9 @@ namespace MfGames.TextTokens.Texts
         /// <param name="cursor">
         /// The cursor.
         /// </param>
-        public TextRange(TextLocation anchor, TextLocation cursor)
+        public TextRange(
+            TextLocation anchor, 
+            TextLocation cursor)
             : this()
         {
             this.Anchor = anchor;

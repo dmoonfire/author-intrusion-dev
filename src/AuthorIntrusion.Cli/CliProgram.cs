@@ -39,7 +39,8 @@ namespace AuthorIntrusion.Cli
             bool successful = parser.ParseArguments(
                 args, 
                 options, 
-                (verb, subOptions) =>
+                (verb, 
+                    subOptions) =>
                     {
                         // if parsing succeeds the verb name and correct instance
                         // will be passed to onVerbCommand delegate (string,object)

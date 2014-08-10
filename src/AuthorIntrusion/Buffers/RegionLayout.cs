@@ -132,9 +132,8 @@ namespace AuthorIntrusion.Buffers
         /// </returns>
         public RegionLayout GetSequencedRegion(string testSlug)
         {
-            RegionLayout layout =
-                this.GetSequencedRegions()
-                    .FirstOrDefault(l => l.IsSequenceSlug(testSlug));
+            RegionLayout layout = this.GetSequencedRegions()
+                .FirstOrDefault(l => l.IsSequenceSlug(testSlug));
 
             return layout;
         }

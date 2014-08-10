@@ -252,7 +252,8 @@ namespace MfGames.TextTokens.Controllers
         /// The <see cref="ReplaceSelectionEventArgs"/> instance containing the event data.
         /// </param>
         private void OnReplaceSelection(
-            object sender, ReplaceSelectionEventArgs e)
+            object sender, 
+            ReplaceSelectionEventArgs e)
         {
             e.OldTextRanges[this] = this.ToTextRange();
             this.Anchor = e.TextRange.Anchor;
@@ -269,7 +270,8 @@ namespace MfGames.TextTokens.Controllers
         /// The <see cref="RestoreSelectionEventArgs"/> instance containing the event data.
         /// </param>
         private void OnRestoreSelection(
-            object sender, RestoreSelectionEventArgs e)
+            object sender, 
+            RestoreSelectionEventArgs e)
         {
             TextRange newTextRange;
 

@@ -139,7 +139,8 @@ namespace AuthorIntrusion
         /// The created region or null if one cannot be created.
         /// </returns>
         private Region CreateRegion(
-            RegionLayout layout, Dictionary<string, Region> oldRegions)
+            RegionLayout layout, 
+            Dictionary<string, Region> oldRegions)
         {
             // We don't do anything with sequenced regions.
             if (layout.IsSequenced)
@@ -160,7 +161,10 @@ namespace AuthorIntrusion
                 out region))
             {
                 // Create a new region for this slug.
-                region = new Region { Slug = regionSlug };
+                region = new Region
+                    {
+                        Slug = regionSlug
+                    };
             }
 
             // If the region doesn't have content, then just remove everything.

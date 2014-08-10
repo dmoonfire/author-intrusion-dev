@@ -74,7 +74,8 @@ namespace AuthorIntrusion.IO
 
             while (line.StartsWith("#"))
             {
-                line = line.Substring(1).TrimStart();
+                line = line.Substring(1)
+                    .TrimStart();
                 isAtx = true;
                 headerDepth++;
             }
@@ -144,7 +145,9 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         public void Load(
-            BufferLoadContext context, string input, IProjectBuffer buffer)
+            BufferLoadContext context, 
+            string input, 
+            IProjectBuffer buffer)
         {
             using (var reader = new StringReader(input))
             {
@@ -196,7 +199,9 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         public void Store(
-            BufferStoreContext context, Stream stream, IProjectBuffer buffer)
+            BufferStoreContext context, 
+            Stream stream, 
+            IProjectBuffer buffer)
         {
             using (var writer = new StreamWriter(stream))
             {
@@ -219,7 +224,9 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         public void Store(
-            BufferStoreContext context, TextWriter writer, IProjectBuffer buffer)
+            BufferStoreContext context, 
+            TextWriter writer, 
+            IProjectBuffer buffer)
         {
             // Write out the YAML header.
             this.StoreMetadata(
@@ -332,7 +339,9 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         private void Load(
-            BufferLoadContext context, TextReader reader, IProjectBuffer buffer)
+            BufferLoadContext context, 
+            TextReader reader, 
+            IProjectBuffer buffer)
         {
             // Loop through the lines, starting with looking for the metadata.
             string line = reader.ReadLine();
@@ -468,7 +477,9 @@ namespace AuthorIntrusion.IO
         /// The buffer.
         /// </param>
         private void Load(
-            BufferLoadContext context, Stream stream, IProjectBuffer buffer)
+            BufferLoadContext context, 
+            Stream stream, 
+            IProjectBuffer buffer)
         {
             using (var reader = new StreamReader(
                 stream, 
@@ -491,7 +502,9 @@ namespace AuthorIntrusion.IO
         /// </param>
         /// <returns>
         /// </returns>
-        private bool LoadExternalRegion(BufferLoadContext context, string line)
+        private bool LoadExternalRegion(
+            BufferLoadContext context, 
+            string line)
         {
             // Check to see if this is a Markdown link. If we don't have one, then skip it.
             line = line.TrimStart(
@@ -624,7 +637,9 @@ namespace AuthorIntrusion.IO
         /// <exception cref="Exception">
         /// </exception>
         private bool LoadInternalRegion(
-            BufferLoadContext context, List<string> lines, ref int lineIndex)
+            BufferLoadContext context, 
+            List<string> lines, 
+            ref int lineIndex)
         {
             string text, id;
             int headerOffset, headerDepth;
@@ -795,7 +810,9 @@ namespace AuthorIntrusion.IO
         /// Cannot parse YAML metadata with non-scalar values.
         /// </exception>
         private void ReadYamlMetadata(
-            BufferLoadContext context, TextReader reader, IProjectBuffer buffer)
+            BufferLoadContext context, 
+            TextReader reader, 
+            IProjectBuffer buffer)
         {
             // Build up the rest of the line.
             var builder = new StringBuilder();
@@ -894,7 +911,9 @@ namespace AuthorIntrusion.IO
         /// </param>
         /// <exception cref="System.NotImplementedException">
         /// </exception>
-        private void StoreMetadata(TextWriter writer, IProjectBuffer buffer)
+        private void StoreMetadata(
+            TextWriter writer, 
+            IProjectBuffer buffer)
         {
             // Create a dictionary with the metadata and start adding elements.
             var metadata = new Dictionary<string, object>();

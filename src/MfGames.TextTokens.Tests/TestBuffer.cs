@@ -33,7 +33,9 @@ namespace MfGames.TextTokens.Tests
         /// <exception cref="System.InvalidOperationException">
         /// Could not get a line after inserting into buffer.
         /// </exception>
-        public void PopulateRowColumn(int lineCount, int columnCount)
+        public void PopulateRowColumn(
+            int lineCount, 
+            int columnCount)
         {
             // Go through the lines and each add one in turn.
             int word = 0;
@@ -59,7 +61,8 @@ namespace MfGames.TextTokens.Tests
                     // Create an empty line via Insert lines.
                     line = (Line)this.InsertLines(
                         afterLineIndex, 
-                        1).First();
+                        1)
+                        .First();
                 }
                 else
                 {

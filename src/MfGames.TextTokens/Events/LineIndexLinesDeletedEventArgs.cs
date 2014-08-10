@@ -25,7 +25,9 @@ namespace MfGames.TextTokens.Events
         /// <param name="count">
         /// The count.
         /// </param>
-        public LineIndexLinesDeletedEventArgs(LineIndex lineIndex, int count)
+        public LineIndexLinesDeletedEventArgs(
+            LineIndex lineIndex, 
+            int count)
             : base(lineIndex)
         {
             Contract.Requires(count > 0);

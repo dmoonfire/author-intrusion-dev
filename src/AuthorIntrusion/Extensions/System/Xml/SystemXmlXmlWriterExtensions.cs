@@ -104,7 +104,8 @@ namespace AuthorIntrusion.Extensions.System.Xml
             MetadataDictionary metadata, 
             MetadataKey metadataKey)
         {
-            string value = metadata.GetOrCreate(metadataKey).Value;
+            string value = metadata.GetOrCreate(metadataKey)
+                .Value;
 
             writer.WriteElementString(
                 elementName, 

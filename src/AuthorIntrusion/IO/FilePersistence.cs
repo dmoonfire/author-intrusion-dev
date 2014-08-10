@@ -27,7 +27,8 @@ namespace AuthorIntrusion.IO
         /// The project format.
         /// </param>
         public FilePersistence(
-            FileInfo projectFile, IFileBufferFormat projectFormat)
+            FileInfo projectFile, 
+            IFileBufferFormat projectFormat)
         {
             this.ProjectFormat = projectFormat;
             this.ProjectFile = projectFile;

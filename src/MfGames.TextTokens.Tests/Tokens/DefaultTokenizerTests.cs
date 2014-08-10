@@ -31,7 +31,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
@@ -54,7 +55,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
@@ -89,7 +91,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
@@ -129,7 +132,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
@@ -152,7 +156,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
@@ -175,7 +180,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
@@ -198,7 +204,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
@@ -242,7 +249,8 @@ namespace MfGames.TextTokens.Tests.Tokens
             var tokenizer = new DefaultTokenSplitter();
 
             // Act
-            List<string> results = tokenizer.Tokenize(input).ToList();
+            List<string> results = tokenizer.Tokenize(input)
+                .ToList();
 
             // Assert
             Assert.IsNotNull(
