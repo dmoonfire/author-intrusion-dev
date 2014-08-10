@@ -549,6 +549,32 @@ namespace AuthorIntrusion.IO
 
             if (!foundRegion)
             {
+                // If we didn't find a region, see if we can create a region that
+                // matches it.
+                RegionLayout layout =
+                    context.Project.Layout.GetSequencedRegion(slug);
+
+                if (layout != null)
+                {
+                    // We have a new region, so create one and add it to the list.
+                    region =
+                        context.Project.Regions.Create(
+                            context.CurrentRegion, 
+                            layout);
+                    foundRegion = true;
+
+                    // Add a link into the current buffer.
+                    context.CurrentRegion.Blocks.Add(
+                        new Block
+                            {
+                                BlockType = BlockType.Region, 
+                                LinkedRegion = region
+                            });
+                }
+            }
+
+            if (!foundRegion)
+            {
                 // We don't know how to handle this.
                 throw new Exception(
                     string.Format(
@@ -561,8 +587,12 @@ namespace AuthorIntrusion.IO
             using (
                 Stream stream = context.Persistence.GetReadStream(region.Path))
             {
+                // We need to create a new context for the external to handle
+                // headers properly.
+                var innerContext = new BufferLoadContext(context);
+
                 this.Load(
-                    context, 
+                    innerContext, 
                     stream, 
                     region);
             }
