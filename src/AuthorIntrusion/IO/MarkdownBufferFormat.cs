@@ -589,12 +589,15 @@ namespace AuthorIntrusion.IO
             {
                 // We need to create a new context for the external to handle
                 // headers properly.
+                context.Push(region);
                 var innerContext = new BufferLoadContext(context);
 
                 this.Load(
                     innerContext, 
                     stream, 
                     region);
+
+                context.Pop();
             }
 
             // We found the external region.

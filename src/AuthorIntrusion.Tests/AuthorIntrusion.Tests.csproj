@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalExternalProjectTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalInternalRegionsTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalSequenceRegion2Tests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineExternalProjectTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInlineRegionWithWrongTitleTests.cs" />
