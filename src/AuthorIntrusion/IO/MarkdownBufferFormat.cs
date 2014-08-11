@@ -229,7 +229,7 @@ namespace AuthorIntrusion.IO
             IProjectBuffer buffer)
         {
             // Write out the YAML header.
-            this.StoreYamlMetadata(
+            bool wroteHeader = this.StoreYamlMetadata(
                 writer, 
                 buffer);
 
@@ -237,7 +237,8 @@ namespace AuthorIntrusion.IO
             this.StoreContents(
                 context, 
                 writer, 
-                buffer);
+                buffer, 
+                !wroteHeader);
         }
 
         /// <summary>
@@ -976,18 +977,29 @@ namespace AuthorIntrusion.IO
         /// <param name="buffer">
         /// The buffer.
         /// </param>
+        /// <param name="skipFirstBlank">
+        /// if set to <c>true</c> skip first blank line.
+        /// </param>
         /// <exception cref="System.InvalidOperationException">
         /// </exception>
         private void StoreContents(
             BufferStoreContext context, 
             TextWriter writer, 
-            IProjectBuffer buffer)
+            IProjectBuffer buffer, 
+            bool skipFirstBlank)
         {
             // Write out all the buffer lines.
             foreach (Block block in buffer.Blocks)
             {
                 // Every block has a blank line before that.
-                writer.WriteLine();
+                if (skipFirstBlank)
+                {
+                    skipFirstBlank = false;
+                }
+                else
+                {
+                    writer.WriteLine();
+                }
 
                 // What we write is based on what is next.
                 switch (block.BlockType)
@@ -1023,13 +1035,21 @@ namespace AuthorIntrusion.IO
         /// </param>
         /// <exception cref="System.NotImplementedException">
         /// </exception>
-        private void StoreYamlMetadata(
+        /// <returns>
+        /// </returns>
+        private bool StoreYamlMetadata(
             TextWriter writer, 
             IProjectBuffer buffer)
         {
             // Get the metadata for the buffer.
             Dictionary<string, object> metadata =
                 this.GetMetadataDictionary(buffer);
+
+            // If we have an empty metadata, then skip this.
+            if (metadata.Count == 0)
+            {
+                return false;
+            }
 
             // Write out the YAML header.
             var serializer = new Serializer();
@@ -1039,6 +1059,9 @@ namespace AuthorIntrusion.IO
                 writer, 
                 metadata);
             writer.WriteLine("---");
+
+            // We have at least one metadata entry.
+            return true;
         }
 
         /// <summary>
@@ -1062,20 +1085,38 @@ namespace AuthorIntrusion.IO
             TextWriter writer, 
             Block block)
         {
-            // Determine if this is an external or internal region.
+            // Push the region for processing.
             Region region = block.LinkedRegion;
+
+            context.Push(region);
+
+            // Determine if this is an external or internal region.
             RegionLayout layout = region.Layout;
 
             if (layout.IsExternal)
             {
-                throw new InvalidOperationException(
-                    "Cannot write out external regions.");
+                // Write out the link.
+                writer.Write(
+                    "{0} {1} [{2}]", 
+                    layout.IsSequenced ? "1." : "*", 
+                    region.Name, 
+                    region.Slug);
+                writer.WriteLine();
+
+                // Recurse into the region.
+                using (
+                    Stream stream =
+                        context.Persistence.GetWriteStream(region.Path))
+                {
+                    this.Store(
+                        context, 
+                        stream, 
+                        region);
+                }
             }
             else
             {
                 // Write out the header.
-                context.Push(region);
-
                 writer.Write(
                     "{0} {1} [{2}]", 
                     new string(
@@ -1089,11 +1130,12 @@ namespace AuthorIntrusion.IO
                 this.StoreContents(
                     context, 
                     writer, 
-                    region);
-
-                // Pop off the region we're processing.
-                context.Pop();
+                    region, 
+                    false);
             }
+
+            // Pop off the region we're processing.
+            context.Pop();
         }
 
         #endregion
