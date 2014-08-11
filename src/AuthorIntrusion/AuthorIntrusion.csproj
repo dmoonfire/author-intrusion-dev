@@ -93,6 +93,7 @@
     <Compile Include="IO\MarkdownBufferFormatFactory.cs" />
     <Compile Include="IO\NameDictionary.cs" />
     <Compile Include="IO\ProjectPersistenceContext.cs" />
+    <Compile Include="IO\RegionProcessingContext.cs" />
     <Compile Include="IO\TitleInfo.cs" />
     <Compile Include="IProjectBuffer.cs" />
     <Compile Include="ISlugged.cs" />

@@ -229,16 +229,15 @@ namespace AuthorIntrusion.IO
             IProjectBuffer buffer)
         {
             // Write out the YAML header.
-            this.StoreMetadata(
+            this.StoreYamlMetadata(
                 writer, 
                 buffer);
 
-            // Write out all the buffer lines.
-            foreach (Block block in buffer.Blocks)
-            {
-                writer.WriteLine();
-                writer.WriteLine(block.Text);
-            }
+            // Write out the contents.
+            this.StoreContents(
+                context, 
+                writer, 
+                buffer);
         }
 
         /// <summary>
@@ -325,6 +324,71 @@ namespace AuthorIntrusion.IO
                 throw new InvalidOperationException(
                     "Cannot parse YAML metadata with mapping/dictionary values.");
             }
+        }
+
+        /// <summary>
+        /// Gets the metadata dictionary for the given buffer.
+        /// </summary>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private Dictionary<string, object> GetMetadataDictionary(
+            IProjectBuffer buffer)
+        {
+            // Create a dictionary with the metadata and start adding elements.
+            var metadata = new Dictionary<string, object>();
+
+            metadata.AddIfNotEmpty(
+                "title", 
+                buffer.Titles.Title);
+            metadata.AddIfNotEmpty(
+                "subtitle", 
+                buffer.Titles.Subtitle);
+
+            metadata.AddIfNotEmpty(
+                "author", 
+                buffer.Authors.PreferredName);
+
+            // Loop through and add the rest of the metadata.
+            foreach (MetadataKey key in buffer.Metadata.Keys)
+            {
+                metadata[key.Name] = buffer.Metadata[key];
+            }
+
+            // Go through the linked regions and recursively add each one.
+            List<Block> links =
+                buffer.Blocks.Where(b => b.BlockType == BlockType.Region)
+                    .Where(b => !b.LinkedRegion.Layout.IsExternal)
+                    .ToList();
+
+            if (links.Count > 0)
+            {
+                // Build up a dictionary of regions.
+                var linksDictionary = new Dictionary<string, object>();
+
+                foreach (Block link in links)
+                {
+                    // Get the metadata for this link.
+                    Dictionary<string, object> linkMetadata =
+                        this.GetMetadataDictionary(link.LinkedRegion);
+
+                    if (linkMetadata.Count > 0)
+                    {
+                        linksDictionary[link.LinkedRegion.Slug] = linkMetadata;
+                    }
+                }
+
+                // If we have at least one metadata, then add it.
+                if (linksDictionary.Count > 0)
+                {
+                    metadata["regions"] = linksDictionary;
+                }
+            }
+
+            // Return the resulting metadata.
+            return metadata;
         }
 
         /// <summary>
@@ -901,6 +965,54 @@ namespace AuthorIntrusion.IO
         }
 
         /// <summary>
+        /// Stores the contents of the buffer to the writer.
+        /// </summary>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        /// <exception cref="System.InvalidOperationException">
+        /// </exception>
+        private void StoreContents(
+            BufferStoreContext context, 
+            TextWriter writer, 
+            IProjectBuffer buffer)
+        {
+            // Write out all the buffer lines.
+            foreach (Block block in buffer.Blocks)
+            {
+                // Every block has a blank line before that.
+                writer.WriteLine();
+
+                // What we write is based on what is next.
+                switch (block.BlockType)
+                {
+                    case BlockType.Region:
+                        this.WriteRegion(
+                            context, 
+                            writer, 
+                            block);
+                        break;
+
+                    case BlockType.Text:
+                        writer.WriteLine(block.Text);
+                        break;
+
+                    default:
+                        throw new InvalidOperationException(
+                            string.Format(
+                                "Cannot process a block with a type of {0}.", 
+                                block.BlockType));
+                }
+            }
+        }
+
+        /// <summary>
         /// Writes out the metadata to the given writer.
         /// </summary>
         /// <param name="writer">
@@ -911,29 +1023,13 @@ namespace AuthorIntrusion.IO
         /// </param>
         /// <exception cref="System.NotImplementedException">
         /// </exception>
-        private void StoreMetadata(
+        private void StoreYamlMetadata(
             TextWriter writer, 
             IProjectBuffer buffer)
         {
-            // Create a dictionary with the metadata and start adding elements.
-            var metadata = new Dictionary<string, object>();
-
-            metadata.AddIfNotEmpty(
-                "title", 
-                buffer.Titles.Title);
-            metadata.AddIfNotEmpty(
-                "subtitle", 
-                buffer.Titles.Subtitle);
-
-            metadata.AddIfNotEmpty(
-                "author", 
-                buffer.Authors.PreferredName);
-
-            // Loop through and add the rest of the metadata.
-            foreach (MetadataKey key in buffer.Metadata.Keys)
-            {
-                metadata[key.Name] = buffer.Metadata[key];
-            }
+            // Get the metadata for the buffer.
+            Dictionary<string, object> metadata =
+                this.GetMetadataDictionary(buffer);
 
             // Write out the YAML header.
             var serializer = new Serializer();
@@ -943,6 +1039,61 @@ namespace AuthorIntrusion.IO
                 writer, 
                 metadata);
             writer.WriteLine("---");
+        }
+
+        /// <summary>
+        /// Writes the linked region from the given block, either in the current
+        /// file or externally.
+        /// </summary>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="block">
+        /// The block.
+        /// </param>
+        /// <exception cref="System.InvalidOperationException">
+        /// Cannot write out external regions.
+        /// </exception>
+        private void WriteRegion(
+            BufferStoreContext context, 
+            TextWriter writer, 
+            Block block)
+        {
+            // Determine if this is an external or internal region.
+            Region region = block.LinkedRegion;
+            RegionLayout layout = region.Layout;
+
+            if (layout.IsExternal)
+            {
+                throw new InvalidOperationException(
+                    "Cannot write out external regions.");
+            }
+            else
+            {
+                // Write out the header.
+                context.Push(region);
+
+                writer.Write(
+                    "{0} {1} [{2}]", 
+                    new string(
+                        '#', 
+                        context.HeaderDepth), 
+                    region.Name, 
+                    region.Slug);
+                writer.WriteLine();
+
+                // Recurse into the region.
+                this.StoreContents(
+                    context, 
+                    writer, 
+                    region);
+
+                // Pop off the region we're processing.
+                context.Pop();
+            }
         }
 
         #endregion

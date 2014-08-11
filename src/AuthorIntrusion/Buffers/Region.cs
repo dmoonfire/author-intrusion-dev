@@ -50,6 +50,14 @@ namespace AuthorIntrusion.Buffers
         public BlockCollection Blocks { get; private set; }
 
         /// <summary>
+        /// Gets or sets the layout.
+        /// </summary>
+        /// <value>
+        /// The layout.
+        /// </value>
+        public RegionLayout Layout { get; set; }
+
+        /// <summary>
         /// Gets the metadata associated with the project.
         /// </summary>
         /// <value>

@@ -58,6 +58,7 @@
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInternalInternalProjectTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\MarkdownBufferFormatTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\MemoryPersistenceTestsBase.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\StoreInternalRegionTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\StoreSimpleProjectTests.cs" />
     <Compile Include="ProjectLayoutTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -44,14 +44,6 @@ namespace AuthorIntrusion
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the layout for the project.
-        /// </summary>
-        /// <value>
-        /// The layout.
-        /// </value>
-        public RegionLayout Layout { get; set; }
-
-        /// <summary>
         /// Gets the metadata manager for the project.
         /// </summary>
         /// <value>
@@ -180,6 +172,7 @@ namespace AuthorIntrusion
             // Assign the new flags to the region.
             region.Name = layout.Name;
             region.Slug = layout.Slug;
+            region.Layout = layout;
 
             // Add the region into the new region collection.
             this.Regions.Add(region);

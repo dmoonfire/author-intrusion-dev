@@ -64,6 +64,7 @@ namespace AuthorIntrusion.Buffers
                     Name = macros.Expand(
                         layout.Name, 
                         variables), 
+                    Layout = layout, 
                 };
 
             // Add the region into the collection.

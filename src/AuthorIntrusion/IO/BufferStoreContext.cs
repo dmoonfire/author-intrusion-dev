@@ -5,8 +5,9 @@
 namespace AuthorIntrusion.IO
 {
     /// <summary>
+    /// Encapsulates the context for loading buffers.
     /// </summary>
-    public class BufferStoreContext : ProjectPersistenceContext
+    public class BufferStoreContext : RegionProcessingContext
     {
         #region Constructors and Destructors
 
@@ -33,7 +34,7 @@ namespace AuthorIntrusion.IO
         /// <param name="context">
         /// The context.
         /// </param>
-        public BufferStoreContext(ProjectPersistenceContext context)
+        public BufferStoreContext(BufferStoreContext context)
             : base(context)
         {
         }
