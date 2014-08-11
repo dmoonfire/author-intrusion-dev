@@ -118,10 +118,12 @@ namespace AuthorIntrusion.IO
                 // Pull out the identifier.
                 headerSlug = headerText.Substring(
                     lastOpenBracket + 1, 
-                    lastCloseBracket - lastOpenBracket - 1);
+                    lastCloseBracket - lastOpenBracket - 1)
+                    .Trim();
                 headerText = headerText.Substring(
                     0, 
-                    lastOpenBracket);
+                    lastOpenBracket)
+                    .Trim();
             }
             else
             {
@@ -333,17 +335,26 @@ namespace AuthorIntrusion.IO
         /// <param name="buffer">
         /// The buffer.
         /// </param>
+        /// <param name="excludeTitle">
+        /// if set to <c>true</c> then exclude the title metadata.
+        /// </param>
         /// <returns>
+        /// A dictionary with the metadata keys.
         /// </returns>
         private Dictionary<string, object> GetMetadataDictionary(
-            IProjectBuffer buffer)
+            IProjectBuffer buffer, 
+            bool excludeTitle)
         {
             // Create a dictionary with the metadata and start adding elements.
             var metadata = new Dictionary<string, object>();
 
-            metadata.AddIfNotEmpty(
-                "title", 
-                buffer.Titles.Title);
+            if (!excludeTitle)
+            {
+                metadata.AddIfNotEmpty(
+                    "title", 
+                    buffer.Titles.Title);
+            }
+
             metadata.AddIfNotEmpty(
                 "subtitle", 
                 buffer.Titles.Subtitle);
@@ -373,7 +384,9 @@ namespace AuthorIntrusion.IO
                 {
                     // Get the metadata for this link.
                     Dictionary<string, object> linkMetadata =
-                        this.GetMetadataDictionary(link.LinkedRegion);
+                        this.GetMetadataDictionary(
+                            link.LinkedRegion, 
+                            true);
 
                     if (linkMetadata.Count > 0)
                     {
@@ -706,13 +719,13 @@ namespace AuthorIntrusion.IO
             List<string> lines, 
             ref int lineIndex)
         {
-            string text, id;
+            string name, slug;
             int headerOffset, headerDepth;
             bool isHeader = this.IsMarkdownHeader(
                 lines, 
                 lineIndex, 
-                out text, 
-                out id, 
+                out name, 
+                out slug, 
                 out headerOffset, 
                 out headerDepth);
 
@@ -728,8 +741,8 @@ namespace AuthorIntrusion.IO
                 // Try to find it via the ID.
                 Region region;
                 bool foundRegion = context.Project.Regions.TryGetSlugOrName(
-                    id, 
-                    text, 
+                    slug, 
+                    name, 
                     out region);
 
                 if (!foundRegion)
@@ -737,7 +750,7 @@ namespace AuthorIntrusion.IO
                     // If we didn't find a region, see if we can create a region that
                     // matches it.
                     RegionLayout layout =
-                        context.Project.Layout.GetSequencedRegion(id);
+                        context.Project.Layout.GetSequencedRegion(slug);
 
                     if (layout != null)
                     {
@@ -765,8 +778,8 @@ namespace AuthorIntrusion.IO
                     throw new Exception(
                         string.Format(
                             "Cannot find region by {0} or {1}.", 
-                            text, 
-                            id));
+                            name, 
+                            slug));
                 }
 
                 // Increment the index ahead.
@@ -780,6 +793,9 @@ namespace AuthorIntrusion.IO
                     lines, 
                     ref lineIndex, 
                     region);
+
+                // Set up the metadata.
+                region.Titles.Title = name;
             }
 
             return isHeader;
@@ -1005,7 +1021,7 @@ namespace AuthorIntrusion.IO
                 switch (block.BlockType)
                 {
                     case BlockType.Region:
-                        this.WriteRegion(
+                        this.StoreRegion(
                             context, 
                             writer, 
                             block);
@@ -1025,46 +1041,6 @@ namespace AuthorIntrusion.IO
         }
 
         /// <summary>
-        /// Writes out the metadata to the given writer.
-        /// </summary>
-        /// <param name="writer">
-        /// The writer.
-        /// </param>
-        /// <param name="buffer">
-        /// The buffer.
-        /// </param>
-        /// <exception cref="System.NotImplementedException">
-        /// </exception>
-        /// <returns>
-        /// </returns>
-        private bool StoreYamlMetadata(
-            TextWriter writer, 
-            IProjectBuffer buffer)
-        {
-            // Get the metadata for the buffer.
-            Dictionary<string, object> metadata =
-                this.GetMetadataDictionary(buffer);
-
-            // If we have an empty metadata, then skip this.
-            if (metadata.Count == 0)
-            {
-                return false;
-            }
-
-            // Write out the YAML header.
-            var serializer = new Serializer();
-
-            writer.WriteLine("---");
-            serializer.Serialize(
-                writer, 
-                metadata);
-            writer.WriteLine("---");
-
-            // We have at least one metadata entry.
-            return true;
-        }
-
-        /// <summary>
         /// Writes the linked region from the given block, either in the current
         /// file or externally.
         /// </summary>
@@ -1080,7 +1056,7 @@ namespace AuthorIntrusion.IO
         /// <exception cref="System.InvalidOperationException">
         /// Cannot write out external regions.
         /// </exception>
-        private void WriteRegion(
+        private void StoreRegion(
             BufferStoreContext context, 
             TextWriter writer, 
             Block block)
@@ -1089,6 +1065,11 @@ namespace AuthorIntrusion.IO
             Region region = block.LinkedRegion;
 
             context.Push(region);
+
+            // Figure out the title.
+            string title = string.IsNullOrWhiteSpace(region.Titles.Title)
+                ? region.Name
+                : region.Titles.Title;
 
             // Determine if this is an external or internal region.
             RegionLayout layout = region.Layout;
@@ -1099,7 +1080,7 @@ namespace AuthorIntrusion.IO
                 writer.Write(
                     "{0} {1} [{2}]", 
                     layout.IsSequenced ? "1." : "*", 
-                    region.Name, 
+                    title, 
                     region.Slug);
                 writer.WriteLine();
 
@@ -1122,7 +1103,7 @@ namespace AuthorIntrusion.IO
                     new string(
                         '#', 
                         context.HeaderDepth), 
-                    region.Name, 
+                    title, 
                     region.Slug);
                 writer.WriteLine();
 
@@ -1136,6 +1117,48 @@ namespace AuthorIntrusion.IO
 
             // Pop off the region we're processing.
             context.Pop();
+        }
+
+        /// <summary>
+        /// Writes out the metadata to the given writer.
+        /// </summary>
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        /// <param name="buffer">
+        /// The buffer.
+        /// </param>
+        /// <exception cref="System.NotImplementedException">
+        /// </exception>
+        /// <returns>
+        /// </returns>
+        private bool StoreYamlMetadata(
+            TextWriter writer, 
+            IProjectBuffer buffer)
+        {
+            // Get the metadata for the buffer.
+            Dictionary<string, object> metadata =
+                this.GetMetadataDictionary(
+                    buffer, 
+                    false);
+
+            // If we have an empty metadata, then skip this.
+            if (metadata.Count == 0)
+            {
+                return false;
+            }
+
+            // Write out the YAML header.
+            var serializer = new Serializer();
+
+            writer.WriteLine("---");
+            serializer.Serialize(
+                writer, 
+                metadata);
+            writer.WriteLine("---");
+
+            // We have at least one metadata entry.
+            return true;
         }
 
         #endregion
