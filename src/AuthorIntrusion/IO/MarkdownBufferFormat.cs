@@ -1105,13 +1105,16 @@ namespace AuthorIntrusion.IO
                 // External regions should skip sequenced regions.
                 skipNextBlank = true;
 
+                // Create a recursive context for the new file.
+                var innerContext = new BufferStoreContext(context);
+
                 // Recurse into the region.
                 using (
                     Stream stream =
                         context.Persistence.GetWriteStream(region.Path))
                 {
                     this.Store(
-                        context, 
+                        innerContext, 
                         stream, 
                         region);
                 }

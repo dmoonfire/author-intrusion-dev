@@ -1,4 +1,4 @@
-﻿// <copyright file="StoreExternalSequenceRegionTests.cs" company="Moonfire Games">
+﻿// <copyright file="StoreExternalRegionWithInternalSequenceRegionsTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -17,7 +17,8 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     /// Tests various aspects of storing an external sequence region in Markdown.
     /// </summary>
     [TestFixture]
-    public class StoreExternalSequenceRegionTests : MemoryPersistenceTestsBase
+    public class StoreExternalRegionWithInternalSequenceRegionsTests :
+        MemoryPersistenceTestsBase
     {
         #region Fields
 
@@ -54,7 +55,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             this.Setup();
 
             Assert.AreEqual(
-                3, 
+                2, 
                 this.outputPersistence.DataCount, 
                 "The number of output files was unexpected.");
         }
@@ -75,46 +76,30 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 "title: Testing", 
                 "---", 
                 string.Empty, 
-                "1. [Chapter 1a](regions/region-1)", 
-                "2. [Not Cheese](regions/region-2)");
+                "* [Regions](regions)");
         }
 
         /// <summary>
-        /// Verifies the contents of the region-1 file.
+        /// Verifies the contents of the regions file.
         /// </summary>
         [Test]
-        public void VerifyRegion1()
+        public void VerifyRegions()
         {
             this.Setup();
 
-            List<string> lines =
-                this.outputPersistence.GetDataLines("/regions/region-1");
+            List<string> lines = this.outputPersistence.GetDataLines("/regions");
 
             this.AssertLines(
                 lines, 
                 "---", 
-                "title: Chapter 1a", 
+                "title: Regions", 
                 "---", 
                 string.Empty, 
-                "One Two Three.");
-        }
-
-        /// <summary>
-        /// Verifies the contents of the region-2 file.
-        /// </summary>
-        [Test]
-        public void VerifyRegion2()
-        {
-            this.Setup();
-
-            List<string> lines =
-                this.outputPersistence.GetDataLines("/regions/region-2");
-
-            this.AssertLines(
-                lines, 
-                "---", 
-                "title: Not Cheese", 
-                "---", 
+                "# Test 1 [regions/region-1]", 
+                string.Empty, 
+                "One Two Three.", 
+                string.Empty, 
+                "# Test 2 [regions/region-2]", 
                 string.Empty, 
                 "Four Five Six.");
         }
@@ -135,19 +120,15 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 "---", 
                 "title: Testing", 
                 "---", 
-                "* [Chapter 1](regions/region-1)", 
-                "* [Cheese](regions/region-2)");
+                "* [Regions](regions)");
             this.inputPersistence.SetData(
-                new HierarchicalPath("/regions/region-1"), 
+                new HierarchicalPath("/regions"), 
                 "---", 
-                "title: Chapter 1a", 
+                "title: Regions", 
                 "---", 
-                "One Two Three.");
-            this.inputPersistence.SetData(
-                new HierarchicalPath("/regions/region-2"), 
-                "---", 
-                "title: Not Cheese", 
-                "---", 
+                "# Test 1 [regions/region-1]", 
+                "One Two Three.", 
+                "# Test 2 [regions/region-2]", 
                 "Four Five Six.");
 
             // Set up the layout.
@@ -157,16 +138,24 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     Slug = "project", 
                     HasContent = false, 
                 };
+            var regionsLayout = new RegionLayout
+                {
+                    Name = "Region", 
+                    Slug = "regions", 
+                    HasContent = false, 
+                    IsExternal = true, 
+                };
             var sequencedRegion = new RegionLayout
                 {
                     Name = "Sequenced Region", 
                     Slug = "regions/region-$(ContainerIndex:0)", 
                     HasContent = true, 
                     IsSequenced = true, 
-                    IsExternal = true, 
+                    IsExternal = false, 
                 };
 
-            projectLayout.Add(sequencedRegion);
+            projectLayout.Add(regionsLayout);
+            regionsLayout.Add(sequencedRegion);
 
             // Create a new project with the given layout.
             this.project = new Project();
