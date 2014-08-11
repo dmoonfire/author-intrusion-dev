@@ -1,4 +1,4 @@
-﻿// <copyright file="StoreInternalSequenceRegionTests.cs" company="Moonfire Games">
+﻿// <copyright file="StoreExternalSequenceRegionTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -14,10 +14,10 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests various aspects of storing an internal sequence region in Markdown.
+    /// Tests various aspects of storing an external sequence region in Markdown.
     /// </summary>
     [TestFixture]
-    public class StoreInternalSequenceRegionTests : MemoryPersistenceTestsBase
+    public class StoreExternalSequenceRegionTests : MemoryPersistenceTestsBase
     {
         #region Fields
 
@@ -54,7 +54,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             this.Setup();
 
             Assert.AreEqual(
-                1, 
+                3, 
                 this.outputPersistence.DataCount, 
                 "The number of output files was unexpected.");
         }
@@ -75,11 +75,46 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 "title: Testing", 
                 "---", 
                 string.Empty, 
-                "# Chapter 1 [regions/region-1]", 
+                "1. [Chapter 1a](regions/region-1)", 
+                "2. [Not Cheese](regions/region-2)");
+        }
+
+        /// <summary>
+        /// Verifies the contents of the region-1 file.
+        /// </summary>
+        [Test]
+        public void VerifyRegion1()
+        {
+            this.Setup();
+
+            List<string> lines =
+                this.outputPersistence.GetDataLines("/regions/region-1");
+
+            this.AssertLines(
+                lines, 
+                "---", 
+                "title: Chapter 1a", 
+                "---", 
                 string.Empty, 
-                "One Two Three.", 
-                string.Empty, 
-                "# Cheese [regions/region-2]", 
+                "One Two Three.");
+        }
+
+        /// <summary>
+        /// Verifies the contents of the region-2 file.
+        /// </summary>
+        [Test]
+        public void VerifyRegion2()
+        {
+            this.Setup();
+
+            List<string> lines =
+                this.outputPersistence.GetDataLines("/regions/region-2");
+
+            this.AssertLines(
+                lines, 
+                "---", 
+                "title: Not Cheese", 
+                "---", 
                 string.Empty, 
                 "Four Five Six.");
         }
@@ -100,9 +135,19 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 "---", 
                 "title: Testing", 
                 "---", 
-                "# Chapter 1 [regions/region-1]", 
-                "One Two Three.", 
-                "# Cheese [regions/region-2]", 
+                "* [Chapter 1](regions/region-1)", 
+                "* [Cheese](regions/region-2)");
+            this.inputPersistence.SetData(
+                new HierarchicalPath("/regions/region-1"), 
+                "---", 
+                "title: Chapter 1a", 
+                "---", 
+                "One Two Three.");
+            this.inputPersistence.SetData(
+                new HierarchicalPath("/regions/region-2"), 
+                "---", 
+                "title: Not Cheese", 
+                "---", 
                 "Four Five Six.");
 
             // Set up the layout.
@@ -118,6 +163,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     Slug = "regions/region-$(ContainerIndex:0)", 
                     HasContent = true, 
                     IsSequenced = true, 
+                    IsExternal = true, 
                 };
 
             projectLayout.Add(fixedLayout);

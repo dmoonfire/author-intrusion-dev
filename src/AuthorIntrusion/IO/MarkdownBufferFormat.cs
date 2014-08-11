@@ -993,7 +993,7 @@ namespace AuthorIntrusion.IO
         /// <param name="buffer">
         /// The buffer.
         /// </param>
-        /// <param name="skipFirstBlank">
+        /// <param name="skipNextBlank">
         /// if set to <c>true</c> skip first blank line.
         /// </param>
         /// <exception cref="System.InvalidOperationException">
@@ -1002,15 +1002,15 @@ namespace AuthorIntrusion.IO
             BufferStoreContext context, 
             TextWriter writer, 
             IProjectBuffer buffer, 
-            bool skipFirstBlank)
+            bool skipNextBlank)
         {
             // Write out all the buffer lines.
             foreach (Block block in buffer.Blocks)
             {
                 // Every block has a blank line before that.
-                if (skipFirstBlank)
+                if (skipNextBlank)
                 {
-                    skipFirstBlank = false;
+                    skipNextBlank = false;
                 }
                 else
                 {
@@ -1021,9 +1021,10 @@ namespace AuthorIntrusion.IO
                 switch (block.BlockType)
                 {
                     case BlockType.Region:
-                        this.StoreRegion(
+                        skipNextBlank = this.StoreRegion(
                             context, 
                             writer, 
+                            buffer, 
                             block);
                         break;
 
@@ -1050,15 +1051,21 @@ namespace AuthorIntrusion.IO
         /// <param name="writer">
         /// The writer.
         /// </param>
+        /// <param name="buffer">
+        /// </param>
         /// <param name="block">
         /// The block.
         /// </param>
+        /// <returns>
+        /// True if the next blank line should be skipped.
+        /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// Cannot write out external regions.
         /// </exception>
-        private void StoreRegion(
+        private bool StoreRegion(
             BufferStoreContext context, 
             TextWriter writer, 
+            IProjectBuffer buffer, 
             Block block)
         {
             // Push the region for processing.
@@ -1073,16 +1080,30 @@ namespace AuthorIntrusion.IO
 
             // Determine if this is an external or internal region.
             RegionLayout layout = region.Layout;
+            bool skipNextBlank = false;
 
             if (layout.IsExternal)
             {
+                // Figure out the prefix for this line.
+                string bullet = "*";
+
+                if (layout.IsSequenced)
+                {
+                    // Figure out the index in the parent layout.
+                    int regionLayout = buffer.Blocks.GetContainerIndex(region);
+                    bullet = (regionLayout + 1) + ".";
+                }
+
                 // Write out the link.
                 writer.Write(
-                    "{0} {1} [{2}]", 
-                    layout.IsSequenced ? "1." : "*", 
+                    "{0} [{1}]({2})", 
+                    bullet, 
                     title, 
                     region.Slug);
                 writer.WriteLine();
+
+                // External regions should skip sequenced regions.
+                skipNextBlank = true;
 
                 // Recurse into the region.
                 using (
@@ -1117,6 +1138,9 @@ namespace AuthorIntrusion.IO
 
             // Pop off the region we're processing.
             context.Pop();
+
+            // For formatting purposes, we return the skip.
+            return skipNextBlank;
         }
 
         /// <summary>

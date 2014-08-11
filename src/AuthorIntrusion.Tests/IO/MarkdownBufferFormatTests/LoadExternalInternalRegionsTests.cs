@@ -232,8 +232,8 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     IsSequenced = true, 
                     SequenceBufferFormatFactory = new MarkdownBufferFormatFactory(), 
                 };
-            projectLayout.InnerLayouts.Add(nestedLayout);
-            nestedLayout.InnerLayouts.Add(regionLayout);
+            projectLayout.Add(nestedLayout);
+            nestedLayout.Add(regionLayout);
 
             // Create a new project with the given layout.
             var project = new Project();

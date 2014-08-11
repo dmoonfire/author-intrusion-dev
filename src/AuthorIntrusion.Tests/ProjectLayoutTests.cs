@@ -33,7 +33,7 @@ namespace AuthorIntrusion.Tests
                     Slug = "project", 
                     HasContent = false, 
                 };
-            projectLayout.InnerLayouts.Add(
+            projectLayout.Add(
                 new RegionLayout
                     {
                         Name = "Region 1", 
@@ -89,14 +89,14 @@ namespace AuthorIntrusion.Tests
                     Slug = "project", 
                     HasContent = false, 
                 };
-            projectLayout.InnerLayouts.Add(
+            projectLayout.Add(
                 new RegionLayout
                     {
                         Name = "Region 1", 
                         Slug = "region-1", 
                         HasContent = true, 
                     });
-            projectLayout.InnerLayouts.Add(
+            projectLayout.Add(
                 new RegionLayout
                     {
                         Name = "Region 2", 
@@ -166,8 +166,8 @@ namespace AuthorIntrusion.Tests
                     Slug = "region-1", 
                     HasContent = true, 
                 };
-            projectLayout.InnerLayouts.Add(regionLayout1);
-            regionLayout1.InnerLayouts.Add(
+            projectLayout.Add(regionLayout1);
+            regionLayout1.Add(
                 new RegionLayout
                     {
                         Name = "Region 2", 

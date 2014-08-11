@@ -91,7 +91,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 "title: Testing", 
                 "---", 
                 string.Empty, 
-                "* Fixed Region [fixed]");
+                "* [Fixed Region](fixed)");
         }
 
         #endregion
@@ -130,7 +130,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     IsExternal = true, 
                 };
 
-            projectLayout.InnerLayouts.Add(fixedLayout);
+            projectLayout.Add(fixedLayout);
 
             // Create a new project with the given layout.
             this.project = new Project();

@@ -21,6 +21,10 @@ namespace AuthorIntrusion.Buffers
         #region Fields
 
         /// <summary>
+        /// </summary>
+        private readonly IList<RegionLayout> innerLayouts;
+
+        /// <summary>
         /// Contains the slug for this layout.
         /// </summary>
         private string slug;
@@ -39,7 +43,7 @@ namespace AuthorIntrusion.Buffers
         /// </summary>
         public RegionLayout()
         {
-            this.InnerLayouts = new List<RegionLayout>();
+            this.innerLayouts = new List<RegionLayout>();
         }
 
         #endregion
@@ -63,7 +67,13 @@ namespace AuthorIntrusion.Buffers
         /// <value>
         /// The inner layouts.
         /// </value>
-        public IList<RegionLayout> InnerLayouts { get; private set; }
+        public IEnumerable<RegionLayout> InnerLayouts
+        {
+            get
+            {
+                return this.innerLayouts;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether this region is an external one
@@ -87,6 +97,14 @@ namespace AuthorIntrusion.Buffers
         /// The name.
         /// </value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parent layout for this layout.
+        /// </summary>
+        /// <value>
+        /// The parent layout.
+        /// </value>
+        public RegionLayout ParentLayout { get; set; }
 
         /// <summary>
         /// Gets or sets the buffer format factory used for all the sequenced
@@ -120,6 +138,18 @@ namespace AuthorIntrusion.Buffers
         #endregion
 
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Adds the specified layout as an inner layout.
+        /// </summary>
+        /// <param name="layout">
+        /// The layout.
+        /// </param>
+        public void Add(RegionLayout layout)
+        {
+            layout.ParentLayout = this;
+            this.innerLayouts.Add(layout);
+        }
 
         /// <summary>
         /// Attempts to retrieve a region that matches the given pattern.

@@ -132,8 +132,8 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     HasContent = true, 
                     IsExternal = true, 
                 };
-            projectLayout.InnerLayouts.Add(nestedLayout);
-            nestedLayout.InnerLayouts.Add(regionLayout);
+            projectLayout.Add(nestedLayout);
+            nestedLayout.Add(regionLayout);
 
             // Create a new project with the given layout.
             var project = new Project();

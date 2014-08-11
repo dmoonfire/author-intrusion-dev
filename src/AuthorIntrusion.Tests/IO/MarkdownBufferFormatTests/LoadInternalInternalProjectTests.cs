@@ -125,8 +125,8 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     Slug = "region-1", 
                     HasContent = true, 
                 };
-            projectLayout.InnerLayouts.Add(nestedLayout);
-            nestedLayout.InnerLayouts.Add(regionLayout);
+            projectLayout.Add(nestedLayout);
+            nestedLayout.Add(regionLayout);
 
             // Create a new project with the given layout.
             var project = new Project();

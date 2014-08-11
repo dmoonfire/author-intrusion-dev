@@ -26,5 +26,29 @@ namespace AuthorIntrusion.Buffers
         }
 
         #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Gets the index of the region inside the linked blocks.
+        /// </summary>
+        /// <param name="region">
+        /// The region.
+        /// </param>
+        /// <returns>
+        /// The index of the region.
+        /// </returns>
+        public int GetContainerIndex(Region region)
+        {
+            List<Region> regions = this.ToArray()
+                .Where(b => b.BlockType == BlockType.Region)
+                .Select(b => b.LinkedRegion)
+                .ToList();
+
+            int index = regions.IndexOf(region);
+            return index;
+        }
+
+        #endregion
     }
 }

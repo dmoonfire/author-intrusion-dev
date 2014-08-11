@@ -90,7 +90,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     Slug = "project", 
                     HasContent = false, 
                 };
-            projectLayout.InnerLayouts.Add(
+            projectLayout.Add(
                 new RegionLayout
                     {
                         Name = "Region 1", 

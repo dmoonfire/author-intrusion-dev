@@ -150,7 +150,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     IsSequenced = true, 
                     SequenceBufferFormatFactory = new MarkdownBufferFormatFactory(), 
                 };
-            projectLayout.InnerLayouts.Add(regionLayout);
+            projectLayout.Add(regionLayout);
 
             // Create a new project with the given layout.
             var project = new Project();

@@ -114,7 +114,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     HasContent = true, 
                 };
 
-            projectLayout.InnerLayouts.Add(fixedLayout);
+            projectLayout.Add(fixedLayout);
 
             // Create a new project with the given layout.
             this.project = new Project();
