@@ -55,6 +55,21 @@ namespace AuthorIntrusion.Buffers
                     { "ProjectIndex", projectIndex }
                 };
 
+            // Add in the parent slug, if we have one.
+            if (layout.ParentLayout != null)
+            {
+                // We have a parent regular expression, so include that.
+                var parentVariables = new Dictionary<string, object>
+                    {
+                        { "ContainerIndex", parentRegion.ContainerIndex + 1 }, 
+                        { "ProjectIndex", parentRegion.ProjectIndex + 1 }, 
+                    };
+                string parentSlug = macros.Expand(
+                    parentRegion.Layout.Slug, 
+                    parentVariables);
+                variables["ParentSlug"] = parentSlug;
+            }
+
             // Create a new region.
             var region = new Region
                 {

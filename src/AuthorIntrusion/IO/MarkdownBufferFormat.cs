@@ -661,6 +661,7 @@ namespace AuthorIntrusion.IO
                                 BlockType = BlockType.Region, 
                                 LinkedRegion = region
                             });
+                    region.ParentRegion = context.CurrentRegion;
                 }
             }
 
@@ -768,6 +769,7 @@ namespace AuthorIntrusion.IO
                                     BlockType = BlockType.Region, 
                                     LinkedRegion = region
                                 });
+                        region.ParentRegion = context.CurrentRegion;
                     }
                 }
 

@@ -50,6 +50,25 @@ namespace AuthorIntrusion.Buffers
         public BlockCollection Blocks { get; private set; }
 
         /// <summary>
+        /// Gets the index of this region within it's container container.
+        /// </summary>
+        /// <value>
+        /// The index of the container.
+        /// </value>
+        public int ContainerIndex
+        {
+            get
+            {
+                if (this.ParentRegion == null)
+                {
+                    return 0;
+                }
+
+                return this.ParentRegion.Blocks.GetContainerIndex(this);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the layout.
         /// </summary>
         /// <value>
@@ -74,6 +93,14 @@ namespace AuthorIntrusion.Buffers
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the parent region for this region.
+        /// </summary>
+        /// <value>
+        /// The parent region.
+        /// </value>
+        public Region ParentRegion { get; set; }
+
+        /// <summary>
         /// Gets the path associated with this region.
         /// </summary>
         /// <value>
@@ -84,6 +111,20 @@ namespace AuthorIntrusion.Buffers
             get
             {
                 return new HierarchicalPath("/" + this.Slug);
+            }
+        }
+
+        /// <summary>
+        /// Gets the index of the region within the entire project.
+        /// </summary>
+        /// <value>
+        /// The index of the project.
+        /// </value>
+        public int ProjectIndex
+        {
+            get
+            {
+                return this.ContainerIndex;
             }
         }
 

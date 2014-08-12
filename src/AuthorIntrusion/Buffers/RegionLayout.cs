@@ -217,9 +217,29 @@ namespace AuthorIntrusion.Buffers
             // If we don't have the regex, build it.
             if (this.slugRegex == null)
             {
+                // Determine if we have a parent layout expression and add it
+                // to a list of additional expansions.
                 var macros = new MacroExpansion();
+                var additionalExpressions = new Dictionary<string, string>();
 
-                this.slugRegex = macros.GetRegex(this.Slug);
+                if (this.ParentLayout != null)
+                {
+                    // We have a parent regular expression, so include that.
+                    Regex parentRegex = macros.GetRegex(
+                        this.ParentLayout.Slug, 
+                        additionalExpressions, 
+                        MacroExpansionRegexOptions.NonCapturing);
+
+                    additionalExpressions["ParentSlug"] = string.Format(
+                        "({0})", 
+                        parentRegex);
+                }
+
+                // Figure out the regular expression for this item.
+                this.slugRegex = macros.GetRegex(
+                    this.Slug, 
+                    additionalExpressions, 
+                    MacroExpansionRegexOptions.Default);
             }
 
             // Return if this is a match.

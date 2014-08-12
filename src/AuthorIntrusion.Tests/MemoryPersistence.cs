@@ -151,6 +151,12 @@ namespace AuthorIntrusion.Tests
         /// </remarks>
         public Stream GetReadStream(HierarchicalPath path)
         {
+            if (!this.data.ContainsKey(path))
+            {
+                throw new Exception(
+                    "Cannot get read stream for path: " + path + ".");
+            }
+
             byte[] bytes = this.data[path];
             return new MemoryStream(
                 bytes, 

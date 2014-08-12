@@ -198,6 +198,7 @@ namespace AuthorIntrusion
                         BlockType = BlockType.Region, 
                         LinkedRegion = childRegion
                     };
+                childRegion.ParentRegion = region;
 
                 region.Blocks.Add(block);
             }
