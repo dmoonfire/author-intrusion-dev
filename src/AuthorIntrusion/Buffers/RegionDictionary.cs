@@ -5,6 +5,7 @@
 namespace AuthorIntrusion.Buffers
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using MfGames.Text;
@@ -45,7 +46,7 @@ namespace AuthorIntrusion.Buffers
         {
             // Figure out the indexes for the region.
             int containerIndex = parentRegion.Blocks.LinkCount + 1;
-            int projectIndex = containerIndex;
+            int projectIndex = this.GetLayoutCount(layout) + 1;
 
             // Format the slugs and names.
             var macros = new MacroExpansion();
@@ -160,6 +161,30 @@ namespace AuthorIntrusion.Buffers
             // Otherwise, we didn't find it.
             region = null;
             return false;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets the number of regions that have a given count.
+        /// </summary>
+        /// <param name="layout">
+        /// The layout.
+        /// </param>
+        /// <returns>
+        /// The total number of items.
+        /// </returns>
+        private int GetLayoutCount(RegionLayout layout)
+        {
+            // Establish our contracts.
+            Contract.Requires(layout != null);
+
+            // Get how many regions have this contract.
+            int count = this.Values.Count(r => r.Layout == layout);
+
+            return count;
         }
 
         #endregion

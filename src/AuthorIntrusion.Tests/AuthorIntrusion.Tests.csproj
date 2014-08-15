@@ -56,6 +56,7 @@
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInternalSequenceRegionTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInternalSingleRegionTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadInternalInternalProjectTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadNestedProjectIndexedRegionsTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadNestedSequencedRegionsTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\MarkdownBufferFormatTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\MemoryPersistenceTestsBase.cs" />
