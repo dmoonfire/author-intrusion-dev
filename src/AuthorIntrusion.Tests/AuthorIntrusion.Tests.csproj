@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\MarkdownBufferFormatTests\StoreNestedSequencedRegionsTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalExternalProjectTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalInternalRegionsTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalSequenceRegion2Tests.cs" />
