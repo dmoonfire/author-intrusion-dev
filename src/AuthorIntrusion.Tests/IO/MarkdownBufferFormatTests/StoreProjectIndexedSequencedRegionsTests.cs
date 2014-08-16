@@ -1,4 +1,4 @@
-﻿// <copyright file="StoreProjectIndexedequencedRegionsTests.cs" company="Moonfire Games">
+﻿// <copyright file="StoreProjectIndexedSequencedRegionsTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -17,7 +17,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     /// Tests writing out a series of files with nested sequences and project indexes.
     /// </summary>
     [TestFixture]
-    public class StoreProjectIndexedequencedRegionsTests : MemoryPersistenceTestsBase
+    public class StoreProjectIndexedSequencedRegionsTests : MemoryPersistenceTestsBase
     {
         #region Fields
 
