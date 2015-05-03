@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\DocBookBufferFormatTests\StoreInternalRegionTests.cs" />
+    <Compile Include="IO\MarkdownBufferFormatTests\LoadNestedMetadataTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\StoreProjectIndexedSequencedRegionsTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\StoreNestedSequencedRegionsTests.cs" />
     <Compile Include="IO\MarkdownBufferFormatTests\LoadExternalExternalProjectTests.cs" />
@@ -76,10 +78,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\mfgames-cil\src\MfGames\MfGames.csproj">
-      <Project>{3BABBE73-CD1D-494E-A81F-E4EA40107FA9}</Project>
-      <Name>MfGames</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AuthorIntrusion\AuthorIntrusion.csproj">
       <Project>{36D7F7CB-F006-464F-9E71-F3D2F84D1CEA}</Project>
       <Name>AuthorIntrusion</Name>

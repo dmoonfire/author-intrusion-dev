@@ -209,7 +209,7 @@ namespace AuthorIntrusion.Buffers
         public bool IsSequenceSlug(string testSlug)
         {
             // If we aren't sequenced, we don't bother.
-            if (!this.IsSequenced)
+            if (!this.IsSequenced || string.IsNullOrWhiteSpace(testSlug))
             {
                 return false;
             }

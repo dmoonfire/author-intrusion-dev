@@ -44,6 +44,7 @@ namespace AuthorIntrusion.IO
         /// format instance.
         /// </summary>
         /// <param name="context">
+        /// The context of the storing process.
         /// </param>
         void StoreProject(BufferStoreContext context);
 

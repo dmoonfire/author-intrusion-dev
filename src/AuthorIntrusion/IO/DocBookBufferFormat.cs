@@ -93,8 +93,7 @@ namespace AuthorIntrusion.IO
         /// Writes out the project to the given persistence using the
         /// format instance.
         /// </summary>
-        /// <param name="context">
-        /// </param>
+        /// <param name="context">The context of the storing process.</param>
         public void StoreProject(BufferStoreContext context)
         {
             // Write out the project's stream first. This will recursively call

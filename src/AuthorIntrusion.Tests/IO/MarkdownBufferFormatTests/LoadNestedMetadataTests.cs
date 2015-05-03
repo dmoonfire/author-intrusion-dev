@@ -1,4 +1,4 @@
-﻿// <copyright file="LoadNestedSequencedRegionsTests.cs" company="Moonfire Games">
+﻿// <copyright file="LoadNestedMetadataTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
@@ -12,10 +12,10 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests loading a series of files that has multiple sequences inside sequences.
+    /// Tests loading nested metdata from the file.
     /// </summary>
     [TestFixture]
-    public class LoadNestedSequenceRegionsTests
+    public class LoadNestedMetadataTests
     {
         #region Public Methods and Operators
 
@@ -31,26 +31,26 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             Region sceneRegion2 = project.Regions["chapter-01/scene-002"];
 
             Assert.AreEqual(
-                2, 
-                chapterRegion.Blocks.Count, 
+                2,
+                chapterRegion.Blocks.Count,
                 "Number of lines in the project was unexpected.");
 
             Assert.AreEqual(
-                BlockType.Region, 
-                chapterRegion.Blocks[0].BlockType, 
+                BlockType.Region,
+                chapterRegion.Blocks[0].BlockType,
                 "The block type of project's link block is unexpected.");
             Assert.AreEqual(
-                sceneRegion1, 
-                chapterRegion.Blocks[0].LinkedRegion, 
+                sceneRegion1,
+                chapterRegion.Blocks[0].LinkedRegion,
                 "The linked region of the link type is unexpected.");
 
             Assert.AreEqual(
-                BlockType.Region, 
-                chapterRegion.Blocks[1].BlockType, 
+                BlockType.Region,
+                chapterRegion.Blocks[1].BlockType,
                 "The block type of project's link block is unexpected.");
             Assert.AreEqual(
-                sceneRegion2, 
-                chapterRegion.Blocks[1].LinkedRegion, 
+                sceneRegion2,
+                chapterRegion.Blocks[1].LinkedRegion,
                 "The linked region of the link type is unexpected.");
         }
 
@@ -64,12 +64,12 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             Region region1 = project.Regions["chapter-01/scene-001"];
 
             Assert.AreEqual(
-                1, 
-                region1.Blocks.Count, 
+                1,
+                region1.Blocks.Count,
                 "Number of lines was unexpected.");
             Assert.AreEqual(
-                "Text in chapter 1, scene 1.", 
-                region1.Blocks[0].Text, 
+                "Text in chapter 1, scene 1.",
+                region1.Blocks[0].Text,
                 "The text in block 1 was unexpected.");
         }
 
@@ -83,12 +83,12 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             Region region1 = project.Regions["chapter-01/scene-002"];
 
             Assert.AreEqual(
-                1, 
-                region1.Blocks.Count, 
+                1,
+                region1.Blocks.Count,
                 "Number of lines was unexpected.");
             Assert.AreEqual(
-                "Text in chapter 1, scene 2.", 
-                region1.Blocks[0].Text, 
+                "Text in chapter 1, scene 2.",
+                region1.Blocks[0].Text,
                 "The text in block 1 was unexpected.");
         }
 
@@ -100,30 +100,30 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         {
             Project project = this.Setup();
             Region chapterRegion = project.Regions["chapter-02"];
-            Region sceneRegion1 = project.Regions["chapter-02/scene-001"];
-            Region sceneRegion2 = project.Regions["chapter-02/scene-002"];
+            Region sceneRegion1 = project.Regions["chapter-02/scene-003"];
+            Region sceneRegion2 = project.Regions["chapter-02/scene-004"];
 
             Assert.AreEqual(
-                2, 
-                chapterRegion.Blocks.Count, 
+                2,
+                chapterRegion.Blocks.Count,
                 "Number of lines in the project was unexpected.");
 
             Assert.AreEqual(
-                BlockType.Region, 
-                chapterRegion.Blocks[0].BlockType, 
+                BlockType.Region,
+                chapterRegion.Blocks[0].BlockType,
                 "The block type of project's link block is unexpected.");
             Assert.AreEqual(
-                sceneRegion1, 
-                chapterRegion.Blocks[0].LinkedRegion, 
+                sceneRegion1,
+                chapterRegion.Blocks[0].LinkedRegion,
                 "The linked region of the link type is unexpected.");
 
             Assert.AreEqual(
-                BlockType.Region, 
-                chapterRegion.Blocks[1].BlockType, 
+                BlockType.Region,
+                chapterRegion.Blocks[1].BlockType,
                 "The block type of project's link block is unexpected.");
             Assert.AreEqual(
-                sceneRegion2, 
-                chapterRegion.Blocks[1].LinkedRegion, 
+                sceneRegion2,
+                chapterRegion.Blocks[1].LinkedRegion,
                 "The linked region of the link type is unexpected.");
         }
 
@@ -134,15 +134,15 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         public void VerifyChapter2Scene1()
         {
             Project project = this.Setup();
-            Region region1 = project.Regions["chapter-02/scene-001"];
+            Region region1 = project.Regions["chapter-02/scene-003"];
 
             Assert.AreEqual(
-                1, 
-                region1.Blocks.Count, 
+                1,
+                region1.Blocks.Count,
                 "Number of lines was unexpected.");
             Assert.AreEqual(
-                "Text in chapter 2, scene 1.", 
-                region1.Blocks[0].Text, 
+                "Text in chapter 2, scene 1.",
+                region1.Blocks[0].Text,
                 "The text in block 1 was unexpected.");
         }
 
@@ -153,15 +153,15 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         public void VerifyChapter2Scene2()
         {
             Project project = this.Setup();
-            Region region1 = project.Regions["chapter-02/scene-002"];
+            Region region1 = project.Regions["chapter-02/scene-004"];
 
             Assert.AreEqual(
-                1, 
-                region1.Blocks.Count, 
+                1,
+                region1.Blocks.Count,
                 "Number of lines was unexpected.");
             Assert.AreEqual(
-                "Text in chapter 2, scene 2.", 
-                region1.Blocks[0].Text, 
+                "Text in chapter 2, scene 2.",
+                region1.Blocks[0].Text,
                 "The text in block 1 was unexpected.");
         }
 
@@ -176,26 +176,26 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             Region chapter2 = project.Regions["chapter-02"];
 
             Assert.AreEqual(
-                2, 
-                project.Blocks.Count, 
+                2,
+                project.Blocks.Count,
                 "Number of lines in the project was unexpected.");
 
             Assert.AreEqual(
-                BlockType.Region, 
-                project.Blocks[0].BlockType, 
+                BlockType.Region,
+                project.Blocks[0].BlockType,
                 "The block type of project's link block is unexpected.");
             Assert.AreEqual(
-                chapter1, 
-                project.Blocks[0].LinkedRegion, 
+                chapter1,
+                project.Blocks[0].LinkedRegion,
                 "The linked region of the link type is unexpected.");
 
             Assert.AreEqual(
-                BlockType.Region, 
-                project.Blocks[1].BlockType, 
+                BlockType.Region,
+                project.Blocks[1].BlockType,
                 "The block type of project's link block is unexpected.");
             Assert.AreEqual(
-                chapter2, 
-                project.Blocks[1].LinkedRegion, 
+                chapter2,
+                project.Blocks[1].LinkedRegion,
                 "The linked region of the link type is unexpected.");
         }
 
@@ -214,53 +214,39 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             // Create the test input.
             var persistence = new MemoryPersistence();
             persistence.SetData(
-                new HierarchicalPath("/"), 
-                "* [Chapter 1](chapter-01)", 
-                "* [Chapter 2](chapter-02)");
-            persistence.SetData(
-                new HierarchicalPath("/chapter-01"), 
-                "* [Scene 1](chapter-01/scene-001)", 
-                "* [Scene 2](chapter-01/scene-002)");
-            persistence.SetData(
-                new HierarchicalPath("/chapter-02"), 
-                "* [Scene 1](chapter-02/scene-001)", 
-                "* [Scene 2](chapter-02/scene-002)");
-            persistence.SetData(
-                new HierarchicalPath("/chapter-01/scene-001"), 
-                "Text in chapter 1, scene 1.");
-            persistence.SetData(
-                new HierarchicalPath("/chapter-01/scene-002"), 
-                "Text in chapter 1, scene 2.");
-            persistence.SetData(
-                new HierarchicalPath("/chapter-02/scene-001"), 
-                "Text in chapter 2, scene 1.");
-            persistence.SetData(
-                new HierarchicalPath("/chapter-02/scene-002"), 
+                new HierarchicalPath("/"),
+                "# Chapter 1 [chapter-01]",
+                "## Scene 1 [chapter-01/scene-001]",
+                "Text in chapter 1, scene 1.",
+                "## Scene 2 [chapter-01/scene-002]",
+                "Text in chapter 1, scene 2.",
+                "# Chapter 2 [chapter-02]",
+                "## Scene 1 [chapter-02/scene-003]",
+                "Text in chapter 2, scene 1.",
+                "## Scene 2 [chapter-02/scene-004]",
                 "Text in chapter 2, scene 2.");
 
             // Set up the layout.
             var projectLayout = new RegionLayout
-                {
-                    Name = "Project", 
-                    Slug = "project", 
-                    HasContent = false, 
-                };
+            {
+                Name = "Project",
+                Slug = "project",
+                HasContent = false,
+            };
             var chapterLayout = new RegionLayout
-                {
-                    Name = "Chapters", 
-                    Slug = "chapter-$(ContainerIndex:00)", 
-                    HasContent = false, 
-                    IsExternal = true, 
-                    IsSequenced = true, 
-                };
+            {
+                Name = "Chapters",
+                Slug = "chapter-$(ContainerIndex:00)",
+                HasContent = false,
+                IsSequenced = true,
+            };
             var sceneLayout = new RegionLayout
-                {
-                    Name = "Scenes", 
-                    Slug = "$(ParentSlug)/scene-$(ContainerIndex:000)", 
-                    HasContent = true, 
-                    IsExternal = true, 
-                    IsSequenced = true, 
-                };
+            {
+                Name = "Scenes",
+                Slug = "$(ParentSlug)/scene-$(ProjectIndex:000)",
+                HasContent = true,
+                IsSequenced = true,
+            };
             projectLayout.Add(chapterLayout);
             chapterLayout.Add(sceneLayout);
 
@@ -273,7 +259,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
 
             // Parse the buffer lines.
             var context = new BufferLoadContext(
-                project, 
+                project,
                 persistence);
 
             format.LoadProject(context);

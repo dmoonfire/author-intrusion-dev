@@ -1,23 +1,25 @@
-﻿// <copyright file="StoreExternalSequenceRegionTests.cs" company="Moonfire Games">
+﻿// <copyright file="StoreInternalRegionTests.cs" company="Moonfire Games">
 //     Copyright (c) Moonfire Games. Some Rights Reserved.
 // </copyright>
 // MIT Licensed (http://opensource.org/licenses/MIT)
-namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
+namespace AuthorIntrusion.Tests.IO.DocBookBufferFormatTests
 {
     using System.Collections.Generic;
 
     using AuthorIntrusion.Buffers;
     using AuthorIntrusion.IO;
+    using AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests;
 
     using MfGames.HierarchicalPaths;
 
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests various aspects of storing an external sequence region in Markdown.
+    /// Tests various aspects of storing a project with a single internal
+    /// region inside a single file.
     /// </summary>
     [TestFixture]
-    public class StoreExternalSequenceRegionTests : MemoryPersistenceTestsBase
+    public class StoreInternalRegionTests : MemoryPersistenceTestsBase
     {
         #region Fields
 
@@ -30,6 +32,11 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
         /// Contains the context from the load process.
         /// </summary>
         private BufferStoreContext outputContext;
+
+        /// <summary>
+        /// The output format used to write out the results.
+        /// </summary>
+        private DocBookBufferFormat outputFormat;
 
         /// <summary>
         /// Contains the persistence used to write out the results.
@@ -54,7 +61,7 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
             this.Setup();
 
             Assert.AreEqual(
-                3, 
+                1, 
                 this.outputPersistence.DataCount, 
                 "The number of output files was unexpected.");
         }
@@ -75,48 +82,9 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 "title: Testing", 
                 "---", 
                 string.Empty, 
-                "1. [Chapter 1a](regions/region-1)", 
-                "2. [Not Cheese](regions/region-2)");
-        }
-
-        /// <summary>
-        /// Verifies the contents of the region-1 file.
-        /// </summary>
-        [Test]
-        public void VerifyRegion1()
-        {
-            this.Setup();
-
-            List<string> lines =
-                this.outputPersistence.GetDataLines("/regions/region-1");
-
-            this.AssertLines(
-                lines, 
-                "---", 
-                "title: Chapter 1a", 
-                "---", 
+                "# Fixed Region [fixed]", 
                 string.Empty, 
                 "One Two Three.");
-        }
-
-        /// <summary>
-        /// Verifies the contents of the region-2 file.
-        /// </summary>
-        [Test]
-        public void VerifyRegion2()
-        {
-            this.Setup();
-
-            List<string> lines =
-                this.outputPersistence.GetDataLines("/regions/region-2");
-
-            this.AssertLines(
-                lines, 
-                "---", 
-                "title: Not Cheese", 
-                "---", 
-                string.Empty, 
-                "Four Five Six.");
         }
 
         #endregion
@@ -135,20 +103,8 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                 "---", 
                 "title: Testing", 
                 "---", 
-                "* [Chapter 1](regions/region-1)", 
-                "* [Cheese](regions/region-2)");
-            this.inputPersistence.SetData(
-                new HierarchicalPath("/regions/region-1"), 
-                "---", 
-                "title: Chapter 1a", 
-                "---", 
+                "# Fixed Region [fixed]", 
                 "One Two Three.");
-            this.inputPersistence.SetData(
-                new HierarchicalPath("/regions/region-2"), 
-                "---", 
-                "title: Not Cheese", 
-                "---", 
-                "Four Five Six.");
 
             // Set up the layout.
             var projectLayout = new RegionLayout
@@ -157,16 +113,14 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
                     Slug = "project", 
                     HasContent = false, 
                 };
-            var sequencedRegion = new RegionLayout
+            var fixedLayout = new RegionLayout
                 {
-                    Name = "Sequenced Region", 
-                    Slug = "regions/region-$(ContainerIndex:0)", 
+                    Name = "Fixed Region", 
+                    Slug = "fixed", 
                     HasContent = true, 
-                    IsSequenced = true, 
-                    IsExternal = true, 
                 };
 
-            projectLayout.Add(sequencedRegion);
+            projectLayout.Add(fixedLayout);
 
             // Create a new project with the given layout.
             this.project = new Project();
@@ -184,12 +138,13 @@ namespace AuthorIntrusion.Tests.IO.MarkdownBufferFormatTests
 
             // Using the same project layout, we create a new persistence and
             // write out the results.
+            this.outputFormat = new DocBookBufferFormat();
             this.outputPersistence = new MemoryPersistence();
             this.outputContext = new BufferStoreContext(
                 this.project, 
                 this.outputPersistence);
 
-            format.StoreProject(this.outputContext);
+            this.outputFormat.StoreProject(this.outputContext);
         }
 
         #endregion
